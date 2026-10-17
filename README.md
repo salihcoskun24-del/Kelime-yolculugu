@@ -14,6 +14,7 @@ Paket hazır APK değildir. Android ve iPhone’da ana ekrana eklenebilen web uy
 - 3D görünümlü ada illüstrasyonu ve animasyonlu bölüm haritası
 - 100 bölüm, 1.000 kelime, her bölümde 10 eşleşme
 - Yanlış eşleşmede bölümü yeniden başlatma
+- İngilizce kelimeye dokununca sesli telaffuz (cihazın İngilizce metin okuma motoru)
 - Ses efektleri ve kutlama animasyonu
 - Yerel ilerleme kaydı, kelime defteri ve JSON yedekleme
 - HTTPS üzerinden ilk yüklemeden sonra çevrimdışı kullanım
@@ -83,3 +84,11 @@ Eşleşme, yanlış cevapta sıfırlama, bölüm açma, kayıt, arama ve çevrim
 3D etkiler SVG/CSS ile sağlanır; gerçek zamanlı 3D motor kullanılmaz.
 
 Orijinal Python/Kivy kaynak kodu `original/` klasöründe korunur.
+
+## Kelimeleri sesli dinle
+
+Oyun ekranında İngilizce kelimeye dokununca İngilizce sesle okunur.
+Ses düğmesi hem efektleri hem telaffuzu açıp kapatır. API anahtarı gerekmez.
+Sesin doğallığı cihazda bulunan İngilizce sese bağlıdır. Bazı cihazlarda
+İngilizce ses paketini indirmek veya internet bağlantısı gerekebilir.
+Bu özellik harici yapay zekâ API’sine bağlanmaz; tarayıcının metin okuma desteğini kullanır.

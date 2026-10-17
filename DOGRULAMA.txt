@@ -4,3 +4,5 @@ Kaynak veri: 1000 kelime çifti. JavaScript sözdizimi kontrolü başarılı.
 Fiziksel Android/iPhone testi ve yerel APK derlemesi yapılmadı.
 
 Vercel hazırlığı: npm run build başarılı; dist dosyaları ve HTML/manifest varlık yolları doğrulandı. vercel.json eklendi. Vercel bulut dağıtımı çalıştırılmadı.
+
+Telaffuz: Chromium otomasyonunda ses motoru taklidiyle İngilizce dokunma, tekrarlı dokunma, İngilizce ses seçimi, Türkçe için okumama, eşleşme, sessize alma/açma ve gezinmede iptal doğrulandı. Gerçek cihazda ses çıkışı dinlenerek test edilmedi. Build ve JS sözdizimi kontrolü başarılı.
