@@ -64,3 +64,10 @@ GİZLİLİK
 Hesap, reklam, analiz veya harici font/görsel servisi yoktur.
 Uygulama oyun verilerini yerel depolamada tutar. Barındırma hizmeti
 kendi erişim kayıtlarını tutabilir.
+
+VERCEL'DE YAYINLAMA
+Vercel > Add New > Project > GitHub deposunu içe aktar.
+Root Directory depo kökü, Framework Other olarak kalsın.
+vercel.json ayarları otomatik uygular: npm run build, çıktı dist.
+Deploy seç. Ortam değişkeni gerekmez. www klasörünü Root Directory seçme.
+Mevcut projede eski özel ayarlar varsa build/output değerlerini eşleştir.

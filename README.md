@@ -30,6 +30,31 @@ Windows’ta `BASLAT_WINDOWS.bat` da kullanılabilir. `http://localhost:8080` ad
 Aynı Wi-Fi üzerindeki telefondan terminalde gösterilen yerel IP adresi ile erişebilirsin.
 Yerel HTTP bağlantısında telefona yükleme ve çevrimdışı kullanım desteklenmez; bunlar HTTPS gerektirir.
 
+## Vercel’de yayınla
+
+1. Vercel hesabında **Add New → Project** seç.
+2. GitHub’dan **salihcoskun24-del/Kelime-yolculugu** deposunu içe aktar.
+3. **Root Directory** depo kökü olarak kalsın (`www` seçme).
+4. Framework **Other** olmalı. `vercel.json` kurulum, build ve çıktı ayarlarını otomatik tanımlar.
+5. **Deploy** düğmesine bas. Oluşan HTTPS adresini telefonda aç.
+
+Çıktı klasörü `dist`, build komutu `npm run build` olarak tanımlıdır.
+Web sürümü bağımsız statik dosyalardan oluştuğu için Vercel’de Capacitor/Android bağımlılıkları kurulmaz.
+Ortam değişkeni gerekmez. Depo zaten Vercel’e bağlıysa bu commit yeni bir dağıtım başlatabilir;
+başlatmazsa **Deployments → Redeploy** seç. Eski elle girilmiş build/output ayarları varsa
+bunları yukarıdaki değerlerle eşleştir veya proje ayarlarına bırak.
+
+Yerelde aynı çıktıyı hazırlamak için:
+
+```sh
+npm run build
+python -m http.server 8080 --directory dist
+```
+
+Canlı adreste Android Chrome’dan **Uygulamayı yükle / Ana ekrana ekle**;
+iPhone Safari’den **Paylaş → Ana Ekrana Ekle** seçeneğini kullan.
+Vercel hesabına bu işlemde dağıtım yapılmadı; GitHub projesi dağıtıma hazırlandı.
+
 ## Telefona ekle
 
 `www` klasörünün içeriğini HTTPS sunan statik barındırmaya yükle.
