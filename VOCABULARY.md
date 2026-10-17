@@ -32,29 +32,17 @@ Telaffuz, cihazın seçilen dil için sağladığı metin okuma sesini kullanır
 
 ## Dosyalar ve doğrulama
 
-- `www/words.js`: orijinal İngilizce bankası.
-- `www/vocabularies.js`: beş yeni dilin sabit bankaları.
-- `kelime-listeleri/`: her dil için 1.000 satırlık, bölüm ve aşama içeren UTF-8 CSV.
-- `npm run check`: her dilde tam 1.000 kayıt, tekrar etmeyen kaynak metinler,
-  bölüm içinde ayırt edilebilir Türkçe kartlar, yerel alfabeler ve JS sözdizimi.
-- `npm run vocabulary:export`: CSV dosyalarını mevcut bankalardan yeniden üretir.
+WordTrail 4 kaynakları aynı adlardaki `kelime-listeleri/` ve `cumle-sorulari/` CSV dosyalarıdır.
+Her kayıtta sabit bölüm:sıra kimliği ve tr/en/de/es/ru/ar/fr çeviri kolonları vardır.
+Şimdilik tr doludur; diğer ana diller boştur. Cümle anlamları da aynı şekilde ayrılmıştır.
+`scripts/data.cjs` kaynakları `translations` nesneli modele okur.
+`npm run vocabulary:export` ve `npm run sentences:export` eksiksiz çiftlerin JSON dosyalarını üretir.
+`npm run check` bütün çiftlerdeki eksik kelime/cümle çevirisi sayısını raporlar;
+10 kartlık bölümde her ana dilin dolu anlamlarının eşsizliğini ayrı doğrular.
+Eksik çift hiçbir zaman Türkçe anlamlara dönerek açılmaz.
 
-Üretim uygulaması çeviri API'sine istek göndermez; listeler pakete gömülüdür.
-Yayınlanmış bir dilin kayıtlarını veya bölüm sırasını değiştirirken kaydedilmiş
-oturum ve tamamlanmış bölüm verileri için bir geçiş tasarlanmalıdır.
-
-## Bölüm sonu cümleleri
-
-`www/sentences.js`, her dilde 100 bölüm için üçer soru (toplam 1.800) içerir.
-Her sorunun `wordIndex` değeri o bölümdeki on kelimeden birine işaret eder.
-Sorular farklı üç kelimeye aittir. `answer` cümlede gereken çekimli biçim olabilir.
-Her cümlede tek boşluk, Türkçe anlam ve o bölümün sorularından üç farklı seçenek vardır.
-Türkçe anlam, birden çok kelimenin dil bilgisi bakımından uyabildiği durumlarda hedefi açıklar.
-
-`scripts/sentence-source.json` özgün İngilizce bağlam cümlelerini ve Türkçe anlamlarını
-saklar. Diğer diller için otomatik çeviri taslakları kullanıldı; kayıp işaretler,
-çevrilmeden kalan cümleler ve aynı biçimde görünen seçenekler düzeltildi.
-Almanca ayrılabilen eylemlerde boşluk eylemin çekimli bölümünü kapsayabilir.
-Tüm cümleler ana dili konuşan bir editör tarafından doğrulanmış değildir.
-CSV listeleri `cumle-sorulari/` içindedir. `npm run sentences:export` bunları üretir.
-Veri kontrolü 100 bölüm, üç ayrı hedef kelime, tek boşluk ve ayrı seçenekleri denetler.
+Eski `www/words.js`, `vocabularies.js`, `sentences.js` dosyaları tarihsel kaynak olarak
+korunur; üretim web çıktısında veya runtime yükleme listesinde bulunmaz.
+Uygulama yalnızca seçilen çiftin JSON dosyasını indirir; ziyaret edilen çiftler çevrimdışı saklanır.
+Kaynak CSV kimliklerini ve yayımlanmış bölüm sırasını değiştirme; mevcut kayıtlar bunları kullanır.
+Arayüzdeki yeni yedi dil çevirilerini ana dilini konuşan biri kontrol etsin.

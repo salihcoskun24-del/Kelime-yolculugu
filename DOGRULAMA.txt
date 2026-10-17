@@ -1,4 +1,4 @@
-KELİME YOLCULUĞU 2.2 — DOĞRULAMA
+WordTrail — TARİHSEL VE GÜNCEL — DOĞRULAMA
 
 Veri ve build:
 - Altı dilde 1000'er kelime/ifade, 100'er bölüm, bölüm başına 10 çift.
@@ -105,3 +105,27 @@ kurulumu kullanılır; PLAYWRIGHT_MODULE ve BROWSER_EXECUTABLE ile özel
 kurulum yolları belirtilebilir. Testler geçici yerel HTTP sunucusu açar.
 Bu ortamda /usr/bin/chromium ile headless Chromium testleri çalıştırılmıştır.
 Canlı Vercel dağıtımı veya gerçek reklam hesabı bu testlerin parçası değildir.
+
+WORDTRAIL 4.0.0 — YENİ DOĞRULAMALAR
+- Paket/appName/mağaza başlığı/manifest/cache öneki WordTrail olarak değiştirildi.
+- ky-v2 kayıt anahtarı değişmedi. v2/v3 ilerlemesi, kurtarma ve SRS verileri *-tr'ye taşınır.
+- Yeni ve eski yedeklerde ortak can/yenilenme zamanı ve mevcut seri korunur.
+- es-tr/es-en/ru-ar verileri birbirine karışmaz; başka çiftin yedeği diğer çiftleri silmez.
+- 115 anahtar × 7 dil; anahtar kümeleri ve yer tutucular aynı; kullanılan statik t()/button()
+  anahtarları ve dinamik enum anahtarları kontrol edilir. Intl.NumberFormat/PluralRules kullanılır.
+- Cihaz dili önerilir; kullanıcı seçmeden kaydedilmez. Ana menüden 7 dil anında değişir.
+- HTML lang/dir ve meta description güncellenir. Arapça RTL; 320 px'de ekranlar taşmaz.
+- Rusça 1/2/5 ve Arapça 0/1/2/3/11 çoğul kategorileri sözlükte desteklenir.
+- Eksik çiftler kapalı, ana dil hedeflerden gizli; Türkçeye geri dönüş yoktur.
+- Teste özel tam ru-ar fixture ile Rusça kaynak kartı LTR, Arapça anlam kartı RTL doğrulanır.
+  Bu fixture üretim veri listesine yazılmaz; üretimde Türkçe dışında çift açılmaz.
+- Başlangıçta yalnızca catalog; çift seçiminde yalnızca o çiftin JSON'u istenir.
+  Eski monolitik words/vocabularies/sentences betikleri web build'e alınmaz.
+- SW önbelleğinde yalnızca açılan en-tr verisi bulunur; bütün çiftler önceden indirilmez.
+- SW değişimi açık kullanıcı isteğiyle gerçekleşir; çevrimdışı yenilemede seçilen çift ve
+  2 eşleşme/Hata 1/2 oturumu korunur.
+- Kaynak CSV'ler yeni çeviri kolonlarıyla korunur. Her çiftin eksikleri ayrı raporlanır.
+- Önceki oyun ekonomisi, iki hata/kurtarma, pratik/tekrar, seri ve tema testleri tekrar çalıştırılır.
+
+Arayüz çevirileri taslaktır: ana dilini konuşan biri kontrol etsin.
+Canlı Vercel veya gerçek mağaza yayını bu yerel testlerle doğrulanmış sayılmaz.

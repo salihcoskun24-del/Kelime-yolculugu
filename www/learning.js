@@ -1,7 +1,6 @@
 'use strict';
 const Learning = (() => {
   const LANGS=['en','de','es','ru','ar','fr'];
-  const NAMES={en:'İngilizce',de:'Almanca',es:'İspanyolca',ru:'Rusça',ar:'Arapça',fr:'Fransızca'};
   const integer=(v,f=0)=>Number.isSafeInteger(v)&&v>=0?v:f;
   const day = (now=Date.now()) => {const d=new Date(now);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
   const validDay=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s+'T00:00:00Z'))&&new Date(s+'T00:00:00Z').toISOString().slice(0,10)===s;
@@ -35,13 +34,7 @@ const Learning = (() => {
   }
   const anchor=(state,now=Date.now())=>touchDay(state.activity,now).date;
   const units=activity=>activity.current.lessons+Math.floor((activity.current.practiceCorrect+activity.current.reviewAnswered)/10);
-  function definitions(){return [
-    ...[3,7,30].map(n=>({id:`streak-${n}`,label:`${n} günlük seri`,detail:`Günlük hedefi ${n} gün art arda tamamla.`})),
-    ...LANGS.flatMap(l=>[10,50,100].map(n=>({id:`levels-${l}-${n}`,label:`${NAMES[l]} · ${n} bölüm`,detail:`${NAMES[l]} yolculuğunda ${n} bölüm tamamla.`}))),
-    {id:'speed-first',label:'İlk hız rekoru',detail:'60 saniyelik hız oturumunda ilk rekorunu kır.'},
-    {id:'review-100',label:'100 tekrar',detail:'Aralıklı tekrarda 100 soruyu yanıtla.'},
-    {id:'six-languages',label:'Altı dünyaya adım',detail:'Altı dilin her birinde en az bir bölüm tamamla.'}
-  ];}
+  function definitions(){return [...[3,7,30].map(n=>({id:`streak-${n}`})),...LANGS.flatMap(l=>[10,50,100].map(n=>({id:`levels-${l}-${n}`}))),...['speed-first','review-100','six-languages'].map(id=>({id}))];}
   function normalizeBadges(value){const out={},ids=new Set(definitions().map(b=>b.id));if(value&&typeof value==='object')for(const [id,v] of Object.entries(value))if(ids.has(id)&&validDay(v?.date))out[id]={date:v.date,source:v.source==='migration'?'migration':'earned'};return out;}
   function award(state,id,date,source='earned'){if(state.badges[id])return [];state.badges[id]={date,source};return [id];}
   function qualify(state,now=Date.now()){
@@ -71,12 +64,12 @@ const Learning = (() => {
   }
   function recordCompletion(state,lang,previousCount,previousAll,now=Date.now()){
     const clock=touchDay(state.activity,now);let awards=[];
-    for(const n of [10,50,100])if(previousCount<n&&state.progress[lang].completed.length>=n)awards.push(...award(state,`levels-${lang}-${n}`,clock.date));
-    if(!previousAll&&LANGS.every(l=>state.progress[l].completed.length>0))awards.push(...award(state,'six-languages',clock.date));
+    for(const n of [10,50,100])if(previousCount<n&&state.progress[lang].completed.length>=n)awards.push(...award(state,`levels-${lang.split('-')[0]}-${n}`,clock.date));
+    if(!previousAll&&LANGS.every(l=>Object.entries(state.progress).some(([key,p])=>key.split('-')[0]===l&&p.completed.length>0)))awards.push(...award(state,'six-languages',clock.date));
     if(!clock.rollback){state.activity.current.lessons++;awards.push(...qualify(state,now));}
     return awards;
   }
-  function migrateSections(state,now=Date.now()){for(const lang of LANGS)for(const n of [10,50,100])if(state.progress[lang].completed.length>=n)award(state,`levels-${lang}-${n}`,day(now),'migration');}
+  function migrateSections(state,now=Date.now()){for(const lang of Object.keys(state.progress))for(const n of [10,50,100])if(state.progress[lang].completed.length>=n)award(state,`levels-${lang.split('-')[0]}-${n}`,day(now),'migration');}
   function speedResult(state,lang,score,now=Date.now()){const p=state.progress[lang];if(score<=p.speedRecord)return {record:false,awards:[]};const first=p.speedRecord===0;p.speedRecord=score;return {record:true,awards:first?award(state,'speed-first',anchor(state,now)):[]};}
   const due=(state,lang,now=Date.now())=>{const date=anchor(state,now);return Object.entries(state.progress[lang].review).filter(([,v])=>v.due<=date).sort((a,b)=>a[1].due.localeCompare(b[1].due)||b[1].wrong-a[1].wrong).map(([key])=>key);};
   const accuracy=p=>{const totals=Object.values(p.stats).reduce((s,c)=>({correct:s.correct+c.correct,wrong:s.wrong+c.wrong}),{correct:0,wrong:0});return {...totals,total:totals.correct+totals.wrong,percent:totals.correct+totals.wrong?Math.round(totals.correct/(totals.correct+totals.wrong)*100):null};};

@@ -3,7 +3,8 @@
  if(!('serviceWorker' in navigator)||location.protocol==='file:')return;
  let registration=null,worker=null,reloadRequested=false,reloading=false,controller=navigator.serviceWorker.controller,lastCheck=0,dismissed=null;
  const banner=document.createElement('div');banner.className='update-banner';banner.hidden=true;banner.setAttribute('role','status');
- banner.innerHTML='<span>Yeni sürüm var — Yenile</span><button class="primary" id="apply-update">Yenile</button><button class="text-button" id="dismiss-update" aria-label="Güncellemeyi daha sonra yap">×</button>';
+ banner.innerHTML=`<span>${t('update')}</span><button class="primary" id="apply-update">${t('refresh')}</button><button class="text-button" id="dismiss-update" aria-label="${t('later')}">×</button>`;
+ window.addEventListener('wordtrail-locale',()=>{banner.querySelector('span').textContent=t('update');banner.querySelector('#apply-update').textContent=t('refresh');banner.querySelector('#dismiss-update').setAttribute('aria-label',t('later'));});
  document.body.appendChild(banner);
  function show(waiting){if(dismissed&&dismissed===waiting)return;worker=waiting;banner.hidden=false;}
  function watch(reg){

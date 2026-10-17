@@ -1,6 +1,6 @@
 {
-  "appId": "com.kelimeyolculugu.app",
-  "appName": "Kelime Yolculu\u011fu",
+  "appId": "com.wordtrail.app",
+  "appName": "WordTrail",
   "webDir": "www",
   "backgroundColor": "#091e2c"
 }

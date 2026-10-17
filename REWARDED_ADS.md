@@ -1,4 +1,4 @@
-# Ödüllü reklam bağlantısı
+# WordTrail — Ödüllü reklam bağlantısı
 
 ## Şu anki durum
 
