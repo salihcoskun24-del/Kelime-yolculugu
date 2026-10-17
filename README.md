@@ -1,71 +1,87 @@
 # Kelime Yolculuğu
 
-100 bölüm ve 1.000 İngilizce–Türkçe kelime içeren, telefon ekranlarına uyumlu eşleştirme oyunu.
-
-## ZIP dosyasını indir
+Altı dilde 100'er bölüm ve 1.000'er kelime içeren, telefona eklenebilen eşleştirme oyunu.
+İngilizce, Almanca, İspanyolca, Rusça, Arapça ve Fransızca kelimeleri Türkçeleriyle eşleştir.
 
 **[Uygulamayı ZIP olarak indir](https://github.com/salihcoskun24-del/Kelime-yolculugu/raw/refs/heads/main/Kelime_Yolculugu_Mobil.zip)**
 
-Dosya indikten sonra ZIP’i çıkarıp `OKU_BENI.txt` dosyasını aç.
-Paket hazır APK değildir. Android ve iPhone’da ana ekrana eklenebilen web uygulaması ve Android APK üretmek için Capacitor ayarları içerir.
+Paket hazır APK değildir; PWA ve Android APK üretmek için Capacitor ayarları içerir.
 
-## Özellikler
+## Yenilikler
 
-- 3D görünümlü ada illüstrasyonu ve animasyonlu bölüm haritası
-- 100 bölüm, 1.000 kelime, her bölümde 10 eşleşme
-- Yanlış eşleşmede bölümü yeniden başlatma
-- İngilizce kelimeye dokununca sesli telaffuz (cihazın İngilizce metin okuma motoru)
-- Ses efektleri ve kutlama animasyonu
-- Yerel ilerleme kaydı, kelime defteri ve JSON yedekleme
-- HTTPS üzerinden ilk yüklemeden sonra çevrimdışı kullanım
+- Açılışta altı dilden birini seç; ana ekrandaki dil düğmesinden değiştir.
+- Her dilin bölüm ilerlemesi, devam eden eşleşmeleri ve yardımcı hakları ayrı saklanır.
+- Yeni beş dilde kolaydan zora 1.000'er kayıt; sıralı listeler `kelime-listeleri/` klasöründe.
+- Kelimeye dokununca o dilin sesiyle telaffuz; Arapça kartlarda sağdan sola metin.
+- Bölümlerin altında **Kaldığım yere gel** ve **İpucu** düğmeleri.
+- Her dilde her yardımcı için bir defalık **5 hak**.
+- Eski İngilizce ilerlemesi otomatik taşınır; İngilizce bölüm sırası korunur.
+- 3D görünümlü ada, animasyonlar, kutlama, sesler, kelime defteri ve tüm diller için yedekleme.
 
-## Bilgisayarda çalıştır
+## Yardımcılar
 
-Python 3 kurulu bilgisayarda:
+**Kaldığım yere gel:** Haritayı aktif bölüme kaydırır. Eski bir bölüm oynuyorsan
+kayıtlı aktif bölümüne ve eşleşmelerine döndürür. Zaten oradaysan hak harcamaz.
+Ana ekrandaki normal devam düğmesi ve bölüm seçmek ücretsizdir.
+
+**İpucu:** Oynanan bölümde doğru bir çifti 5 saniye işaretler. Bölüm haritasından
+kullanılırsa aktif bölümü açıp orada ipucu verir. Otomatik puan kazandırmaz.
+İpucu görünürken tekrar basmak ikinci hak harcamaz.
+
+Haklar bölüm geçişinde, sayfa yenilemede veya ilerleme sıfırlamada yenilenmez.
+Bakiye sıfır olunca düğme pasif olur. Reklam izleme veya ödül verme henüz eklenmedi.
+Bakiyeler dil başına `progress[language].jump` ve `.hint` alanlarında yerel saklanır.
+İleride ödüllü reklam eklendiğinde hak verme işlemi gerçek reklam tamamlama
+sonucuna bağlanmalı; bu yerel kayıt bir reklam doğrulama sistemi değildir.
+
+## Vercel'de yayınla
+
+1. **Add New → Project** ile bu GitHub deposunu içe aktar.
+2. **Root Directory** depo kökü olarak kalsın; `www` seçme.
+3. Framework **Other** olmalı. `vercel.json` diğer ayarları tanımlar.
+4. **Deploy**'a bas. Çıktı klasörü `dist`, build komutu `npm run build`.
+
+Ortam değişkeni veya API anahtarı gerekmez. Web sürümü statik olduğundan
+Vercel'de Android/Capacitor bağımlılıkları kurulmaz.
+Depo zaten bağlıysa push sonrası otomatik dağıtım başlayabilir; başlamazsa **Redeploy** seç.
+Eski özel build/output ayarları varsa bu değerlerle eşleştir.
+
+## Yerelde çalıştır
+
+Python 3 ile:
 
 ```sh
 python calistir.py
 ```
 
-Windows’ta `BASLAT_WINDOWS.bat` da kullanılabilir. `http://localhost:8080` adresini aç.
-Aynı Wi-Fi üzerindeki telefondan terminalde gösterilen yerel IP adresi ile erişebilirsin.
-Yerel HTTP bağlantısında telefona yükleme ve çevrimdışı kullanım desteklenmez; bunlar HTTPS gerektirir.
+Windows'ta `BASLAT_WINDOWS.bat` da kullanılabilir. `http://localhost:8080` adresini aç.
+Aynı Wi-Fi üzerindeki telefonda terminalde gösterilen yerel IP adresini kullan.
 
-## Vercel’de yayınla
-
-1. Vercel hesabında **Add New → Project** seç.
-2. GitHub’dan **salihcoskun24-del/Kelime-yolculugu** deposunu içe aktar.
-3. **Root Directory** depo kökü olarak kalsın (`www` seçme).
-4. Framework **Other** olmalı. `vercel.json` kurulum, build ve çıktı ayarlarını otomatik tanımlar.
-5. **Deploy** düğmesine bas. Oluşan HTTPS adresini telefonda aç.
-
-Çıktı klasörü `dist`, build komutu `npm run build` olarak tanımlıdır.
-Web sürümü bağımsız statik dosyalardan oluştuğu için Vercel’de Capacitor/Android bağımlılıkları kurulmaz.
-Ortam değişkeni gerekmez. Depo zaten Vercel’e bağlıysa bu commit yeni bir dağıtım başlatabilir;
-başlatmazsa **Deployments → Redeploy** seç. Eski elle girilmiş build/output ayarları varsa
-bunları yukarıdaki değerlerle eşleştir veya proje ayarlarına bırak.
-
-Yerelde aynı çıktıyı hazırlamak için:
+Vercel çıktısını yerelde kontrol etmek için:
 
 ```sh
+npm run check
 npm run build
 python -m http.server 8080 --directory dist
 ```
 
-Canlı adreste Android Chrome’dan **Uygulamayı yükle / Ana ekrana ekle**;
-iPhone Safari’den **Paylaş → Ana Ekrana Ekle** seçeneğini kullan.
-Vercel hesabına bu işlemde dağıtım yapılmadı; GitHub projesi dağıtıma hazırlandı.
+## Telefonuna ekle
 
-## Telefona ekle
+Vercel'in HTTPS adresini aç. Android Chrome: **Menü → Uygulamayı yükle / Ana ekrana ekle**.
+iPhone Safari: **Paylaş → Ana Ekrana Ekle**.
+İlk açılışta tüm dillerin uygulama dosyaları önbelleğe alınır; sonrasında oyun çevrimdışı çalışır.
+Telaffuzun çalışması ve çevrimdışı ses desteği, cihazdaki ilgili dilin ses paketine bağlıdır.
+Yeni sürüm dağıtıldıktan sonra açık uygulamayı yeniden yükle; eski sürüm görünüyorsa kapatıp tekrar aç.
 
-`www` klasörünün içeriğini HTTPS sunan statik barındırmaya yükle.
-Android Chrome’da **Menü → Uygulamayı yükle / Ana ekrana ekle**;
-iPhone Safari’de **Paylaş → Ana Ekrana Ekle** seçeneğini kullan.
-Bu depoyu oluşturmak tek başına canlı site yayınlamaz.
+## Kayıt ve yedek
+
+Ayarlar'dan tüm dillerin ilerlemesini, devam eden bölümünü ve yardımcı haklarını JSON olarak yedekle.
+Eski İngilizce yedekleri de içe aktarılabilir; diğer diller korunur.
+Kayıt bu cihazın tarayıcısında ve bu adrese özeldir; cihazlar arasında otomatik eşitlenmez.
 
 ## Android APK üretme
 
-Node.js 22+, JDK 21, Android SDK ve Android Studio kurulu bilgisayarda:
+Node.js 22+, JDK 21, Android SDK ve Android Studio ile:
 
 ```sh
 npm install
@@ -74,21 +90,11 @@ npm run android:sync
 npm run android:open
 ```
 
-Android Studio’dan APK oluştur. Bu projede yerel APK derlemesi ve fiziksel telefon testi yapılmadı.
-Ayrıntılar `OKU_BENI.txt` dosyasında.
+Android Studio'dan APK oluştur. Yerel APK derlemesi bu ortamda yapılmadı.
 
-## Doğrulama
+## Veri ve doğrulama
 
-Chromium’da 320, 390 ve 768 piksel genişliklerde kontrol edildi.
-Eşleşme, yanlış cevapta sıfırlama, bölüm açma, kayıt, arama ve çevrimdışı yeniden yükleme kontrolleri geçti.
-3D etkiler SVG/CSS ile sağlanır; gerçek zamanlı 3D motor kullanılmaz.
-
-Orijinal Python/Kivy kaynak kodu `original/` klasöründe korunur.
-
-## Kelimeleri sesli dinle
-
-Oyun ekranında İngilizce kelimeye dokununca İngilizce sesle okunur.
-Ses düğmesi hem efektleri hem telaffuzu açıp kapatır. API anahtarı gerekmez.
-Sesin doğallığı cihazda bulunan İngilizce sese bağlıdır. Bazı cihazlarda
-İngilizce ses paketini indirmek veya internet bağlantısı gerekebilir.
-Bu özellik harici yapay zekâ API’sine bağlanmaz; tarayıcının metin okuma desteğini kullanır.
+Veri sıralaması, alfabe tercihleri ve çeviri hazırlığı için [VOCABULARY.md](VOCABULARY.md).
+Tekrarlanabilir veri kontrolleri `npm run check` ile çalışır ve build sırasında da uygulanır.
+Oyun kontrolleri, kayıt geçişi ve sınırlar [DOGRULAMA.txt](DOGRULAMA.txt) dosyasında.
+Orijinal Python/Kivy kaynak dosyası `original/` içinde korunur.
