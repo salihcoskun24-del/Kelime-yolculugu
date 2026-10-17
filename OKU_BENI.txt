@@ -1,0 +1,66 @@
+KELİME YOLCULUĞU — TELEFON UYGULAMASI
+====================================
+100 bölüm / 1.000 İngilizce-Türkçe kelime
+
+PAKETİN İÇERİĞİ
+Mobil ekranlara uyumlu, ana ekrana eklenebilir PWA uygulaması.
+3D görünümlü SVG ada ve bölüm taşları, süzülme animasyonları,
+konfeti, ses efektleri, kelime defteri, yerel kayıt ve JSON yedekleme.
+Görseller stilize 3D görünümündedir; gerçek zamanlı 3D motor kullanılmaz.
+Orijinal Python dosyası original klasöründe korunmuştur.
+Bu ZIP hazır APK veya IPA içermez. Python/Kivy kurulumu gerektirmez;
+aşağıdaki yerel sunucu seçeneği için bilgisayarda Python 3 gerekir.
+
+1. BİLGİSAYARDA HEMEN DENE
+ZIP'i bir klasöre çıkar. Windows'ta BASLAT_WINDOWS.bat dosyasını aç.
+Mac/Linux veya terminal: python3 calistir.py
+Windows terminal: python calistir.py
+Tarayıcı: http://localhost:8080
+Aynı Wi-Fi'deki telefonda terminalde yazan telefon adresini aç.
+Gerekirse güvenlik duvarında Python'a yerel ağ erişimi ver.
+Bilgisayarı açık tut. Durdurmak için Ctrl+C kullan.
+index.html'i çift tıklamak yerine sunucu üzerinden aç.
+
+2. TELEFONA YÜKLE (ANDROID VE IPHONE)
+www klasörünün İÇİNDEKİ dosyaları herhangi bir HTTPS statik
+barındırma hizmetine yükle. Örneğin Netlify Drop'a www klasörünü
+bırakıp oluşan HTTPS adresini telefonda açabilirsin. Bu pakette
+canlı barındırma kurulmamıştır.
+Android: Chrome → menü → Uygulamayı yükle / Ana ekrana ekle.
+iPhone: Safari → Paylaş → Ana Ekrana Ekle.
+İlk açılış internet ister. Service worker dosyaları önbelleğe aldıktan
+sonra aynı adres/kurulum çevrimdışı çalışır. İlk açılışı tamamlamadan
+internet bağlantısını kesme. Ayarlar cihazda ve adrese özel saklanır.
+Telefondaki yerel HTTP adresinde oyun çalışır; PWA yükleme ve
+çevrimdışı özellikler için HTTPS gerekir (bilgisayarda localhost hariç).
+
+3. ANDROID APK ÜRETMEK İSTEYENLER İÇİN
+Capacitor yapılandırması dahildir. Node.js 22+, Android Studio,
+Android SDK ve JDK 21 kurulu bir bilgisayarda proje kökünde:
+  npm install
+  npm run android:add
+  npm run android:sync
+  npm run android:open
+Android Studio gerekli SDK'ları indirir. Build > Build App Bundle(s) /
+APK(s) > Build APK(s) ile test APK'sı üretilebilir. Menü adı sürüme göre
+farklı olabilir. Play Store için ayrıca imzalı sürüm gerekir.
+Bu derleme ortamda yapılmadı; APK işleyişi burada doğrulanmadı.
+Capacitor içine web dosyaları gömülür. Değişiklikten sonra sync çalıştır.
+iOS yerel paketleme için macOS, Xcode ve Apple imzalama gerekir;
+ana ekrana eklenen PWA için bunlar gerekmez.
+
+OYUN KURALLARI
+Bir sütundan kelimeyi, diğerinden karşılığını seç.
+10 doğru eşleşme bölümü tamamlar. Yanlış cevap bölümü baştan başlatır.
+100 bölüm sırayla açılır; tamamlanan bölümler tekrar oynanabilir.
+Kelime defteri yalnızca tamamlanan bölümleri gösterir.
+İlerleme bu tarayıcıda saklanır; farklı cihazlara otomatik taşınmaz.
+Ayarlar > İlerlemeyi yedekle ile JSON indir, başka cihazda geri yükle.
+Verileri temizlemeden önce yedek al.
+Ses ilk dokunuştan sonra çalışır. Sessiz mod / tarayıcı ayarları etkileyebilir.
+Azaltılmış hareket sistem tercihi animasyonları azaltır.
+
+GİZLİLİK
+Hesap, reklam, analiz veya harici font/görsel servisi yoktur.
+Uygulama oyun verilerini yerel depolamada tutar. Barındırma hizmeti
+kendi erişim kayıtlarını tutabilir.

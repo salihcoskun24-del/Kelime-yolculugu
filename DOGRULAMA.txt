@@ -1,0 +1,4 @@
+Tarayıcı kontrolü: Chromium / 320, 390 ve 768 piksel genişlikler.
+Başarılı: 20 oyun kartı, yanlış cevap sonrası sıfırlama, 10 doğru eşleşme, kutlama, sonraki bölüm kilidi, yeniden açılışta kayıt, kelime defteri ve arama, 100 bölüm, çevrimdışı yeniden yükleme.
+Kaynak veri: 1000 kelime çifti. JavaScript sözdizimi kontrolü başarılı.
+Fiziksel Android/iPhone testi ve yerel APK derlemesi yapılmadı.
