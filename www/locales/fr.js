@@ -129,5 +129,11 @@ window.WordTrailLocales.fr={
     "few": "{count} mots",
     "many": "{count} mots",
     "other": "{count} mots"
-  }
+  },
+  "mapA1": "A1 · Premiers pas",
+  "mapA2": "A2 · Vie quotidienne",
+  "mapB1": "B1 · Exprime-toi",
+  "mapB2": "B2 · Nouveaux horizons",
+  "mapC1": "C1 · Approfondir",
+  "mapC2": "C2 · Vers le sommet"
 };

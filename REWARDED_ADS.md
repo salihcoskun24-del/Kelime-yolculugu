@@ -3,7 +3,7 @@
 ## Şu anki durum
 
 Yayıncı hesabı veya gerçek ödüllü reklam birimi yok. Kullanıcının isteğiyle
-reklam seçeneği kapalı bırakıldı. Reklam ekranında düğme pasiftir, Google reklam
+reklam seçeneği kapalı bırakıldı. Reklam düğmesi henüz gösterilmez; Google reklam
 SDK'sına ağ isteği yapılmaz ve reklam izlenmiş gibi ödül verilmez.
 10 dakikalık otomatik can yenilenmesi bağımsız olarak çalışır.
 

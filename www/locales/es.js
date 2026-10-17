@@ -129,5 +129,11 @@ window.WordTrailLocales.es={
     "few": "{count} palabras",
     "many": "{count} palabras",
     "other": "{count} palabras"
-  }
+  },
+  "mapA1": "A1 · Primeros pasos",
+  "mapA2": "A2 · Vida cotidiana",
+  "mapB1": "B1 · Exprésate",
+  "mapB2": "B2 · Nuevos horizontes",
+  "mapC1": "C1 · Profundiza",
+  "mapC2": "C2 · Camino a la cima"
 };

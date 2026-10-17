@@ -129,5 +129,11 @@ window.WordTrailLocales.en={
     "few": "{count} words",
     "many": "{count} words",
     "other": "{count} words"
-  }
+  },
+  "mapA1": "A1 · First steps",
+  "mapA2": "A2 · Everyday life",
+  "mapB1": "B1 · Express yourself",
+  "mapB2": "B2 · New horizons",
+  "mapC1": "C1 · Go deeper",
+  "mapC2": "C2 · Journey to the summit"
 };

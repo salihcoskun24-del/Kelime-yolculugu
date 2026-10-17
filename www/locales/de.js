@@ -129,5 +129,11 @@ window.WordTrailLocales.de={
     "few": "{count} Wörter",
     "many": "{count} Wörter",
     "other": "{count} Wörter"
-  }
+  },
+  "mapA1": "A1 · Erste Schritte",
+  "mapA2": "A2 · Alltag",
+  "mapB1": "B1 · Drück dich aus",
+  "mapB2": "B2 · Neue Horizonte",
+  "mapC1": "C1 · Vertiefen",
+  "mapC2": "C2 · Weg zum Gipfel"
 };

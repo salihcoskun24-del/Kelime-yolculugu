@@ -15,10 +15,17 @@ Ana menünün üstündeki seçici arayüzü hemen değiştirir; tercih cihazda s
 Arapça arayüz RTL'dir. Öğrenilen kelimenin yönü hedef dile, anlam kartının yönü ana dile bağlıdır.
 Kullanıcının ana dili hedef listesinden gizlenir.
 
-**Şu anda yalnızca Türkçe ana dilli altı çiftin kelime ve cümle çevirileri hazırdır.**
-Diğer ana dillerde arayüz çalışır; eksik çiftler “kelime listeleri yakında” mesajıyla
-kapalıdır. Türkçe anlamlara sessizce geri dönülmez. Yedi dilin arayüz çevirileri başlangıç
+**36 ana–hedef dil çiftinin tamamı hazırdır:** her çiftte 1.000 kelime ve 300 cümle anlamı vardır.
+Eşleştirme, cümle, kelime defteri, tekrar ve pratik seçilen ana dilin karşılıklarını kullanır.
+Listeler satır sırasıyla değil, kalıcı `conceptId` kavram kimlikleriyle eşleştirilir; İngilizcenin
+eski bölüm sırası korunur. Türkçe anlamlara sessizce geri dönülmez. Yedi dilin arayüz çevirileri başlangıç
 taslağıdır; **her dilin çevirilerini ana dilini konuşan biri kontrol etsin.**
+
+## Sürüm 4.1
+
+- Doğru eşleştirmelerde tüm ekran yeniden çizilmez; yalnızca iki kart, sayaç ve ilerleme çubuğu güncellenir. İlk hata da mevcut kartları korur; ekran yanıp sönmez ve kaydırma sıçramaz.
+- Bölümler kıvrımlı bağlantılar ve üç boyutlu taşlarla yol haritasıdır. Başlıklar: A1 (1–20), A2 (21–40), B1 (41–60), B2 (61–80), C1 (81–90), C2 (91–100). Tamamlanan/mevcut/kilitli durumları ayrıdır; mevcut bölüme kaydırılır. Bunlar rota başlıklarıdır, resmî CEFR sınavı veya yeterlilik belgesi değildir.
+- Bütün dil çiftleri kelime ve cümle karşılıklarıyla açılmıştır. Eksik dil listesi ekranı normal kullanımda gösterilmez.
 
 ## Oyun
 
@@ -48,18 +55,24 @@ taslağıdır; **her dilin çevirilerini ana dilini konuşan biri kontrol etsin.
 ## Veri modeli ve yeni çeviri ekleme
 
 Kaynaklar aynı adlarla `kelime-listeleri/` ve `cumle-sorulari/` CSV dosyalarındadır.
-Kelime kolonları: `id;target;text;level;stage;tr;en;de;es;ru;ar;fr`.
+Kelime kolonları: `id;conceptId;target;text;level;stage;tr;en;de;es;ru;ar;fr`.
 Cümle kolonları: `id;target;level;wordId;text;answer;tr;en;de;es;ru;ar;fr`.
-Boş çeviri hücresi “hazır değil” demektir. Kimlikler değişmez: `1:0` … `100:9`.
-`scripts/data.cjs`, bunları `{id,target,text,level,stage,translations:{tr,en,de,es,ru,ar,fr}}`
+Tüm çeviri hücreleri doldurulmuştur. Oyun kimlikleri değişmez: `1:0` … `100:9`.
+`conceptId` aynı anlamın farklı bölüm sıralarındaki kelimelerini bağlar.
+`scripts/data.cjs`, bunları `{id,conceptId,target,text,level,stage,translations:{tr,en,de,es,ru,ar,fr}}`
 modeline okur. Cümlelerde de ayrı çeviri alanları vardır.
 
 `npm run vocabulary:export` veya `npm run sentences:export`, kaynak CSV'lerden
 `www/data/catalog.json` ve **yalnızca eksiksiz çiftler** için `<hedef>-<ana>.json` üretir.
-Bir çifti açmak için 1.000 kelime ve 300 cümle anlamını doldur; bölümdeki 10 anlam kartı
+Yeni bir çift eklerken 1.000 kelime ve 300 cümle anlamı eksiksiz olmalı; bölümdeki 10 anlam kartı
 birbirinden farklı olmalı. `npm run check`, her çiftin eksik sayısını raporlar ve
 her ana dil için bölüm içi eşsizliği ayrı kontrol eder. Yeni çeviriler eklenince build
 kataloğu otomatik günceller. JSON üretim dosyalarını elle düzenleme.
+
+`npm run translations:complete` mevcut paralel bankaların `conceptId` ve ortak cümle bağlamlarından
+bütün çevirileri yeniden oluşturur; ağ/çeviri servisi kullanmaz. Kaynak kelimelerin ve Türkçe
+karşılıkların eski sürümle aynı kaldığı, tüm çiftlerin anlam/kavram eşleşmeleri ve 36/36
+eksiksizliği test edilir. Ardından `npm run build` çalıştır.
 
 `www/words.js`, `vocabularies.js`, `sentences.js` önceki sürümün tarihsel kaynakları olarak
 aynı adlarla korunur; uygulama bunları yüklemez ve web build'e/önbelleğe dahil etmez.
@@ -134,8 +147,8 @@ Bu paket hazır APK/IPA içermez. iOS yerel derlemesi için macOS/Xcode ve imzal
 yedi dilin anahtar/yer tutucu eşitliği, t() anahtarları ve çift bazlı kayıt/yedek geçişi.
 `npm run build`: CSV doğrulama, her çiftin eksik raporu ve web çıktısı.
 `npm run test:browser`: Playwright + Chromium ile oyun akışları, ilk ana dil seçimi,
-yedi dil/RTL, sentetik test çiftinde farklı kart yönleri, sadece seçili çift isteği,
+yedi dil/RTL, gerçek 36 çiftte farklı kart yönleri, sadece seçili çift isteği,
 ilerleme yalıtımı ve gerçek service worker ile çevrimdışı güncelleme.
 Testler kendi HTTP sunucularını açar. Özel kurulum: `PLAYWRIGHT_MODULE`, `BROWSER_EXECUTABLE`.
 
-Gerçek reklam hesabı henüz yoktur; reklam seçeneği kapalıdır. Ayrıntılar: REWARDED_ADS.md.
+Gerçek reklam hesabı henüz yoktur; reklam seçeneği yapılandırılana kadar gösterilmez. Ayrıntılar: REWARDED_ADS.md.

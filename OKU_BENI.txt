@@ -1,10 +1,10 @@
-WordTrail 4.0.0
+WordTrail 4.1.0
 Mağaza başlığı: WordTrail: Learn Languages
 
 İlk açılışta ana dilini seç. Üstteki seçiciden değiştirebilirsin.
 7 arayüz dili: Türkçe, English, Deutsch, Español, Русский, العربية, Français.
-Şimdilik yalnızca Türkçe ana dilin 6 hedef dil listesi hazırdır.
-Diğer çiftler yakında bilgisiyle kapalıdır; Türkçe anlamlara geri dönülmez.
+36 ana-hedef dil çiftinin tamamı 1.000 kelime ve 300 cümle anlamıyla hazırdır.
+Eşleştirmeler ortak kavram kimlikleriyle yapılır; Türkçe anlamlara geri dönülmez.
 Arayüz çevirilerini ana dilini konuşan biri kontrol etsin.
 
 Mevcut veriler kaybolmaz: ky-v2 anahtarı korunur, eski ilerleme hedef-tr
@@ -27,3 +27,8 @@ sıfırlama. Kurtarma önceki doğru eşleşmeleri 1 hakla geri getirir.
 5 ortak can, yalnızca cümle yanlışında azalır; 10 dakikada 1 yenilenir.
 Tekrar ve dört pratik modu can harcamaz. Günlük hedef, seri, istatistik,
 rozetler ve Sistem/Açık/Koyu tema bulunur. Gerçek reklamlar henüz kapalıdır.
+
+4.1 DÜZELTMELERİ
+Doğru eşleştirmede ekran yeniden çizilmez; kartlar ve sayaç yerinde güncellenir.
+Bölümler A1/A2/B1/B2/C1/C2 başlıkları, kıvrımlı yol ve 3D taşlarla gösterilir.
+Kayıtlar ve bölüm kimlikleri korunmuştur.

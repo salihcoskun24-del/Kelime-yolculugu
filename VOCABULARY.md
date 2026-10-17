@@ -34,7 +34,9 @@ Telaffuz, cihazın seçilen dil için sağladığı metin okuma sesini kullanır
 
 WordTrail 4 kaynakları aynı adlardaki `kelime-listeleri/` ve `cumle-sorulari/` CSV dosyalarıdır.
 Her kayıtta sabit bölüm:sıra kimliği ve tr/en/de/es/ru/ar/fr çeviri kolonları vardır.
-Şimdilik tr doludur; diğer ana diller boştur. Cümle anlamları da aynı şekilde ayrılmıştır.
+Bütün ana dillerin kelime ve cümle anlamları doludur; 36 çiftin tamamı açıktır.
+`conceptId` ortak kavramı tanımlar; farklı bölüm sıraları satır numarasıyla birleştirilmez.
+Cümle anlamları, 300 ortak bağlamın ilgili dildeki tam cümlesinden alınır.
 `scripts/data.cjs` kaynakları `translations` nesneli modele okur.
 `npm run vocabulary:export` ve `npm run sentences:export` eksiksiz çiftlerin JSON dosyalarını üretir.
 `npm run check` bütün çiftlerdeki eksik kelime/cümle çevirisi sayısını raporlar;
@@ -46,3 +48,8 @@ korunur; üretim web çıktısında veya runtime yükleme listesinde bulunmaz.
 Uygulama yalnızca seçilen çiftin JSON dosyasını indirir; ziyaret edilen çiftler çevrimdışı saklanır.
 Kaynak CSV kimliklerini ve yayımlanmış bölüm sırasını değiştirme; mevcut kayıtlar bunları kullanır.
 Arayüzdeki yeni yedi dil çevirilerini ana dilini konuşan biri kontrol etsin.
+
+`npm run translations:complete` kalıcı kavram kimlikleri ve cümle bağlamları üzerinden
+çevirileri yeniden oluşturur. Önceki 6.000 kaynak kelime/Türkçe karşılık ve 1.800
+sorunun metni, cevabı ve kelime kimliği aynı kalır. `npm test` bu korumayı ve tüm
+çiftlerin karşılıklı anlam uyumunu doğrular.

@@ -129,5 +129,11 @@ window.WordTrailLocales.tr={
     "few": "{count} kelime",
     "many": "{count} kelime",
     "other": "{count} kelime"
-  }
+  },
+  "mapA1": "A1 · İlk adımlar",
+  "mapA2": "A2 · Günlük yaşam",
+  "mapB1": "B1 · Kendini ifade et",
+  "mapB2": "B2 · Yeni ufuklar",
+  "mapC1": "C1 · Derinleş",
+  "mapC2": "C2 · Zirve yolculuğu"
 };

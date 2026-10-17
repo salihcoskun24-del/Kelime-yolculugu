@@ -129,3 +129,18 @@ WORDTRAIL 4.0.0 — YENİ DOĞRULAMALAR
 
 Arayüz çevirileri taslaktır: ana dilini konuşan biri kontrol etsin.
 Canlı Vercel veya gerçek mağaza yayını bu yerel testlerle doğrulanmış sayılmaz.
+
+WORDTRAIL 4.1.0 — GÜNCEL KONTROLLER
+- Doğru eşleştirme ve ilk yanlış sonrası aynı .board DOM düğümü korunur.
+  Tüm ekran yeniden oluşturulmaz; screen animasyonu ve scrollTo tekrar çalışmaz.
+- A1/A2/B1/B2/C1/C2 altında toplam 100 yol taşı, kıvrımlı bağlantılar,
+  tamamlanan/mevcut/kilitli durumları; 320 px Arapça RTL dahil taşma yoktur.
+- 36/36 gerçek çiftin tamamı tarayıcıda yüklenir: her çift 1.000 kelime ve
+  300 tam cümle anlamı içerir. Eksik kelime/cümle çevirisi: 0.
+- Kalıcı conceptId ve ortak cümle bağlamları ile tüm çapraz anlamlar doğrulanır.
+  İngilizce sırası farklı olduğu için yalnızca satır indeksine göre birleştirme yapılmaz.
+- Önceki kaynak/Türkçe içerik ve kayıt kimlikleri değişmez; çift bazlı kayıtlar,
+  2 hata/kurtarma, canlar, pratik, tekrar, seri ve çevrimdışı güncelleme testleri geçer.
+- Yedi sözlükte 121 anahtar aynıdır. Altı rota başlığı her arayüz dilinde çevrilmiştir.
+- Yukarıdaki tarihsel 4.0 kapalı çift/sentetik fixture kontrollerinin yerini gerçek
+  tam çift testleri alır. Testte üretim dışı çeviri fixture'ı kullanılmaz.
