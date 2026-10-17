@@ -1,4 +1,4 @@
-KELİME YOLCULUĞU 2.1
+KELİME YOLCULUĞU 2.2
 ====================
 6 dil: İngilizce, Almanca, İspanyolca, Rusça, Arapça, Fransızca.
 Her dil: 100 bölüm ve 1000 kelime/ifade; Türkçe karşılıklarla eşleştirme.
@@ -12,7 +12,8 @@ OYUN
 Yabancı dilde kelimeye dokununca o dilde sesli okunur.
 Türkçe karşılığını seç. 10 doğru eşleşmeden sonra o bölümden üç kelimeyle cümle soruları açılır.
 Üçünü de doğru yanıtlayıp Bölümü tamamla deyince sonraki bölüm açılır.
-Yanlış cümle cevabında yalnızca o soruyu tekrar denersin.
+Yanlış cümle cevabında 1 can düşer; aynı soruyu tekrar denersin.
+Canın bittiğinde oynama durur, doğru eşleşmeler ve cümle ilerlemesi korunur.
 Türkçe anlamlar ve üç cevap seçeneği vardır. Dolu cümleyi dinleyebilirsin.
 Yanlış eşleşmede bölüm yeniden başlar. Kaldığın eşleşmeler kaydedilir.
 Kelime defteri tamamladığın bölümleri gösterir; orada da telaffuz dinlenir.
@@ -26,8 +27,10 @@ Aynı kurtarma kaydı bir kez kullanılabilir. Haritadan da geri getirilebilir.
 İpucu: Eşleştirmede doğru çifti, cümlede doğru seçeneği işaretler.
 Eşleştirmeyi veya cümle cevabını sen seçersin.
 İpucu görünürken tekrar dokunmak ikinci hak harcamaz.
-Haklar kayıtlı kalır, bölüm geçince veya sıfırlayınca yenilenmez.
-Bakiye sıfırsa yardımcı pasif olur. Reklamla hak kazanma henüz eklenmedi.
+Her ilk bölüm tamamlamada +1 ipucu kazanırsın.
+İlk kez tamamlanan 5, 10, 15... numaralı bölümlerde ayrıca +1 geri dönme hakkı gelir.
+Aynı bölümü tekrar oynamak veya ilerlemeyi sıfırlamak tekrar ödül vermez.
+Bakiyeler 5'in üzerine çıkabilir; bakiye sıfırsa yardımcı pasif olur.
 Normal devam düğmesi ve bölümleri elle seçmek ücretsizdir.
 
 HEMEN ÇALIŞTIR
@@ -81,3 +84,23 @@ CÜMLE VERİLERİ
 Her dilde 100 bölüm x 3 soru, toplam 1800 cümle sorusu.
 Cümleler ve cevaplar cumle-sorulari klasöründeki CSV listelerinde.
 Cümle aşaması ve geri getirilebilir eşleşmeler yedeklere de dahil edilir.
+
+CANLAR
+Tüm diller için ortak 5 canın var. Cümle testindeki her yanlış 1 can götürür.
+Eşleştirme hatası can götürmez. Can sıfırken oynayamazsın; menülere bakabilirsin.
+Kalp satırına dokunarak can ekranını ve kalan süreyi görebilirsin.
+İlk can kaybından 10 dakika sonra +1 can gelir. Diğer kayıplar sayacı başa almaz.
+Eksilen canlar 10'ar dakika arayla yenilenir; en fazla 5 olur.
+Uygulama kapalıyken geçen süre sonraki açılışta hesaba katılır.
+Yenilemek, dil değiştirmek, ilerlemeyi sıfırlamak veya eski yedeği yüklemek
+canlarını hemen doldurmaz. Yeni can gelince kaldığın yerden devam edebilirsin.
+
+REKLAM
+Henüz reklam hesabı/birimi olmadığı için Reklam izle +1 can düğmesi pasif.
+Otomatik can yenilenmesi aktiftir. Sahte reklam izleme ödülü verilmez.
+Google Ad Manager ödüllü web reklam bağlantısı hazırdır. Gerçek birim bağlanınca
+SDK ödülü doğruladığında +1 can verilir. Erken kapanan reklam can vermez.
+Kurulum: REWARDED_ADS.md. APK için ayrıca yerel reklam entegrasyonu gerekir.
+
+KONTROL
+npm test: can sayacı, bölüm ödülleri ve reklam olaylarını dış servis olmadan test eder.

@@ -1,4 +1,4 @@
-KELİME YOLCULUĞU 2.1 — DOĞRULAMA
+KELİME YOLCULUĞU 2.2 — DOĞRULAMA
 
 Veri ve build:
 - Altı dilde 1000'er kelime/ifade, 100'er bölüm, bölüm başına 10 çift.
@@ -40,3 +40,35 @@ Telaffuz otomasyonda taklit edildi; fiziksel telefon sesi dinlenmedi.
 Fiziksel Android/iPhone, APK derlemesi ve Vercel hesabında canlı dağıtım testi
 bu ortamda yapılmadı. Cihazın dil ses paketi telaffuzu etkiler.
 Dil verisi hazırlığı ve editör kontrolünün kapsamı VOCABULARY.md içindedir.
+
+SÜRÜM 2.2 — CANLAR VE ÖDÜLLER
+
+npm test (yerel, dış bağımlılıksız):
+- Can yenilenmesinin 10 dakika sınırından 1 ms önce ve tam sınırda davranışı.
+- Birden fazla can kaybının devam eden sayacı başa almaması.
+- Uygulama kapalıyken birden çok can kazanma; en fazla 5 can.
+- Sıfır canda harcama reddi, reklam +1 modeli ve cihaz saati geri alınması.
+- Her ilk tamamlamada +1 ipucu; 5/10/.../100. bölümlerde +1 geri dönme.
+- Tekrar tamamlama ve eski tamamlanmış kayıtlar için çift ödül verilmemesi.
+- Yardımcı bakiyelerinin 5'i aşması ve sayısal taşma sınırı.
+- Reklam hesabı yoksa ağ/ödül akışı başlatılmaması.
+- Hazır/erken kapanma/boş envanter/desteklenmeyen slot olaylarında ödül verilmemesi.
+- Yalnızca SDK grant olayında ödül, tekrarlı olayda tek ödül ve slot filtresi.
+
+Chromium ek kontrolleri:
+- Beş canın altı dilde ortak olması; eşleştirme hatasının can götürmemesi.
+- Cümle testinde her yanlış seçimin tam bir can götürmesi.
+- Son can gidince seçimlerin, yardımcıların, yeni bölümün ve geçişin engellenmesi.
+- Sıfır canın sayfa yenileme ve dil değiştirmede korunması.
+- Sayaç tam dolunca ekranda 1 canın otomatik görünmesi ve oyuna devam.
+- Kayıtlı cümle sorusuna dönüp ilerleme; 1. ve 5. bölüm ödül ekranı.
+- Bakiyelerin 5'i aşarak yeniden yüklemede ve yedekte korunması.
+- İlerleme sıfırlamada ve eski yedekte can/ödül kaydının geri sarılmaması.
+- Çevrimdışı yeniden yüklemede 30 dakika sonrası +3 can, uzun sürede 5'e tamamlama.
+- 320/390/768 px genişliklerde kalpler ve can penceresinde taşma olmaması.
+- Yapılandırılmamış sürümde reklam düğmesinin pasif ve reklam ağı isteğinin sıfır olması.
+- Test sağlayıcısının SDK olaylarıyla tam reklamda +1, erken kapanmada sıfır ödül.
+- Önceki altı dil, 8 eşleşmeyi kurtarma, cümle, kayıt ve çevrimdışı kontrolleri yeniden geçti.
+
+Gerçek yayıncı hesabı olmadığından canlı reklam/enventar testi yapılmadı.
+Reklam testleri yalnızca test ortamında SDK olaylarını taklit eder.

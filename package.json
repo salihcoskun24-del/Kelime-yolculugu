@@ -1,6 +1,6 @@
 {
   "name": "kelime-yolculugu",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
   "scripts": {
     "android:add": "cap add android",
@@ -9,7 +9,8 @@
     "build": "node scripts/build-web.cjs",
     "check": "node scripts/validate-vocabulary.cjs",
     "vocabulary:export": "node scripts/export-vocabulary.cjs",
-    "sentences:export": "node scripts/export-sentences.cjs"
+    "sentences:export": "node scripts/export-sentences.cjs",
+    "test": "node tests/economy.cjs && node tests/rewarded-ads.cjs"
   },
   "dependencies": {
     "@capacitor/core": "^7.4.0",

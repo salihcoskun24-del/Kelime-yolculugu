@@ -9,6 +9,11 @@ Paket hazır APK değildir; PWA ve Android APK üretmek için Capacitor ayarlar�
 
 ## Yenilikler
 
+- Tüm diller için ortak **5 can**; cümle testindeki her yanlışta **−1 can**.
+- Eksilen canlar **10 dakikada +1** yenilenir; kapalıyken geçen süre de sayılır.
+- Can sıfırken bölüm oynama, test yanıtlama ve bölüm geçişi durur; ilerleme saklanır.
+- İlk kez tamamlanan her bölüm **+1 ipucu**; 5'in katı bölümler ayrıca **+1 geri dönme hakkı**.
+
 - Her bölümün sonunda bölümden üç kelimeyle cümlede boşluk doldurma.
 - Altı dilde toplam **1.800 cümle sorusu**, Türkçe anlamı ve üç cevap seçeneği.
 - Bölüm açma koşulu: **10 eşleşme + 3 doğru cümle**.
@@ -48,11 +53,37 @@ Cümlede gereken çekimli biçimler kullanılabilir; sözlükteki temel biçimde
 Cümleler `cumle-sorulari/` CSV dosyalarındadır; `npm run sentences:export` ile yeniden üretilir.
 Eski sürümde tamamlanan bölümler korunur; tekrar oynanırlarsa yeni cümle aşaması da gösterilir.
 
-Haklar bölüm geçişinde, sayfa yenilemede veya ilerleme sıfırlamada yenilenmez.
-Bakiye sıfır olunca düğme pasif olur. Reklam izleme veya ödül verme henüz eklenmedi.
-Bakiyeler dil başına `progress[language].jump` ve `.hint` alanlarında yerel saklanır.
-İleride ödüllü reklam eklendiğinde hak verme işlemi gerçek reklam tamamlama
-sonucuna bağlanmalı; bu yerel kayıt bir reklam doğrulama sistemi değildir.
+## Canlar ve bölüm ödülleri
+
+Kullanıcının bu cihazda **5 ortak canı** vardır. Dil değiştirmek yeni can vermez.
+Yalnızca bölüm sonundaki cümle testinde yanlış bir seçeneğe dokunmak 1 can götürür.
+Doğru cevaplar ve eşleştirme hataları can götürmez.
+
+İlk can kaybında 10 dakikalık sayaç başlar. Sonraki yanlışlar devam eden sayacı
+başa almaz. Her 10 dakikada bir can eklenir, en fazla 5 olabilir. Örneğin sıfır
+canla 30 dakika beklediğinde 3 can gelir. Uygulama kapalıyken de geçen süre
+sonraki açılışta hesaplanır. Kalplere dokunarak sayacı ve can ekranını açabilirsin.
+Can sıfırken oyun durur; menü ve kelime defteri kullanılabilir. Eşleşmeler ve
+cümle ilerlemesi korunur; yeni can gelince aynı yerden devam edilir.
+
+Her dilde ipucu ve geri dönme hakkı başlangıçta 5'er adettir. O dilde:
+
+- İlk kez tamamlanan her bölüm: **+1 ipucu**.
+- İlk kez tamamlanan 5, 10, 15, …, 100. bölümler: ayrıca **+1 geri dönme hakkı**.
+- Aynı bölümün tekrarı veya ilerlemeyi sıfırlama tekrar ödül vermez.
+
+Yardımcı bakiyeleri 5'in üzerine çıkabilir. Eski ilerleme korunur; güncellemeden
+önce tamamlanan bölümler için geriye dönük ödül dağıtılmaz.
+Eski yedeği yüklemek bu cihazdaki can sayacını veya alınmış bölüm ödülü kaydını geri sarmaz.
+
+## Ödüllü reklam durumu
+
+Henüz yayıncı hesabı veya reklam birimi yok; **reklamla can kazanma pasif**.
+Sayaç ve otomatik yenilenme çalışır. Reklam izlenmiş gibi can veren demo yoktur.
+Vercel/PWA için Google Ad Manager ödüllü web reklamı bağlantısı hazırlanmıştır;
+yalnızca SDK'nın ödül olayıyla **+1 can** verir. Erken kapatma, boş envanter
+veya yükleme hatası can vermez. Hesap hazır olduğunda [REWARDED_ADS.md](REWARDED_ADS.md)
+yönergeleriyle gerçek birim bağlanır. Canlar reklamla da 5'i aşmaz.
 
 ## Vercel'de yayınla
 
@@ -81,6 +112,7 @@ Vercel çıktısını yerelde kontrol etmek için:
 
 ```sh
 npm run check
+npm test
 npm run build
 python -m http.server 8080 --directory dist
 ```
@@ -97,6 +129,7 @@ Yeni sürüm dağıtıldıktan sonra açık uygulamayı yeniden yükle; eski sü
 
 Ayarlar'dan tüm dillerin ilerlemesini, devam eden bölümünü, cümle aşamasını, geri getirilebilir eşleşmelerini ve yardımcı haklarını JSON olarak yedekle.
 Eski İngilizce yedekleri de içe aktarılabilir; diğer diller korunur.
+Canlar ve sayaç bu cihazdaki canlı kayıtta korunur; ilerleme yedeği yüklemek bunları doldurmaz.
 Kayıt bu cihazın tarayıcısında ve bu adrese özeldir; cihazlar arasında otomatik eşitlenmez.
 
 ## Android APK üretme

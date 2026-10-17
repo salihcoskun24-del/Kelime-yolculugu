@@ -1,0 +1,34 @@
+const fs=require('node:fs');
+const path=require('node:path');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const context=vm.createContext({});
+vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../www/economy.js'),'utf8')+'\nthis.model=GameEconomy;',context);
+const E=context.model,t=1_800_000_000_000,I=E.REFILL_MS;
+const same=(a,b)=>assert.equal(JSON.stringify(a),JSON.stringify(b));
+same(E.refillLives(null,t),{count:5,nextRefillAt:null});
+let spent=E.spendLife(null,t);assert(spent.spent);same(spent.lives,{count:4,nextRefillAt:t+I});
+spent=E.spendLife(spent.lives,t+200000);same(spent.lives,{count:3,nextRefillAt:t+I});
+same(E.refillLives(spent.lives,t+I-1),spent.lives);
+same(E.refillLives(spent.lives,t+I),{count:4,nextRefillAt:t+2*I});
+same(E.refillLives(spent.lives,t+2*I),{count:5,nextRefillAt:null});
+const empty={count:0,nextRefillAt:t+I};
+assert.equal(E.spendLife(empty,t).spent,false);
+same(E.refillLives(empty,t+3*I),{count:3,nextRefillAt:t+4*I});
+same(E.refillLives(empty,t+20*I),{count:5,nextRefillAt:null});
+same(E.addLife(empty,t),{count:1,nextRefillAt:t+I});
+same(E.addLife({count:4,nextRefillAt:t+I},t),{count:5,nextRefillAt:null});
+same(E.addLife({count:5,nextRefillAt:null},t),{count:5,nextRefillAt:null});
+assert.equal(E.refillLives({count:0,nextRefillAt:t+10*I},t).nextRefillAt,t+I);
+let p={hint:5,jump:5,completed:[],rewardedLevels:[]};
+for(let level=1;level<=10;level++){
+ const awarded=E.completionReward(p,level);assert.equal(awarded.reward.hint,1);assert.equal(awarded.reward.jump,level%5===0?1:0);
+ p={...p,...awarded,completed:[...p.completed,level]};
+ const repeat=E.completionReward(p,level);same(repeat.reward,{hint:0,jump:0});assert.equal(repeat.hint,p.hint);assert.equal(repeat.jump,p.jump);
+}
+assert.equal(p.hint,15);assert.equal(p.jump,7);
+const hundred=E.completionReward(p,100);assert.equal(hundred.hint,16);assert.equal(hundred.jump,8);
+const legacy=E.completionReward({hint:9,jump:7,completed:[1,2,3,4,5]},5);same(legacy.reward,{hint:0,jump:0});
+const overflow=E.completionReward({hint:Number.MAX_SAFE_INTEGER,jump:Number.MAX_SAFE_INTEGER,completed:[]},5);assert.equal(overflow.hint,Number.MAX_SAFE_INTEGER);assert.equal(overflow.jump,Number.MAX_SAFE_INTEGER);
+assert.equal(E.balance(20),20);assert.equal(E.balance(-1),5);
+console.log('PASS economy: exact refill boundary, ongoing timer, background catch-up, full cap, zero lives, ad +1, clock rollback, first-completion and 5th-level rewards, duplicate claims, uncapped helper balances.');
