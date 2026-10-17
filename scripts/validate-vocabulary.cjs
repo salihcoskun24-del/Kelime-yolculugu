@@ -3,7 +3,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
 const web = path.resolve(__dirname, '../www');
-for (const name of ['app.js','sw.js','words.js','vocabularies.js','sentences.js','economy.js','rewarded-ads-config.js','rewarded-ads.js']) {
+for (const name of fs.readdirSync(web).filter(name=>name.endsWith('.js'))) {
   new vm.Script(fs.readFileSync(path.join(web, name), 'utf8'), {filename:name});
 }
 const context = vm.createContext({});

@@ -11,21 +11,23 @@ const LANGUAGE_LIST = [
 const STORAGE_KEY = 'ky-v2';
 const escapeHTML = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = (n,lo,hi,fallback) => Number.isInteger(n)?Math.max(lo,Math.min(hi,n)):fallback;
-const freshProgress = () => ({unlocked:1,completed:[],jump:5,hint:5,session:null,recovery:null,rewardedLevels:[]});
+const freshProgress = () => ({unlocked:1,completed:[],jump:5,hint:5,session:null,recovery:null,rewardedLevels:[],...Learning.normalizeProgress({})});
 function cleanProgress(value={}){
   const completed = Array.isArray(value.completed)?[...new Set(value.completed.filter(n=>Number.isInteger(n)&&n>=1&&n<=100))].sort((a,b)=>a-b):[];
   return {unlocked:Math.max(clamp(value.unlocked,1,100,1),Math.min(100,Math.max(0,...completed)+1)),completed,
-    jump:GameEconomy.balance(value.jump),hint:GameEconomy.balance(value.hint),session:value.session||null,recovery:value.recovery||null,rewardedLevels:GameEconomy.levels([...(Array.isArray(value.rewardedLevels)?value.rewardedLevels:[]),...completed])};
+    jump:GameEconomy.balance(value.jump),hint:GameEconomy.balance(value.hint),session:value.session||null,recovery:value.recovery||null,rewardedLevels:GameEconomy.levels([...(Array.isArray(value.rewardedLevels)?value.rewardedLevels:[]),...completed]),...Learning.normalizeProgress(value)};
 }
 function normalizeState(value){
-  const result={version:2,language:'en',sound:true,lives:GameEconomy.refillLives(null),progress:Object.fromEntries(LANGUAGE_LIST.map(l=>[l.id,freshProgress()]))};
+  const result={version:3,language:'en',sound:true,activity:Learning.normalizeActivity(),badges:{},badgeMigrationDone:true,lives:GameEconomy.refillLives(null),progress:Object.fromEntries(LANGUAGE_LIST.map(l=>[l.id,freshProgress()]))};
   if(!value||typeof value!=='object')return result;
   result.sound=value.sound!==false;
   result.lives=GameEconomy.refillLives(value.lives);
+  result.activity=Learning.normalizeActivity(value.activity||{});result.badges=Learning.normalizeBadges(value.badges);
   if(LANGUAGE_LIST.some(l=>l.id===value.language))result.language=value.language;
-  if(value.version===2&&value.progress&&typeof value.progress==='object'){
+  if([2,3].includes(value.version)&&value.progress&&typeof value.progress==='object'){
     for(const l of LANGUAGE_LIST)result.progress[l.id]=cleanProgress(value.progress[l.id]||{});
   }else if(Number.isInteger(value.unlocked))result.progress.en=cleanProgress(value);
+  if(value.badgeMigrationDone!==true)Learning.migrateSections(result);
   return result;
 }
 let state=normalizeState(null),storageWarning=false;
@@ -62,7 +64,7 @@ function pronounce(word){
 }
 function sound(ok=true){if(!state.sound)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type='sine';o.frequency.setValueAtTime(ok?650:180,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(ok?980:90,audioCtx.currentTime+.13);g.gain.setValueAtTime(.07,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.2);o.start();o.stop(audioCtx.currentTime+.22);}catch{}}
 function clearHint(){clearTimeout(hintTimer);if(game)game.hintVisible=false;app.querySelectorAll('.hinted').forEach(b=>b.classList.remove('hinted'));}
-function cleanup(){stopPronunciation();clearTimeout(timer);clearHint();}
+function cleanup(){cleanupStudy();stopPronunciation();clearTimeout(timer);clearHint();}
 function syncLives(){
   const updated=GameEconomy.refillLives(state.lives);
   if(updated.count!==state.lives.count||updated.nextRefillAt!==state.lives.nextRefillAt){state.lives=updated;save();}
@@ -102,7 +104,7 @@ function updateLifeUI(){
     lifeDialog.querySelector('[data-life-explanation]').textContent=state.lives.count===0?'İlerlemen saklandı. Yeni bir can geldiğinde kaldığın yerden devam edebilirsin.':state.lives.count===5?'5 canın hazır. Yolculuğuna devam edebilirsin.':'Canların tüm dillerde ortaktır. Cümle testindeki her yanlış cevap 1 can götürür.';
   }
 }
-function refreshLives(){syncLives();updateLifeUI();}
+function refreshLives(){syncLives();updateLifeUI();refreshLearningClock();}
 function requireLife(){refreshLives();if(state.lives.count>0)return true;openLives();return false;}
 function openLives(){
   syncLives();
@@ -118,7 +120,7 @@ function openLives(){
         refreshLives();lifeDialog.close();
         if(state.lives.count===0){pendingLevel=null;screen='map';render();return;}
         const pending=pendingLevel;pendingLevel=null;
-        if(pending&&pending.language===state.language)start(pending.level);
+        if(pending&&pending.language===state.language)start(pending.level,false,null,pending.skipIntro===true);
         else if(screen==='game'&&game?.matches.length===10)renderQuiz();
       }
     });
@@ -144,20 +146,20 @@ async function watchRewardedAd(){
 }
 
 function header(){return `<header><div class="brand"><span class="logo">✦</span> KELİME YOLCULUĞU</div><button class="iconbtn" data-action="sound" aria-label="Sesi ${state.sound?'kapat':'aç'}">${state.sound?'♫':'♩'}</button></header>${lifeStrip()}`;}
-function nav(){return `<nav class="nav" aria-label="Ana menü">${[['home','⌂','Keşfet'],['map','♧','Bölümler'],['words','▤','Kelimeler'],['settings','⚙','Ayarlar']].map(([id,icon,label])=>`<button data-go="${id}" class="${screen===id?'active':''}"><b>${icon}</b>${label}</button>`).join('')}</nav>`;}
+function nav(){return `<nav class="nav" aria-label="Ana menü">${[['home','⌂','Keşfet'],['map','♧','Bölümler'],['practice','▷','Pratik'],['words','▤','Kelimeler'],['stats','▥','İstatistik'],['settings','⚙','Ayarlar']].map(([id,icon,label])=>`<button data-go="${id}" class="${screen===id?'active':''}"><b>${icon}</b>${label}</button>`).join('')}</nav>`;}
 function languageBadge(){const l=language();return `<button class="language-badge" data-go="languages" aria-label="Dil değiştir: ${l.name}"><span>${l.flag}</span> ${l.name} <span aria-hidden="true">⌄</span></button>`;}
 function tools(inGame=false){const p=progress();return `<aside class="tools ${inGame?'game-tools':''}" aria-label="Bölüm yardımcıları"><button class="tool" data-action="jump" ${p.jump===0||state.lives.count===0?'disabled':''}><span>◎ Kaldığım yere gel</span><b data-balance="jump">${p.jump}</b></button><button class="tool" data-action="hint" ${p.hint===0||state.lives.count===0?'disabled':''}><span>✧ İpucu</span><b data-balance="hint">${p.hint}</b></button></aside>`;}
 function updateTools(){const p=progress();for(const type of ['jump','hint']){const b=app.querySelector(`[data-action="${type}"]`);if(b){b.disabled=p[type]===0||state.lives.count===0;b.querySelector('[data-balance]').textContent=p[type];}}}
 function region(n){return ['İlk Kelimeler','Ev ve Günlük Yaşam','Hareket ve İletişim','İnsan ve Duygular','Şehir ve Keşif','Öğrenme ve Çalışma','Toplum ve Dünya','Bilim ve Yöntem','Soyut Kavramlar','Ustalık Yolculuğu'][Math.floor((n-1)/10)];}
 function difficulty(n){return n<=30?'Başlangıç':n<=60?'Orta':n<=85?'İleri':'Ustalık';}
 function render(){
-  cleanup();game=null;window.scrollTo(0,0);
+  cleanup();game=null;refreshLearningClock();window.scrollTo(0,0);
   const l=language(),p=progress();let body='';
   if(screen==='languages'){
     body=`${header()}<div class="eyebrow">6 DİL • 6 YENİ DÜNYA</div><h1>Bugün hangi dili<br><span>keşfedelim?</span></h1><p>Yolculuğunu seç. Her dilde 100 bölüm,<br>1.000 kelime ve sana özel ilerleme.</p><div class="language-grid">${LANGUAGE_LIST.map(lang=>{const lp=state.progress[lang.id];return `<button class="language-card ${lang.id===state.language?'last-language':''}" data-language="${lang.id}"><span class="language-flag">${lang.flag}</span><strong>${lang.name}</strong><span class="native-name" lang="${lang.id}" dir="${lang.dir}">${lang.native}</span><span class="language-progress">${lp.completed.length?`${lp.completed.length} bölüm tamamlandı`:'İlk adımını at'} <span>→</span></span></button>`;}).join('')}</div><p class="footer-note">Diller arasında geçiş yap; ilerlemen ve hakların saklı kalsın.</p>`;
   }
   if(screen==='home'){
-    body=`${header()}${languageBadge()}<div class="eyebrow">ÖĞREN • EŞLEŞTİR • KEŞFET</div><h1>Yeni kelimeler,<br><span>yeni ufuklar.</span></h1><p>${l.name} öğrenmenin en keyifli yolculuğu.<br>Her eşleşmede bir adım daha ileri!</p>${island}<div class="stats"><div class="stat"><strong style="color:var(--gold)">${p.unlocked}</strong><span>Aktif bölüm</span></div><div class="stat"><strong style="color:var(--mint)">${p.completed.length*10}</strong><span>Tamamlanan kelime</span></div><div class="stat"><strong>100</strong><span>Keşfedilecek bölüm</span></div></div><div class="section"><h2>Yolculuğuna devam et</h2><span class="pill">${l.name.toLocaleUpperCase('tr')} → TÜRKÇE</span></div><div class="journey"><div class="row"><div><span class="eyebrow">BÖLÜM ${p.unlocked} · ${difficulty(p.unlocked)}</span><h3 style="margin:8px 0">${region(p.unlocked)}</h3></div><span style="font-size:30px">✦</span></div><div class="row tiny"><span>Genel ilerleme</span><span>${p.completed.length} / 100 bölüm</span></div><div class="progress"><i style="width:${p.completed.length}%"></i></div><button class="primary" data-start="${p.unlocked}">${p.session?'Kaldığın yerden devam et':'Yolculuğa devam et'} <span style="float:right">→</span></button></div><div class="footer-note">${l.name} · 100 bölüm · 1.000 kelime</div>`;
+    body=`${header()}${languageBadge()}<div class="eyebrow">ÖĞREN • EŞLEŞTİR • KEŞFET</div><h1>Yeni kelimeler,<br><span>yeni ufuklar.</span></h1><p>${l.name} öğrenmenin en keyifli yolculuğu.<br>Her eşleşmede bir adım daha ileri!</p>${island}${homeLearning()}<div class="stats"><div class="stat"><strong style="color:var(--gold)">${p.unlocked}</strong><span>Aktif bölüm</span></div><div class="stat"><strong style="color:var(--mint)">${p.completed.length*10}</strong><span>Tamamlanan kelime</span></div><div class="stat"><strong>100</strong><span>Keşfedilecek bölüm</span></div></div><div class="section"><h2>Yolculuğuna devam et</h2><span class="pill">${l.name.toLocaleUpperCase('tr')} → TÜRKÇE</span></div><div class="journey"><div class="row"><div><span class="eyebrow">BÖLÜM ${p.unlocked} · ${difficulty(p.unlocked)}</span><h3 style="margin:8px 0">${region(p.unlocked)}</h3></div><span style="font-size:30px">✦</span></div><div class="row tiny"><span>Genel ilerleme</span><span>${p.completed.length} / 100 bölüm</span></div><div class="progress"><i style="width:${p.completed.length}%"></i></div><button class="primary" data-start="${p.unlocked}">${p.session?'Kaldığın yerden devam et':'Yolculuğa devam et'} <span style="float:right">→</span></button></div><div class="footer-note">${l.name} · 100 bölüm · 1.000 kelime</div>`;
   }
   if(screen==='map'){
     body=`${header()}${languageBadge()}<div class="eyebrow">ADIM ADIM İLERLE</div><h1>Senin <span>yolculuğun.</span></h1><p>Her bölümde 10 kelime eşleştir, 3 cümlede boşluk doldur.<br>Kolaydan zora yeni durakları keşfet.</p><p class="tiny">◎ Yanlış öncesi eşleşmelerini geri getir · ✧ Doğru çifti gör<br>Her ilk bölüm bitişinde +1 ipucu; her 5. bölümde ayrıca +1 geri dönme hakkı.</p><div class="map">${Array.from({length:100},(_,i)=>{const n=i+1,locked=n>p.unlocked,done=p.completed.includes(n);return `${i%10===0?`<div class="map-region"><span>${i/10+1}. ADA</span><strong>${region(n)}</strong><small>${difficulty(n)}</small></div>`:''}<div class="maprow"><button class="node ${locked?'locked':!done?'current':''}" style="--x:${[0,-65,-90,-65,0,65,90,65][i%8]}px" data-level="${n}" data-start="${n}" ${locked?'disabled':''} aria-label="Bölüm ${n}${locked?', kilitli':done?', tamamlandı':''}">${locked?'⌑':done?'✓':n}<small>Bölüm ${n}</small></button></div>`;}).join('')}</div>`;
@@ -166,39 +168,38 @@ function render(){
     body=`${header()}${languageBadge()}<div class="eyebrow">KELİME DEFTERİN</div><h1>Keşfettiğin <span>kelimeler.</span></h1><p>Tamamladığın ${l.name} bölümlerini burada tekrar et. Kelimeye dokun, telaffuzunu dinle.</p><input id="search" class="search" placeholder="${l.name} veya Türkçe kelime ara…" aria-label="Kelime ara"><div id="wordlist"></div>`;
   }
   if(screen==='settings'){
-    body=`${header()}${languageBadge()}<div class="eyebrow">SANA GÖRE</div><h1>Yolculuk <span>ayarları.</span></h1><div class="setting row"><span>Sesler ve kelime telaffuzu</span><button class="iconbtn" data-action="sound">${state.sound?'Açık':'Kapalı'}</button></div><div class="setting"><strong>${l.name} yardımcı hakları</strong><p>Kaldığım yere gel: <b>${p.jump}</b><br>İpucu: <b>${p.hint}</b></p><p class="tiny">Başlangıçta 5’er hak verilir. İlk kez bitirdiğin her bölüm +1 ipucu; 5, 10, 15… numaralı bölümler ayrıca +1 geri dönme hakkı kazandırır.</p></div><div class="setting"><strong>Nasıl oynanır?</strong><p>${l.name} kelimeye dokununca telaffuzunu dinle, ardından Türkçe karşılığını seç. 10 doğru eşleşmeden sonra 3 cümlede boşluk doldur; ardından sonraki bölüm açılır. Yanlış eşleştirmede bölüm yeniden başlar.</p><p>İpucu bir doğru çifti işaretler; eşleştirmeyi sen yaparsın. Kaldığım yere gel, yanlış cevapla sıfırlanan bölümde önceki doğru eşleşmelerini 1 hak karşılığında geri getirir. Örneğin 8 doğru yaptıysan yeniden 8/10 olur. Geri getirilecek eşleşme yoksa hak harcanmaz. Cümle testindeki her yanlış cevap 1 can götürür. 5 can tüm dillerde ortaktır; eksilen canlar 10 dakikada bir yenilenir. Can sıfırken oynayamazsın; eşleşmelerin ve doğru cümlelerin saklanır.</p></div><div class="setting"><strong>Telefonuna ekle</strong><p>Android: Chrome menüsü → Ana ekrana ekle / Uygulamayı yükle.<br>iPhone: Safari → Paylaş → Ana Ekrana Ekle.</p><button class="secondary" data-action="install">Uygulamayı yükle</button><p class="tiny">Çevrimdışı kullanım için HTTPS üzerinden ilk açılışı tamamla. Telaffuz için ${l.name} ses paketi gerekebilir; ses kalitesi ve çevrimdışı ses desteği cihaza bağlıdır.</p></div><div class="setting"><strong>İlerlemen bu cihazda saklanır</strong><p>Tüm dillerin ilerlemesini ve haklarını yedekleyebilirsin. Tarayıcı verilerini silmek kaydı siler.</p><button class="secondary" data-action="export">Tüm dilleri yedekle ↓</button><button class="secondary" data-action="import">Yedekten geri yükle ↑</button><input type="file" accept="application/json" id="backup" hidden><button class="secondary danger" data-action="reset">${l.name} ilerlemesini sıfırla</button><p class="tiny">İlerlemeyi sıfırlamak canlarını veya yardımcı haklarını yenilemez. Aynı bölümden tekrar ödül alınmaz.</p></div><p class="footer-note">Kelime Yolculuğu · Sürüm 2.2<br>6 dil · 6.000 kelime · Hesap yok</p>`;
+    body=`${header()}${languageBadge()}<div class="eyebrow">SANA GÖRE</div><h1>Yolculuk <span>ayarları.</span></h1>${learningSettings()}<div class="setting row"><span>Sesler ve kelime telaffuzu</span><button class="iconbtn" data-action="sound">${state.sound?'Açık':'Kapalı'}</button></div><div class="setting"><strong>${l.name} yardımcı hakları</strong><p>Kaldığım yere gel: <b>${p.jump}</b><br>İpucu: <b>${p.hint}</b></p><p class="tiny">Başlangıçta 5’er hak verilir. İlk kez bitirdiğin her bölüm +1 ipucu; 5, 10, 15… numaralı bölümler ayrıca +1 geri dönme hakkı kazandırır.</p></div><div class="setting"><strong>Nasıl oynanır?</strong><p>${l.name} kelimeye dokununca telaffuzunu dinle, ardından Türkçe karşılığını seç. 10 doğru eşleşmeden sonra 3 cümlede boşluk doldur; ardından sonraki bölüm açılır. Eşleştirmede ilk yanlışta devam edersin; ikinci yanlışta bölüm yeniden başlar.</p><p>İpucu bir doğru çifti işaretler; eşleştirmeyi sen yaparsın. Kaldığım yere gel, yanlış cevapla sıfırlanan bölümde önceki doğru eşleşmelerini 1 hak karşılığında geri getirir. Örneğin 8 doğru yaptıysan yeniden 8/10 olur. Geri getirilecek eşleşme yoksa hak harcanmaz. Cümle testindeki her yanlış cevap 1 can götürür. 5 can tüm dillerde ortaktır; eksilen canlar 10 dakikada bir yenilenir. Can sıfırken oynayamazsın; eşleşmelerin ve doğru cümlelerin saklanır.</p></div><div class="setting"><strong>Telefonuna ekle</strong><p>Android: Chrome menüsü → Ana ekrana ekle / Uygulamayı yükle.<br>iPhone: Safari → Paylaş → Ana Ekrana Ekle.</p><button class="secondary" data-action="install">Uygulamayı yükle</button><p class="tiny">Çevrimdışı kullanım için HTTPS üzerinden ilk açılışı tamamla. Telaffuz için ${l.name} ses paketi gerekebilir; ses kalitesi ve çevrimdışı ses desteği cihaza bağlıdır.</p></div><div class="setting"><strong>İlerlemen bu cihazda saklanır</strong><p>Tüm dillerin ilerlemesini ve haklarını yedekleyebilirsin. Tarayıcı verilerini silmek kaydı siler.</p><button class="secondary" data-action="export">Tüm dilleri yedekle ↓</button><button class="secondary" data-action="import">Yedekten geri yükle ↑</button><input type="file" accept="application/json" id="backup" hidden><button class="secondary danger" data-action="reset">${l.name} ilerlemesini sıfırla</button><p class="tiny">İlerlemeyi sıfırlamak canlarını veya yardımcı haklarını yenilemez. Aynı bölümden tekrar ödül alınmaz.</p></div><p class="footer-note">Kelime Yolculuğu · Sürüm 3.0<br>6 dil · 6.000 kelime · Hesap yok</p>`;
   }
+  const feature=featurePage(screen);if(feature!==null)body=feature;
   const isMap=screen==='map';
   app.innerHTML=`<main class="screen ${isMap?'with-tools':''}">${body}</main>${screen==='languages'?'':nav()}${isMap?tools():''}`;
   if(screen==='words')listWords('');
   updateLifeUI();
 }
 function listWords(q){
-  const l=language(),all=vocabulary();
-  const fold=s=>s.toLocaleLowerCase(l.id).normalize('NFD').replace(/\p{M}/gu,'');
-  const query=fold(q);
-  const list=progress().completed.flatMap(n=>all.slice((n-1)*10,n*10)).filter(pair=>pair.some(text=>fold(text).includes(query)||text.toLocaleLowerCase('tr').includes(q.toLocaleLowerCase('tr'))));
-  document.querySelector('#wordlist').innerHTML=list.length?list.map(([word,tr])=>`<button class="worditem" data-speak="${escapeHTML(word)}"><strong lang="${l.id}" dir="${l.dir}">${escapeHTML(word)}</strong><span>${escapeHTML(tr)} <span aria-hidden="true">♫</span></span></button>`).join(''):`<p>${q?'Aramana uygun kelime bulunamadı.':'Henüz tamamlanmış bölüm yok. İlk adana doğru yola çık!'}</p>`;
+  const l=language(),query=Learning.fold(q,l.id);
+  const list=completedWords().filter(word=>word.pair.some(text=>Learning.fold(text,l.id).includes(query)||text.toLocaleLowerCase('tr').includes(q.toLocaleLowerCase('tr'))));
+  document.querySelector('#wordlist').innerHTML=list.length?list.map(({key,pair:[word,tr]})=>`<article class="word-entry"><button class="worditem" data-speak="${escapeHTML(word)}"><strong lang="${l.id}" dir="${l.dir}">${escapeHTML(word)}</strong><span>${escapeHTML(tr)} ♫</span></button><div class="word-actions"><button class="mini-button ${progress().wordMarks[key]==='known'?'active':''}" data-self-key="${key}" data-known="true">✓ Bildim</button><button class="mini-button ${progress().wordMarks[key]==='unknown'?'active':''}" data-self-key="${key}" data-known="false">↻ Bilemedim</button>${progress().review[key]?`<small>Kutu ${progress().review[key].box}</small>`:''}</div></article>`).join(''):`<p>${q?'Aramana uygun kelime bulunamadı.':'Henüz tamamlanmış bölüm yok. İlk adana doğru yola çık!'}</p>`;
 }
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function validSession(s,level,pairs){
   const order=a=>Array.isArray(a)&&a.length===10&&new Set(a).size===10&&a.every(x=>Number.isInteger(x)&&x>=0&&x<10);
-  return s&&s.level===level&&order(s.left)&&order(s.right)&&Array.isArray(s.matches)&&s.matches.length<=10&&(s.quizProgress===undefined||(Number.isInteger(s.quizProgress)&&s.quizProgress>=0&&s.quizProgress<=3))&&(s.matches.length===10||!s.quizProgress)&&s.matches.every(pair=>Array.isArray(pair)&&pair.length===2&&pair.every(i=>Number.isInteger(i)&&i>=0&&i<10)&&pairs[pair[0]][1]===pairs[pair[1]][1])&&new Set(s.matches.map(x=>x[0])).size===s.matches.length&&new Set(s.matches.map(x=>x[1])).size===s.matches.length;
+  return s&&s.level===level&&order(s.left)&&order(s.right)&&Array.isArray(s.matches)&&s.matches.length<=10&&(s.mistakes===undefined||(Number.isInteger(s.mistakes)&&s.mistakes>=0&&s.mistakes<=1))&&(s.quizProgress===undefined||(Number.isInteger(s.quizProgress)&&s.quizProgress>=0&&s.quizProgress<=3))&&(s.matches.length===10||!s.quizProgress)&&s.matches.every(pair=>Array.isArray(pair)&&pair.length===2&&pair.every(i=>Number.isInteger(i)&&i>=0&&i<10)&&pairs[pair[0]][1]===pairs[pair[1]][1])&&new Set(s.matches.map(x=>x[0])).size===s.matches.length&&new Set(s.matches.map(x=>x[1])).size===s.matches.length;
 }
-function sessionData(){return {level:game.level,left:[...game.left],right:[...game.right],matches:game.matches.map(pair=>[...pair]),quizProgress:game.quizProgress||0};}
-function snapshot(){if(!game||game.level!==progress().unlocked||progress().completed.includes(game.level))return;progress().session=sessionData();save();}
-function start(n,fresh=false,restored=null){
+function sessionData(){return {level:game.level,left:[...game.left],right:[...game.right],matches:game.matches.map(pair=>[...pair]),quizProgress:game.quizProgress||0,mistakes:game.mistakes||0};}
+function snapshot(){if(!game)return;progress().session=sessionData();save();}
+function start(n,fresh=false,restored=null,skipIntro=false){
   const p=progress(),l=language();
   if(!Number.isInteger(n)||n>p.unlocked||n<1||n>100)return;
-  if(!requireLife()){pendingLevel={language:state.language,level:n};return;}
-  pendingLevel=null;
-  cleanup();screen='game';
-  const pairs=vocabulary().slice((n-1)*10,n*10),session=validSession(restored,n,pairs)?restored:!fresh&&n===p.unlocked&&validSession(p.session,n,pairs)?p.session:null;
-  game={level:n,pairs,left:session?[...session.left]:shuffle(Array.from({length:10},(_,i)=>i)),right:session?[...session.right]:shuffle(Array.from({length:10},(_,i)=>i)),matches:session?session.matches.map(pair=>[...pair]):[],selected:null,blocked:false,hintVisible:false,quizProgress:clamp(session?.quizProgress,0,3,0)};
+  const pairs=vocabulary().slice((n-1)*10,n*10),session=validSession(restored,n,pairs)?restored:!fresh&&validSession(p.session,n,pairs)?p.session:null;
+  if(!session&&!fresh&&!skipIntro&&AppPreferences.get().showIntro){showIntro(n);return;}
+  if(!requireLife()){pendingLevel={language:state.language,level:n,skipIntro:true};return;}
+  pendingLevel=null;cleanup();screen='game';
+  game={level:n,pairs,left:session?[...session.left]:shuffle(Array.from({length:10},(_,i)=>i)),right:session?[...session.right]:shuffle(Array.from({length:10},(_,i)=>i)),matches:session?session.matches.map(pair=>[...pair]):[],selected:null,blocked:false,hintVisible:false,quizProgress:clamp(session?.quizProgress,0,3,0),mistakes:clamp(session?.mistakes,0,1,0)};
   snapshot();window.scrollTo(0,0);
   if(game.matches.length===10){renderQuiz();return;}
   const matched=(id,side)=>game.matches.some(pair=>pair[side]===id);
-  app.innerHTML=`<main class="screen game-screen"><div class="gamehead"><button class="iconbtn" data-go="map" aria-label="Haritaya dön">‹</button><div style="text-align:center"><div class="eyebrow">${l.flag} ${l.name} · ${difficulty(n)}</div><h2>Bölüm ${n} <span class="tiny">/ 100</span></h2></div><button class="iconbtn" data-action="sound" aria-label="Sesi aç veya kapat">${state.sound?'♫':'♩'}</button></div>${lifeStrip()}<div class="game-status"><div class="row tiny"><span id="status" role="status">${game.matches.length?'Kaldığın yerden devam et':'İlk kelimeni seç'}</span><strong id="count" style="color:var(--mint)">${game.matches.length} / 10</strong></div><div class="progress"><i id="gameprogress" style="width:${game.matches.length*10}%"></i></div></div><div class="board"><div class="col-title">${l.name.toLocaleUpperCase('tr')}</div><div class="col-title">TÜRKÇE</div>${game.left.map((id,i)=>`<button class="word ${matched(id,0)?'matched':''}" lang="${l.id}" dir="${l.dir}" data-id="${id}" data-side="0" ${matched(id,0)?'disabled':''}>${escapeHTML(pairs[id][0])}</button><button class="word ${matched(game.right[i],1)?'matched':''}" lang="tr" dir="ltr" data-id="${game.right[i]}" data-side="1" ${matched(game.right[i],1)?'disabled':''}>${escapeHTML(pairs[game.right[i]][1])}</button>`).join('')}</div><div class="game-info">♫ ${l.name} kelimeye dokun, dinle ve eşleştir.<br>Yanlışta bölüm yeniden başlar; doğru eşleşmelerini yardımcıyla geri getirebilirsin.</div></main>${tools(true)}`;
+  app.innerHTML=`<main class="screen game-screen"><div class="gamehead"><button class="iconbtn" data-go="map" aria-label="Haritaya dön">‹</button><div style="text-align:center"><div class="eyebrow">${l.flag} ${l.name} · ${difficulty(n)}</div><h2>Bölüm ${n} <span class="tiny">/ 100</span></h2></div><button class="iconbtn" data-action="sound" aria-label="Sesi aç veya kapat">${state.sound?'♫':'♩'}</button></div>${lifeStrip()}<div class="game-status"><div class="match-error-line"><span data-match-errors>Hata: ${game.mistakes}/2</span></div><div class="row tiny"><span id="status" role="status">${game.matches.length?'Kaldığın yerden devam et':'İlk kelimeni seç'}</span><strong id="count" style="color:var(--mint)">${game.matches.length} / 10</strong></div><div class="progress"><i id="gameprogress" style="width:${game.matches.length*10}%"></i></div></div><div class="board"><div class="col-title">${l.name.toLocaleUpperCase('tr')}</div><div class="col-title">TÜRKÇE</div>${game.left.map((id,i)=>`<button class="word ${matched(id,0)?'matched':''}" lang="${l.id}" dir="${l.dir}" data-id="${id}" data-side="0" ${matched(id,0)?'disabled':''}>${escapeHTML(pairs[id][0])}</button><button class="word ${matched(game.right[i],1)?'matched':''}" lang="tr" dir="ltr" data-id="${game.right[i]}" data-side="1" ${matched(game.right[i],1)?'disabled':''}>${escapeHTML(pairs[game.right[i]][1])}</button>`).join('')}</div><div class="game-info">♫ ${l.name} kelimeye dokun, dinle ve eşleştir.<br>Her denemede 2 hata hakkın var. İkinci yanlışta bölüm yeniden başlar.</div></main>${tools(true)}`;
   updateLifeUI();
 }
 function markSelected(item){game.selected=item;item.btn.classList.add('selected');item.btn.setAttribute('aria-pressed','true');}
@@ -213,6 +214,7 @@ function choose(btn){
   if(old.side===side){markSelected({id,side,btn});return;}
   const enId=side===0?id:old.id,trId=side===1?id:old.id;
   if(game.pairs[enId][1]===game.pairs[trId][1]){
+    learningAnswer('matching',true,`${game.level}:${enId}`);
     sound();for(const b of [btn,old.btn]){b.disabled=true;b.classList.add('matched');}
     game.matches.push([enId,trId]);snapshot();
     document.querySelector('#count').textContent=game.matches.length+' / 10';
@@ -224,15 +226,24 @@ function choose(btn){
       timer=setTimeout(()=>renderQuiz(),450);
     }
   }else{
-    sound(false);game.blocked=true;btn.classList.add('wrong');old.btn.classList.add('wrong');
-    document.querySelector('#status').textContent='Yanlış eşleşme. Yeniden deneyelim!';
-    const n=game.level;
-    if(game.matches.length>0)progress().recovery=sessionData();
-    if(n===progress().unlocked)progress().session=null;
-    save();
-    timer=setTimeout(()=>start(n,true),1100);
+    learningAnswer('matching',false,`${game.level}:${enId}`);
+    game.mistakes++;game.blocked=true;
+    sound(false);buttonError(btn,old.btn);
+    document.querySelector('[data-match-errors]').textContent=`Hata: ${game.mistakes}/2`;
+    if(game.mistakes===1){
+      snapshot();document.querySelector('#status').textContent='İlk hata. Eşleşmelerin duruyor; devam et!';
+      const current=game;
+      timer=setTimeout(()=>{if(game!==current)return;btn.classList.remove('wrong');old.btn.classList.remove('wrong');game.blocked=false;},650);
+    }else{
+      document.querySelector('#status').textContent='İkinci hata. Bölüm yeniden başlıyor.';
+      const n=game.level;
+      if(game.matches.length>0)progress().recovery={...sessionData(),mistakes:0};
+      if(progress().session?.level===n)progress().session=null;
+      save();timer=setTimeout(()=>start(n,true),1100);
+    }
   }
 }
+function buttonError(...buttons){buttons.forEach(button=>button.classList.add('wrong'));}
 function useHint(){
   if(!requireLife())return;
   const p=progress();
@@ -272,7 +283,7 @@ function restoreMatches(){
   if(currentCount>=recovery.matches.length){toast('Önceki doğru sayına zaten ulaştın. Hak harcanmadı.');return;}
   const count=recovery.matches.length;
   p.jump--;p.recovery=null;save();
-  start(level,false,recovery);
+  start(level,false,{...recovery,mistakes:0});
   toast(`${count} doğru eşleşmen geri geldi. 1 hak kullanıldı.`);
 }
 function renderQuiz(reviewIndex=null){
@@ -293,9 +304,11 @@ function chooseSentence(button){
   clearHint();
   const index=game.quizProgress,question=SENTENCES[state.language][game.level-1][index];
   if(button.dataset.answer===question.answer){
+    learningAnswer('sentence',true,`${game.level}:${question.wordIndex}`);
     sound();game.quizProgress++;snapshot();renderQuiz(index);
     pronounce(question.text.replace('___',question.answer));
   }else{
+    learningAnswer('sentence',false,`${game.level}:${question.wordIndex}`);
     sound(false);button.disabled=true;button.classList.add('wrong');
     const result=GameEconomy.spendLife(state.lives);state.lives=result.lives;save();updateLifeUI();
     document.querySelector('#quiz-feedback').textContent='Yanlış cevap: 1 can gitti. Cümleyi okuyup yeniden dene.';
@@ -315,13 +328,16 @@ function useQuizHint(){
 function completeLevel(){
   if(!game||game.matches.length!==10||game.quizProgress!==3||!requireLife())return;
   const n=game.level,p=progress();
+  const previousCount=p.completed.length,previousAll=LANGUAGE_LIST.every(l=>state.progress[l.id].completed.length>0);
   const awarded=GameEconomy.completionReward(p,n);
   p.hint=awarded.hint;p.jump=awarded.jump;p.rewardedLevels=awarded.rewardedLevels;
   if(!p.completed.includes(n))p.completed.push(n);
   p.completed.sort((a,b)=>a-b);
-  if(n===p.unlocked){p.unlocked=Math.min(100,n+1);p.session=null;}
+  if(n===p.unlocked)p.unlocked=Math.min(100,n+1);
+  if(p.session?.level===n)p.session=null;
   if(p.recovery?.level===n)p.recovery=null;
-  save();celebrate(n,awarded.reward);
+  const badges=Learning.recordCompletion(state,state.language,previousCount,previousAll);
+  save();celebrate(n,awarded.reward);notifyAwards(badges,false);
 }
 function celebrate(n,reward={hint:0,jump:0}){
   screen='success';clearHint();game=null;const p=progress(),l=language();
@@ -331,14 +347,16 @@ function celebrate(n,reward={hint:0,jump:0}){
 
 const island=`<div class="hero" aria-label="Havada süzülen üç boyutlu ada illüstrasyonu"><svg class="island" viewBox="0 0 440 270" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rock" x2="0" y2="1"><stop stop-color="#557d79"/><stop offset="1" stop-color="#183d49"/></linearGradient><linearGradient id="grass" x2="1" y2="1"><stop stop-color="#a5e8af"/><stop offset="1" stop-color="#3eab86"/></linearGradient><linearGradient id="book" x2="1" y2="1"><stop stop-color="#ffe6a2"/><stop offset="1" stop-color="#da9e56"/></linearGradient></defs><ellipse cx="219" cy="238" rx="116" ry="13" fill="#051722" opacity=".5"/><path d="M75 147L153 115 337 136 364 165 293 210 218 229 132 195Z" fill="url(#rock)"/><path d="M75 147L132 163 132 195Z" fill="#36636a"/><path d="M132 163L218 181 218 229 173 202Z" fill="#244c58"/><path d="M218 181L296 166 293 210 247 220Z" fill="#3e6d6c"/><path d="M75 147Q103 117 163 112L280 113Q336 120 364 150L364 165Q307 192 224 183L131 169Z" fill="#28745f"/><path d="M75 147Q105 111 170 106L280 110Q336 119 364 150L296 172 216 176 128 160Z" fill="url(#grass)"/><path d="M145 154Q175 128 206 150T290 145" fill="none" stroke="#f3d99c" stroke-width="16"/><path d="M145 154Q175 128 206 150T290 145" fill="none" stroke="#ffe9b8" stroke-width="10"/><g fill="#165e51"><path d="M100 128V87L120 75 138 88V130Z"/><path d="M297 125V75L315 65 333 80V134Z"/></g><g><path d="M103 104L121 45 142 105Z" fill="#459f76"/><path d="M121 45L121 112 142 105Z" fill="#27775f"/><path d="M292 95L315 22 341 96Z" fill="#67bb85"/><path d="M315 22V108L341 96Z" fill="#358d6c"/></g><g transform="translate(170 40) rotate(-8 45 50)"><path d="M0 30L55 9 96 34 41 56Z" fill="url(#book)"/><path d="M0 30V88L41 111V56Z" fill="#c48a43"/><path d="M41 56L96 34V91L41 111Z" fill="#f6edcc"/><path d="M48 64L90 47M48 74L90 57M48 84L90 67M48 94L90 77" stroke="#ccbca0" stroke-width="2"/><path d="M0 24L54 3 100 29 43 52Z" fill="#ffdb89"/><path d="M43 52V59L100 36V29Z" fill="#e4ae60"/><path d="M18 26L54 12 80 27 44 42Z" fill="#ecc077"/><text x="39" y="31" fill="#8e622f" font-size="19" font-weight="bold" transform="rotate(-6 40 30)">A</text></g><g transform="translate(266 118)"><ellipse cy="38" rx="22" ry="7" fill="#246c58"/><path d="M-18 7Q-20-18 0-19Q23-19 21 7L18 24Q0 36-17 23Z" fill="#b4f6db"/><ellipse cx="-5" cy="4" rx="3" ry="5" fill="#164c47"/><ellipse cx="9" cy="4" rx="3" ry="5" fill="#164c47"/><path d="M-3 16Q3 21 9 15" fill="none" stroke="#377b67" stroke-width="2"/><path d="M-19 5L-28-2M21 6L29-3" stroke="#b4f6db" stroke-width="7" stroke-linecap="round"/></g><g fill="#ffdf85"><circle cx="151" cy="118" r="4"/><circle cx="331" cy="147" r="4"/><circle cx="104" cy="149" r="3"/></g><g fill="#95d9c3" opacity=".5"><path d="M56 89L61 79 66 89 61 99Z"/><path d="M370 107L374 99 378 107 374 115Z"/></g></svg><span class="float-star">✧</span><span class="hero-label">Bir kelime, yeni bir dünya.</span></div>`;
 
-function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=document.querySelector('#confetti'),ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const particles=Array.from({length:90},()=>({x:Math.random()*c.width,y:-Math.random()*c.height,v:2+Math.random()*4,r:Math.random()*6+3,color:['#87efc5','#ffda83','#8fb5ff','#ffb3bb'][Math.floor(Math.random()*4)]}));let frames=0;function draw(){ctx.clearRect(0,0,c.width,c.height);for(const p of particles){p.y+=p.v;p.x+=Math.sin(frames/20+p.r);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.r,p.r*1.5);}if(frames++<220)requestAnimationFrame(draw);else ctx.clearRect(0,0,c.width,c.height);}draw();}
+function confetti(count=90){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=document.querySelector('#confetti'),ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const particles=Array.from({length:count},()=>({x:Math.random()*c.width,y:-Math.random()*c.height,v:2+Math.random()*4,r:Math.random()*6+3,color:[1,2,3,4].map(n=>getComputedStyle(document.documentElement).getPropertyValue(`--confetti-${n}`).trim())[Math.floor(Math.random()*4)]}));let frames=0;function draw(){ctx.clearRect(0,0,c.width,c.height);for(const p of particles){p.y+=p.v;p.x+=Math.sin(frames/20+p.r);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.r,p.r*1.5);}if(frames++<220)requestAnimationFrame(draw);else ctx.clearRect(0,0,c.width,c.height);}draw();}
 
 function parseBackup(value){
   const validLevels=p=>p&&typeof p==='object'&&Number.isInteger(p.unlocked)&&p.unlocked>=1&&p.unlocked<=100&&Array.isArray(p.completed)&&p.completed.every(n=>Number.isInteger(n)&&n>=1&&n<=100);
-  if(value?.version===2){
+  if([2,3].includes(value?.version)){
     if(!value.progress||typeof value.progress!=='object'||!LANGUAGE_LIST.every(l=>validLevels(value.progress[l.id])&&['jump','hint'].every(key=>Number.isSafeInteger(value.progress[l.id][key])&&value.progress[l.id][key]>=0)))throw Error('invalid backup');
     const imported=normalizeState(value);
     imported.lives=GameEconomy.refillLives(state.lives);
+    imported.activity={...state.activity,best:Math.max(state.activity.best,imported.activity.best),reviewAnswered:Math.max(state.activity.reviewAnswered,imported.activity.reviewAnswered)};
+    imported.badges={...imported.badges,...state.badges};
     for(const l of LANGUAGE_LIST)imported.progress[l.id].rewardedLevels=GameEconomy.levels([...state.progress[l.id].rewardedLevels,...imported.progress[l.id].rewardedLevels]);
     return imported;
   }
@@ -347,6 +365,7 @@ function parseBackup(value){
 }
 app.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(handleFeatureClick(b))return;
   if(b.dataset.language){state.language=b.dataset.language;save();screen='home';render();return;}
   if(b.dataset.go){screen=b.dataset.go;render();return;}
   if(b.dataset.start){start(Number(b.dataset.start));return;}
@@ -371,8 +390,11 @@ app.addEventListener('click',async e=>{
     }break;
   }
 });
+app.addEventListener('submit',event=>{if(event.target.id==='typing-form'){event.preventDefault();answerStudy(document.querySelector('#typed-word').value);}});
+window.addEventListener('app-before-update',()=>{if(game&&!game.blocked)snapshot();save();});
 app.addEventListener('input',e=>{if(e.target.id==='search')listWords(e.target.value);});
 app.addEventListener('change',async e=>{
+  if(featureChange(e.target))return;
   if(e.target.id!=='backup'||!e.target.files[0])return;
   try{
     if(e.target.files[0].size>2_000_000)throw Error('too large');
@@ -384,7 +406,6 @@ window.addEventListener('focus',refreshLives);
 window.addEventListener('storage',event=>{if(event.key!==STORAGE_KEY||!event.newValue)return;try{state.lives=GameEconomy.refillLives(JSON.parse(event.newValue).lives);updateLifeUI();}catch{}});
 window.addEventListener('pagehide',stopPronunciation);
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
-if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 render();
 setInterval(refreshLives,1000);
 if(storageWarning)toast('Tarayıcı kaydı açılamadı. İlerlemeni korumak için depolama iznini kontrol et.');

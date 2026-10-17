@@ -72,3 +72,36 @@ Chromium ek kontrolleri:
 
 Gerçek yayıncı hesabı olmadığından canlı reklam/enventar testi yapılmadı.
 Reklam testleri yalnızca test ortamında SDK olaylarını taklit eder.
+
+SÜRÜM 3.0 — YENİ KONTROLLER
+Önceki sürümdeki tek yanlışta sıfırlama kontrollerinin yerini iki hata kuralı alır.
+- 8 eşleşme + ilk hata: 8/10 ve Hata 1/2; yenilemede sayaç korunur.
+- İkinci hata: 0/10, Hata 0/2; kurtarmayla 8/10 ve Hata 0/2, 1 geri dönme hakkı.
+- Her iki eşleştirme hatasında canlar aynı kalır; cümle yanlışı 1 can azaltır.
+- Tamamlanmış bir bölüm yeniden oynanırken de hata sayacı oturumla saklanır.
+- Tanıtım 10 kart; Hazırım/Atla, kaldığı yerden devamda tanıtım yok.
+- Leitner kutuları, 1/3/7 günlük vade, kelime defteri Bildim/Bilemedim.
+- Tekrar ve pratik 0 canla çalışır; ipucu/geri dönme ödülü verilmez.
+- Dört pratik modu, tamamlanmış bölüm havuzu, yazım toleransı, dil başına hız rekoru.
+- Arapça/Rusçada yazarak modunun gizlenmesi.
+- Günlük hedef 1/2/3; tekrar yanlışları da yanıt sayılır, pratik yanlışları sayılmaz.
+- Yerel gün/DST, kaçırılan gün, tarih geri alma, ortak seri ve en iyi seri.
+- Yedekte mevcut seri ve canları koruma; büyük en iyi seriyi alma.
+- Eski kayıtta yalnızca bölüm rozetlerini hesaplama; dil sıfırlamada tekrar verisini silme.
+- Açık/koyu tema kalıcılığı, ayrı tercih kaydı, 320/390 px taşma kontrolü.
+- Ana metin, ikincil metin ve vurgu metinleri/surface çiftlerinde AA kontrastı:
+  koyu en düşük 5.42:1, açık en düşük 5.32:1; düğme/uyarı çiftleri de >=4.5:1.
+- Gerçek Chromium service worker testi: yeni sürüm bekler; oyun kendiliğinden
+  yenilenmez. Yenile mesajıyla yeni worker etkinleşir; internet kapalıyken bile
+  yeni önbellekten açılır, eşleşmeler ve Hata 1/2 korunur; eski cache temizlenir.
+- Derleme: dosya/sürüm değişince cache hash'i değişir; yeni dosyalar otomatik listelenir.
+
+Çalıştırma:
+  npm test
+  npm run build
+  npm run test:browser
+Tarayıcı testi için Playwright ve Chromium gerekir. Varsayılan Playwright
+kurulumu kullanılır; PLAYWRIGHT_MODULE ve BROWSER_EXECUTABLE ile özel
+kurulum yolları belirtilebilir. Testler geçici yerel HTTP sunucusu açar.
+Bu ortamda /usr/bin/chromium ile headless Chromium testleri çalıştırılmıştır.
+Canlı Vercel dağıtımı veya gerçek reklam hesabı bu testlerin parçası değildir.

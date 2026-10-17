@@ -1,0 +1,8 @@
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),assert=require('node:assert/strict');
+const {build}=require('../scripts/build-web.cjs');const root=fs.mkdtempSync(path.join(os.tmpdir(),'kelime-build-'));
+try{
+ fs.mkdirSync(path.join(root,'www/assets'),{recursive:true});fs.writeFileSync(path.join(root,'package.json'),JSON.stringify({version:'3.0.0'}));fs.writeFileSync(path.join(root,'www/index.html'),'<h1>Test</h1>');fs.writeFileSync(path.join(root,'www/assets/new.js'),'const test=1;');
+ const a=build(root),b=build(root);assert.equal(a.cacheName,b.cacheName);assert(a.files.includes('assets/new.js'));let worker=fs.readFileSync(path.join(root,'dist/sw.js'),'utf8');assert(worker.includes('./assets/new.js'));assert(!/install[\s\S]*?skipWaiting\(\)[\s\S]*?addEventListener\('message'/.test(worker));assert(worker.includes("event.data?.type==='SKIP_WAITING'"));assert(worker.includes('networkFirst'));
+ fs.writeFileSync(path.join(root,'www/assets/new.js'),'const test=2;');const c=build(root);assert.notEqual(c.cacheName,b.cacheName);fs.writeFileSync(path.join(root,'package.json'),JSON.stringify({version:'3.0.1'}));const d=build(root);assert.notEqual(c.cacheName,d.cacheName);assert.equal(fs.readFileSync(path.join(root,'www/sw.js'),'utf8'),fs.readFileSync(path.join(root,'dist/sw.js'),'utf8'));
+ console.log('PASS worker build: automatic complete asset list, repeatable content hash, file/version changes invalidate, network-first fallback and message-only skipWaiting.');
+}finally{fs.rmSync(root,{recursive:true,force:true});}

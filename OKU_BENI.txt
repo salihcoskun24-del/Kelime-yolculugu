@@ -20,7 +20,7 @@ Kelime defteri tamamladığın bölümleri gösterir; orada da telaffuz dinlenir
 
 YARDIMCILAR — HER DİLDE 5 + 5 HAK
 Kaldığım yere gel: Yanlış cevapla sıfırlanan bölümde önceki doğru çiftleri
-1 hak karşılığında geri getirir. 8 doğru sonrası yanlışta 0/10 olur;
+1 hak karşılığında geri getirir. 8 doğru sonrası ilk yanlışta 8/10 kalır; ikinci yanlışta 0/10 olur;
 düğmeye basınca 8/10 geri gelir, 1 hak düşer. Sayfa yenilense de kurtarma
 kaydı saklanır. Geri getirilecek çift yoksa hak harcanmaz.
 Aynı kurtarma kaydı bir kez kullanılabilir. Haritadan da geri getirilebilir.
@@ -87,7 +87,7 @@ Cümle aşaması ve geri getirilebilir eşleşmeler yedeklere de dahil edilir.
 
 CANLAR
 Tüm diller için ortak 5 canın var. Cümle testindeki her yanlış 1 can götürür.
-Eşleştirme hatası can götürmez. Can sıfırken oynayamazsın; menülere bakabilirsin.
+Eşleştirme hatası can götürmez. Can sıfırken bölüm oynayamazsın; tekrar ve pratik yapabilirsin.
 Kalp satırına dokunarak can ekranını ve kalan süreyi görebilirsin.
 İlk can kaybından 10 dakika sonra +1 can gelir. Diğer kayıplar sayacı başa almaz.
 Eksilen canlar 10'ar dakika arayla yenilenir; en fazla 5 olur.
@@ -104,3 +104,21 @@ Kurulum: REWARDED_ADS.md. APK için ayrıca yerel reklam entegrasyonu gerekir.
 
 KONTROL
 npm test: can sayacı, bölüm ödülleri ve reklam olaylarını dış servis olmadan test eder.
+
+SÜRÜM 3.0
+İlk yanlış eşleşmede ilerleme korunur, ikinci yanlışta bölüm sıfırlanır.
+Hata sayacı kaydedilir; kurtarma veya yeniden başlatmada 0 olur.
+Bölüm öncesi 10 sesli kelime kartı vardır; Ayarlar’dan kapatılabilir.
+Zor kelimeler 1/3/7 günlük Leitner kutularında tekrar edilir.
+Kelime defterinden Bildim/Bilemedim ile çalışma kaydı tutulabilir.
+Pratik: Dinle ve seç, Ters yön, Yazarak (Latin dilleri), 60 sn Hız.
+Pratik yalnızca tamamlanan bölümlerdendir. Tekrar/pratik can tüketmez.
+Günlük hedef 1/2/3 birimdir: 1 bölüm veya 10 tekrar yanıtı veya
+10 doğru pratik cevabı 1 birim sayılır. Tüm diller ortak seri oluşturur.
+İstatistik, dil başına hız rekoru ve tarihli 24 rozet bulunur.
+Sistem/Açık/Koyu tema ve tanıtım tercihi ilerlemeden ayrı kaydedilir.
+Yedek tekrar/istatistik/rozet verilerini içerir; mevcut seri ve canları
+yükseltmez. En iyi seri için büyük değer korunur.
+Yeni sürüm bandında Yenile’ye basılana kadar oyun yenilenmez.
+Derleme önbellek sürümünü otomatik üretir: npm run build.
+Ayrıntılı kurallar README.md dosyasındadır.

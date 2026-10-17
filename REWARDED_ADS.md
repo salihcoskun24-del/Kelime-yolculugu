@@ -27,7 +27,7 @@ window.REWARDED_ADS_CONFIG = Object.freeze({
 Yol yayıncı kimliği veya erişim sırrı değildir; web istemcisinde kullanılır.
 `/GERCEK_AG_KODU/…` yalnızca yer tutucudur; gerçek yolun ağ kodu sayısaldır.
 
-4. Service worker önbellek sürümünü artırıp Vercel'e dağıt; uygulamayı yeniden aç.
+4. `npm run build` çalıştırıp Vercel'e dağıt; önbellek sürümü otomatik üretilir. Uygulamadaki yeni sürüm bandından Yenile'ye bas.
 5. Can 5'in altındayken kalplere dokun, reklamı izlemeyi seç ve gerçek servisle doğrula.
    Envanterin boş olması veya tarayıcının desteklememesi durumlarını da kontrol et.
 
