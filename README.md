@@ -9,6 +9,11 @@ Paket hazır APK değildir; PWA ve Android APK üretmek için Capacitor ayarlar�
 
 ## Yenilikler
 
+- Her bölümün sonunda bölümden üç kelimeyle cümlede boşluk doldurma.
+- Altı dilde toplam **1.800 cümle sorusu**, Türkçe anlamı ve üç cevap seçeneği.
+- Bölüm açma koşulu: **10 eşleşme + 3 doğru cümle**.
+- Yanlış eşleştirme sonrası önceki doğru eşleşmeleri 1 hakla geri getirme.
+
 - Açılışta altı dilden birini seç; ana ekrandaki dil düğmesinden değiştir.
 - Her dilin bölüm ilerlemesi, devam eden eşleşmeleri ve yardımcı hakları ayrı saklanır.
 - Yeni beş dilde kolaydan zora 1.000'er kayıt; sıralı listeler `kelime-listeleri/` klasöründe.
@@ -20,13 +25,28 @@ Paket hazır APK değildir; PWA ve Android APK üretmek için Capacitor ayarlar�
 
 ## Yardımcılar
 
-**Kaldığım yere gel:** Haritayı aktif bölüme kaydırır. Eski bir bölüm oynuyorsan
-kayıtlı aktif bölümüne ve eşleşmelerine döndürür. Zaten oradaysan hak harcamaz.
-Ana ekrandaki normal devam düğmesi ve bölüm seçmek ücretsizdir.
+**Kaldığım yere gel:** Yanlış eşleştirmeyle sıfırlanan bölümde önceki doğru
+çiftleri **1 hak** karşılığında geri getirir. Örneğin 8 doğru yaptıktan sonra
+9. eşleştirmede yanlış seçersen bölüm 0/10 olur; bu düğmeyle **8/10** geri gelir.
+Kayıt sayfa yenilenince ve dil değiştirilince korunur. Haritadan da kurtarılabilir.
+Geri getirilecek doğru çift yoksa veya aynı sayıya zaten ulaştıysan hak gitmez.
+Kayıt bir defa geri getirilir; aynı kayıt için tekrar hak düşmez.
 
-**İpucu:** Oynanan bölümde doğru bir çifti 5 saniye işaretler. Bölüm haritasından
-kullanılırsa aktif bölümü açıp orada ipucu verir. Otomatik puan kazandırmaz.
-İpucu görünürken tekrar basmak ikinci hak harcamaz.
+**İpucu:** Eşleştirmede doğru çifti, cümlede doğru seçeneği 5 saniye işaretler.
+Doğru cevabı otomatik işaretlemez. İpucu görünürken tekrar basmak ikinci hak harcamaz.
+Yanıtlanmış cümlede ipucu istemek hak harcamaz.
+
+## Cümle soruları
+
+10 çifti eşleştirince o bölümdeki üç farklı kelime için üç cümle açılır.
+Türkçe anlamından yararlanarak boşluğa uygun seçeneği seç.
+Doğru yanıttan sonra dolu cümleyi dinleyebilir, sonraki soruya geçebilirsin.
+Son soruda **Bölümü tamamla** ile sonraki bölüm açılır.
+Cümlede yanlış seçim yalnızca o soruyu yeniden denetir; eşleşmeler korunur.
+Cümle aşaması ve doğru yanıtlanan soru sayısı kaydedilir.
+Cümlede gereken çekimli biçimler kullanılabilir; sözlükteki temel biçimden farklı görünebilir.
+Cümleler `cumle-sorulari/` CSV dosyalarındadır; `npm run sentences:export` ile yeniden üretilir.
+Eski sürümde tamamlanan bölümler korunur; tekrar oynanırlarsa yeni cümle aşaması da gösterilir.
 
 Haklar bölüm geçişinde, sayfa yenilemede veya ilerleme sıfırlamada yenilenmez.
 Bakiye sıfır olunca düğme pasif olur. Reklam izleme veya ödül verme henüz eklenmedi.
@@ -75,7 +95,7 @@ Yeni sürüm dağıtıldıktan sonra açık uygulamayı yeniden yükle; eski sü
 
 ## Kayıt ve yedek
 
-Ayarlar'dan tüm dillerin ilerlemesini, devam eden bölümünü ve yardımcı haklarını JSON olarak yedekle.
+Ayarlar'dan tüm dillerin ilerlemesini, devam eden bölümünü, cümle aşamasını, geri getirilebilir eşleşmelerini ve yardımcı haklarını JSON olarak yedekle.
 Eski İngilizce yedekleri de içe aktarılabilir; diğer diller korunur.
 Kayıt bu cihazın tarayıcısında ve bu adrese özeldir; cihazlar arasında otomatik eşitlenmez.
 

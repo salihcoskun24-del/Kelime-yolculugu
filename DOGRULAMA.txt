@@ -1,35 +1,42 @@
-KELİME YOLCULUĞU 2.0 — DOĞRULAMA
+KELİME YOLCULUĞU 2.1 — DOĞRULAMA
 
-Veri/build:
-- 6 dilde 1000'er kayıt; 100'er bölüm ve bölüm başına 10 çift.
-- Her dilin kaynak kelimelerinde tekrar bulunmuyor.
-- Bölüm içindeki Türkçe kartlar ayırt edilebilir.
-- Rusça ve Arapça bankaları kendi alfabelerinde; Latin harfli çeviri artığı yok.
-- JavaScript sözdizimi, CSV üretimi ve Vercel statik build kontrolü başarılı.
-- npm run check veri kontrollerini tekrar çalıştırır.
+Veri ve build:
+- Altı dilde 1000'er kelime/ifade, 100'er bölüm, bölüm başına 10 çift.
+- Her dilin kaynak metinlerinde tekrar yok; bölümdeki Türkçe kartlar ayrık.
+- Rusça/Arapça veri alfabeleri ve JavaScript sözdizimi kontrol edildi.
+- Altı dil x 100 bölüm x 3 soru = 1800 boşluk doldurma sorusu.
+- Her bölümde üç ayrı hedef kelime, her soruda bir boşluk ve üç ayrı seçenek.
+- Bölüm içindeki kelime indeksleri ve soru metinleri doğrulandı.
+- npm run check, npm run build ve CSV dışa aktarma başarılı.
 
-Chromium otomasyonu:
-- Açılışta 6 dil kartı, her dilde 20 oyun kartı ve bölüm tamamlama.
-- Dile uygun ses seçimi: en-US, de-DE, es-ES, ru-RU, ar-SA, fr-FR.
-- Ses motoru otomasyonda taklit edildi; fiziksel ses çıkışı dinlenmedi.
-- Arapça kartlarda RTL; uygulama menüleri Türkçe ve LTR.
-- Dillerin ilerlemeleri ve yardımcı bakiyeleri birbirinden bağımsız.
-- Haritaya dönünce ve sayfa yenilenince devam eden bölüm ve kart sırası geri gelir.
-- Eski bölümden aktif bölüme dönünce kayıtlı eşleşmeler korunur.
-- Zaten kalınan bölümdeyken yardımcı hak harcamaz.
-- Haritada uzak aktif bölüme kaydırır ve bir hak düşer.
-- İpucu doğru iki kartı işaretler; otomatik eşleştirme yapmaz.
-- İpucu görünürken tekrar basmak ikinci hak harcamaz.
-- 5 hak tükenince düğmeler pasif; eksi bakiye oluşmaz.
-- Dil değiştirme, sayfa yenileme ve ilerleme sıfırlama bakiye yenilemez.
-- Yanlış eşleşmede bölüm başlar; yardımcı bakiyeleri korunur.
-- JSON yedek içe aktarma; geçersiz yedeğin reddedilmesi.
-- Kelime defteri araması ve telaffuzu.
-- 320, 390 ve 768 piksel genişliklerde yatay taşma kontrolü.
-- Çevrimdışı yeniden açılış ve Rusça dahil dil değiştirme.
-- ky-v1 İngilizce kaydının ky-v2 çok dilli yapıya taşınması.
+Chromium oyun kontrolleri (altı dilin tamamında):
+- 8 doğru eşleşmeden sonra 9. eşleşmede yanlış seçim: 0/10'a sıfırlama.
+- Sayfa yenilense de yanlış öncesindeki 8 doğru çiftin kurtarma kaydı korunur.
+- Kaldığım yere gel ile 8/10 ve 16 bilinen kart geri gelir; yalnızca 1 hak düşer.
+- Kurtarılacak kayıt yoksa veya aynı kayıt tekrar istenirse hak harcanmaz.
+- Haritadan doğru eşleşmelerin geri getirilmesi.
+- Beş hakkın tükenmesi, negatif bakiye oluşmaması ve dil başına ayrı bakiye.
+- 10 eşleşme tek başına sonraki bölümü açmaz; üç cümle sorusuna geçer.
+- Cümlede yanlış cevap eşleşmeleri veya doğru cümle sayısını silmez.
+- Cümle ipucu doğru seçeneği gösterir; görünür ipucuna tekrar basmak hak harcamaz.
+- Doğru yanıtlanmış cümlede ipucu istemek hak harcamaz.
+- Cümle ortasında sayfa yenileme: kaldığı soru ve doğru yanıt sayısı korunur.
+- Cümle aşamasında geri getirme düğmesi hak harcamaz.
+- Üç cümle tamamlanınca sonraki bölüm açılır ve 3/3 kutlaması gösterilir.
+- Eski İngilizce ilerlemesi korunur; final bölümde seviye 100'ü aşmaz.
+- Her dilin 100. bölümünde eşleştirme ve cümle akışı kontrol edildi.
+- 320/390/768 piksel genişliklerde yatay taşma yok; Arapça cümleler RTL.
+- Çevrimdışı yeniden yükleme, dil değiştirme ve cümle ekranı kontrol edildi.
 - Yakalanan JavaScript sayfa hatası yok.
 
-Bu ortamda fiziksel Android/iPhone testi, APK derlemesi ve Vercel bulut
-hesabında dağıtım yapılmadı. Ses kalitesi cihazın ses paketine bağlıdır.
-Kelime hazırlığının kapsamı ve dil kontrolü sınırları VOCABULARY.md içindedir.
+Önceki çok dilli sürüm kontrolleri:
+- Dil seçimi, dile uygun telaffuz seçimi, bağımsız kayıtlar.
+- Kart sırası ve eşleşmelerin yeniden açılışta korunması.
+- İpucu bakiyeleri, ilerleme sıfırlamada hakların yenilenmemesi.
+- JSON yedekleme/içe aktarma, geçersiz yedeği reddetme ve kelime defteri araması.
+
+Sınırlar:
+Telaffuz otomasyonda taklit edildi; fiziksel telefon sesi dinlenmedi.
+Fiziksel Android/iPhone, APK derlemesi ve Vercel hesabında canlı dağıtım testi
+bu ortamda yapılmadı. Cihazın dil ses paketi telaffuzu etkiler.
+Dil verisi hazırlığı ve editör kontrolünün kapsamı VOCABULARY.md içindedir.

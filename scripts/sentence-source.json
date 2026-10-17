@@ -1,0 +1,1502 @@
+[
+  {
+    "concept": "cat",
+    "sentence": "The <b>cat</b> is sleeping on the chair.",
+    "translation": "Kedi sandalyede uyuyor."
+  },
+  {
+    "concept": "sun",
+    "sentence": "The <b>sun</b> gives us light and warmth.",
+    "translation": "Güneş bize ışık ve sıcaklık verir."
+  },
+  {
+    "concept": "book",
+    "sentence": "I read a <b>book</b> before bed.",
+    "translation": "Yatmadan önce bir kitap okurum."
+  },
+  {
+    "concept": "mother",
+    "sentence": "My <b>mother</b> makes delicious soup.",
+    "translation": "Annem lezzetli çorba yapar."
+  },
+  {
+    "concept": "school",
+    "sentence": "The children go to <b>school</b> every morning.",
+    "translation": "Çocuklar her sabah okula gider."
+  },
+  {
+    "concept": "window",
+    "sentence": "Please open the <b>window</b> for some fresh air.",
+    "translation": "Biraz temiz hava için lütfen pencereyi aç."
+  },
+  {
+    "concept": "flower",
+    "sentence": "This <b>flower</b> smells wonderful.",
+    "translation": "Bu çiçek harika kokuyor."
+  },
+  {
+    "concept": "milk",
+    "sentence": "I drink a glass of <b>milk</b> with breakfast.",
+    "translation": "Kahvaltıda bir bardak süt içerim."
+  },
+  {
+    "concept": "apple",
+    "sentence": "She puts a red <b>apple</b> in her bag.",
+    "translation": "Çantasına kırmızı bir elma koyar."
+  },
+  {
+    "concept": "morning",
+    "sentence": "We eat breakfast in the <b>morning</b>.",
+    "translation": "Sabah kahvaltı yaparız."
+  },
+  {
+    "concept": "tomorrow",
+    "sentence": "We will visit our grandparents <b>tomorrow</b>.",
+    "translation": "Yarın büyükanne ve büyükbabamızı ziyaret edeceğiz."
+  },
+  {
+    "concept": "happy",
+    "sentence": "I feel <b>happy</b> when I see my friends.",
+    "translation": "Arkadaşlarımı görünce mutlu hissederim."
+  },
+  {
+    "concept": "hot",
+    "sentence": "Be careful; the soup is <b>hot</b>.",
+    "translation": "Dikkat et; çorba sıcak."
+  },
+  {
+    "concept": "clean",
+    "sentence": "Please keep your room <b>clean</b>.",
+    "translation": "Lütfen odanı temiz tut."
+  },
+  {
+    "concept": "new",
+    "sentence": "I bought a <b>new</b> phone yesterday.",
+    "translation": "Dün yeni bir telefon aldım."
+  },
+  {
+    "concept": "red",
+    "sentence": "The stop sign is <b>red</b>.",
+    "translation": "Dur işareti kırmızıdır."
+  },
+  {
+    "concept": "blue",
+    "sentence": "The sky is <b>blue</b> today.",
+    "translation": "Bugün gökyüzü mavidir."
+  },
+  {
+    "concept": "green",
+    "sentence": "The leaves are <b>green</b> in spring.",
+    "translation": "Yapraklar ilkbaharda yeşildir."
+  },
+  {
+    "concept": "one",
+    "sentence": "There is <b>one</b> candle on the cake.",
+    "translation": "Pastanın üzerinde bir mum var."
+  },
+  {
+    "concept": "three",
+    "sentence": "A triangle has <b>three</b> sides.",
+    "translation": "Bir üçgenin üç kenarı vardır."
+  },
+  {
+    "concept": "ten",
+    "sentence": "I have <b>ten</b> fingers.",
+    "translation": "On parmağım var."
+  },
+  {
+    "concept": "head",
+    "sentence": "Wear a helmet to protect your <b>head</b>.",
+    "translation": "Başını korumak için kask tak."
+  },
+  {
+    "concept": "eye",
+    "sentence": "A tiny piece of dust got into my <b>eye</b>.",
+    "translation": "Gözüme küçük bir toz kaçtı."
+  },
+  {
+    "concept": "heart",
+    "sentence": "Exercise is good for your <b>heart</b>.",
+    "translation": "Egzersiz kalbin için iyidir."
+  },
+  {
+    "concept": "city",
+    "sentence": "Many people live in this large <b>city</b>.",
+    "translation": "Bu büyük şehirde birçok insan yaşar."
+  },
+  {
+    "concept": "bridge",
+    "sentence": "The old <b>bridge</b> crosses the river.",
+    "translation": "Eski köprü nehrin üzerinden geçer."
+  },
+  {
+    "concept": "forest",
+    "sentence": "Many wild animals live in the <b>forest</b>.",
+    "translation": "Ormanda birçok vahşi hayvan yaşar."
+  },
+  {
+    "concept": "walk",
+    "sentence": "I like to <b>walk</b> in the park.",
+    "translation": "Parkta yürümeyi severim."
+  },
+  {
+    "concept": "read",
+    "sentence": "We <b>read</b> a story every evening.",
+    "translation": "Her akşam bir hikâye okuruz."
+  },
+  {
+    "concept": "sleep",
+    "sentence": "Babies need to <b>sleep</b> a lot.",
+    "translation": "Bebeklerin çok uyuması gerekir."
+  },
+  {
+    "concept": "friend",
+    "sentence": "My best <b>friend</b> lives next door.",
+    "translation": "En iyi arkadaşım yan evde yaşar."
+  },
+  {
+    "concept": "family",
+    "sentence": "We have dinner together as a <b>family</b>.",
+    "translation": "Aile olarak birlikte akşam yemeği yeriz."
+  },
+  {
+    "concept": "baby",
+    "sentence": "The <b>baby</b> cannot walk yet.",
+    "translation": "Bebek henüz yürüyemiyor."
+  },
+  {
+    "concept": "learn",
+    "sentence": "I want to <b>learn</b> a new language.",
+    "translation": "Yeni bir dil öğrenmek istiyorum."
+  },
+  {
+    "concept": "buy",
+    "sentence": "We need to <b>buy</b> some bread.",
+    "translation": "Biraz ekmek satın almamız gerekiyor."
+  },
+  {
+    "concept": "open",
+    "sentence": "Please <b>open</b> the door.",
+    "translation": "Lütfen kapıyı aç."
+  },
+  {
+    "concept": "strong",
+    "sentence": "A lion is a <b>strong</b> animal.",
+    "translation": "Aslan güçlü bir hayvandır."
+  },
+  {
+    "concept": "young",
+    "sentence": "The <b>young</b> tree needs water.",
+    "translation": "Genç ağacın suya ihtiyacı var."
+  },
+  {
+    "concept": "heavy",
+    "sentence": "This suitcase is too <b>heavy</b> for me.",
+    "translation": "Bu bavul benim için çok ağır."
+  },
+  {
+    "concept": "question",
+    "sentence": "The teacher asked an interesting <b>question</b>.",
+    "translation": "Öğretmen ilginç bir soru sordu."
+  },
+  {
+    "concept": "solution",
+    "sentence": "We need a <b>solution</b> to this problem.",
+    "translation": "Bu soruna bir çözüm bulmamız gerekiyor."
+  },
+  {
+    "concept": "idea",
+    "sentence": "That is a great <b>idea</b>.",
+    "translation": "Bu harika bir fikir."
+  },
+  {
+    "concept": "ticket",
+    "sentence": "You need a <b>ticket</b> to get on the train.",
+    "translation": "Trene binmek için bilete ihtiyacın var."
+  },
+  {
+    "concept": "passport",
+    "sentence": "Show your <b>passport</b> at the border.",
+    "translation": "Sınırda pasaportunu göster."
+  },
+  {
+    "concept": "map",
+    "sentence": "Use the <b>map</b> to find the museum.",
+    "translation": "Müzeyi bulmak için haritayı kullan."
+  },
+  {
+    "concept": "doctor",
+    "sentence": "The <b>doctor</b> examined the patient.",
+    "translation": "Doktor hastayı muayene etti."
+  },
+  {
+    "concept": "medicine",
+    "sentence": "Take this <b>medicine</b> after breakfast.",
+    "translation": "Bu ilacı kahvaltıdan sonra al."
+  },
+  {
+    "concept": "fever",
+    "sentence": "The child has a high <b>fever</b>.",
+    "translation": "Çocuğun yüksek ateşi var."
+  },
+  {
+    "concept": "knowledge",
+    "sentence": "Reading increases your <b>knowledge</b>.",
+    "translation": "Okumak bilgini artırır."
+  },
+  {
+    "concept": "effort",
+    "sentence": "Learning a language takes time and <b>effort</b>.",
+    "translation": "Dil öğrenmek zaman ve çaba gerektirir."
+  },
+  {
+    "concept": "opportunity",
+    "sentence": "This job is a great <b>opportunity</b> for me.",
+    "translation": "Bu iş benim için harika bir fırsat."
+  },
+  {
+    "concept": "freedom",
+    "sentence": "Everyone deserves to live in <b>freedom</b>.",
+    "translation": "Herkes özgürlük içinde yaşamayı hak eder."
+  },
+  {
+    "concept": "patience",
+    "sentence": "Teaching young children requires <b>patience</b>.",
+    "translation": "Küçük çocuklara öğretmenlik yapmak sabır gerektirir."
+  },
+  {
+    "concept": "trust",
+    "sentence": "You can build <b>trust</b> by keeping your promises.",
+    "translation": "Sözlerini tutarak güven oluşturabilirsin."
+  },
+  {
+    "concept": "culture",
+    "sentence": "Food is an important part of our <b>culture</b>.",
+    "translation": "Yemek, kültürümüzün önemli bir parçasıdır."
+  },
+  {
+    "concept": "education",
+    "sentence": "Every child has a right to <b>education</b>.",
+    "translation": "Her çocuğun eğitim hakkı vardır."
+  },
+  {
+    "concept": "technology",
+    "sentence": "Modern <b>technology</b> makes communication easier.",
+    "translation": "Modern teknoloji iletişimi kolaylaştırır."
+  },
+  {
+    "concept": "compare",
+    "sentence": "We should <b>compare</b> the prices before buying.",
+    "translation": "Satın almadan önce fiyatları karşılaştırmalıyız."
+  },
+  {
+    "concept": "maintain",
+    "sentence": "It is important to <b>maintain</b> a healthy balance.",
+    "translation": "Sağlıklı bir denge sürdürmek önemlidir."
+  },
+  {
+    "concept": "improve",
+    "sentence": "Practice can <b>improve</b> your pronunciation.",
+    "translation": "Alıştırma yapmak telaffuzunu iyileştirebilir."
+  },
+  {
+    "concept": "perspective",
+    "sentence": "Try to see the situation from a different <b>perspective</b>.",
+    "translation": "Durumu farklı bir bakış açısından görmeye çalış."
+  },
+  {
+    "concept": "priority",
+    "sentence": "Safety is our first <b>priority</b>.",
+    "translation": "Güvenlik ilk önceliğimizdir."
+  },
+  {
+    "concept": "hypothesis",
+    "sentence": "The scientist tested a new <b>hypothesis</b>.",
+    "translation": "Bilim insanı yeni bir hipotezi sınadı."
+  },
+  {
+    "concept": "resilience",
+    "sentence": "The community showed great <b>resilience</b> after the disaster.",
+    "translation": "Topluluk felaketten sonra büyük dayanıklılık gösterdi."
+  },
+  {
+    "concept": "sustainability",
+    "sentence": "The project focuses on environmental <b>sustainability</b>.",
+    "translation": "Proje çevresel sürdürülebilirliğe odaklanır."
+  },
+  {
+    "concept": "innovation",
+    "sentence": "The company encourages <b>innovation</b> and creative thinking.",
+    "translation": "Şirket yenilikçiliği ve yaratıcı düşünmeyi teşvik eder."
+  },
+  {
+    "concept": "shirt",
+    "sentence": "He wears a white <b>shirt</b> to work.",
+    "translation": "İşe beyaz bir gömlek giyer."
+  },
+  {
+    "concept": "coat",
+    "sentence": "Take your <b>coat</b>; it is cold outside.",
+    "translation": "Paltonu al; dışarısı soğuk."
+  },
+  {
+    "concept": "hat",
+    "sentence": "She wears a <b>hat</b> to protect herself from the sun.",
+    "translation": "Güneşten korunmak için şapka takar."
+  },
+  {
+    "concept": "kitchen",
+    "sentence": "We cook our meals in the <b>kitchen</b>.",
+    "translation": "Yemeklerimizi mutfakta pişiririz."
+  },
+  {
+    "concept": "roof",
+    "sentence": "The rain is falling on the <b>roof</b>.",
+    "translation": "Yağmur çatıya düşüyor."
+  },
+  {
+    "concept": "balcony",
+    "sentence": "We grow flowers on the <b>balcony</b>.",
+    "translation": "Balkonda çiçek yetiştiririz."
+  },
+  {
+    "concept": "pillow",
+    "sentence": "I put my head on the soft <b>pillow</b>.",
+    "translation": "Başımı yumuşak yastığa koyarım."
+  },
+  {
+    "concept": "mirror",
+    "sentence": "She looks in the <b>mirror</b> before leaving.",
+    "translation": "Çıkmadan önce aynaya bakar."
+  },
+  {
+    "concept": "shelf",
+    "sentence": "Put the book on the <b>shelf</b>.",
+    "translation": "Kitabı rafa koy."
+  },
+  {
+    "concept": "spoon",
+    "sentence": "I eat soup with a <b>spoon</b>.",
+    "translation": "Çorbayı kaşıkla içerim."
+  },
+  {
+    "concept": "knife",
+    "sentence": "Use a <b>knife</b> to cut the bread.",
+    "translation": "Ekmeği kesmek için bıçak kullan."
+  },
+  {
+    "concept": "plate",
+    "sentence": "There is a sandwich on the <b>plate</b>.",
+    "translation": "Tabakta bir sandviç var."
+  },
+  {
+    "concept": "cheese",
+    "sentence": "I like <b>cheese</b> on my sandwich.",
+    "translation": "Sandviçimde peynir severim."
+  },
+  {
+    "concept": "egg",
+    "sentence": "The hen laid an <b>egg</b>.",
+    "translation": "Tavuk bir yumurta yumurtladı."
+  },
+  {
+    "concept": "carrot",
+    "sentence": "The rabbit is eating a <b>carrot</b>.",
+    "translation": "Tavşan bir havuç yiyor."
+  },
+  {
+    "concept": "banana",
+    "sentence": "A ripe <b>banana</b> has yellow skin.",
+    "translation": "Olgun bir muzun kabuğu sarıdır."
+  },
+  {
+    "concept": "lemon",
+    "sentence": "Add some <b>lemon</b> to your tea.",
+    "translation": "Çayına biraz limon ekle."
+  },
+  {
+    "concept": "watermelon",
+    "sentence": "We eat cold <b>watermelon</b> in summer.",
+    "translation": "Yazın soğuk karpuz yeriz."
+  },
+  {
+    "concept": "breakfast",
+    "sentence": "We eat <b>breakfast</b> before going to school.",
+    "translation": "Okula gitmeden önce kahvaltı yaparız."
+  },
+  {
+    "concept": "salt",
+    "sentence": "This soup needs a little <b>salt</b>.",
+    "translation": "Bu çorbanın biraz tuza ihtiyacı var."
+  },
+  {
+    "concept": "honey",
+    "sentence": "Bees produce <b>honey</b>.",
+    "translation": "Arılar bal üretir."
+  },
+  {
+    "concept": "rain",
+    "sentence": "We took an umbrella because of the <b>rain</b>.",
+    "translation": "Yağmur nedeniyle şemsiye aldık."
+  },
+  {
+    "concept": "snow",
+    "sentence": "The mountains are covered in white <b>snow</b>.",
+    "translation": "Dağlar beyaz karla kaplı."
+  },
+  {
+    "concept": "wind",
+    "sentence": "The strong <b>wind</b> moved the branches.",
+    "translation": "Güçlü rüzgâr dalları hareket ettirdi."
+  },
+  {
+    "concept": "summer",
+    "sentence": "We swim in the sea during <b>summer</b>.",
+    "translation": "Yaz boyunca denizde yüzeriz."
+  },
+  {
+    "concept": "winter",
+    "sentence": "It is usually cold in <b>winter</b>.",
+    "translation": "Kışın hava genellikle soğuktur."
+  },
+  {
+    "concept": "year",
+    "sentence": "A <b>year</b> has twelve months.",
+    "translation": "Bir yılda on iki ay vardır."
+  },
+  {
+    "concept": "Monday",
+    "sentence": "The working week starts on <b>Monday</b>.",
+    "translation": "Çalışma haftası pazartesi başlar."
+  },
+  {
+    "concept": "Sunday",
+    "sentence": "We usually rest on <b>Sunday</b>.",
+    "translation": "Genellikle pazar günü dinleniriz."
+  },
+  {
+    "concept": "calendar",
+    "sentence": "Mark the meeting date on the <b>calendar</b>.",
+    "translation": "Toplantı tarihini takvimde işaretle."
+  },
+  {
+    "concept": "first",
+    "sentence": "She came <b>first</b> in the race.",
+    "translation": "Yarışta birinci geldi."
+  },
+  {
+    "concept": "early",
+    "sentence": "We arrived <b>early</b> to get good seats.",
+    "translation": "İyi koltuklar bulmak için erken geldik."
+  },
+  {
+    "concept": "never",
+    "sentence": "I <b>never</b> forget my mother's birthday.",
+    "translation": "Annemin doğum gününü asla unutmam."
+  },
+  {
+    "concept": "sometimes",
+    "sentence": "I <b>sometimes</b> walk to work.",
+    "translation": "Bazen işe yürürüm."
+  },
+  {
+    "concept": "soon",
+    "sentence": "The bus will arrive <b>soon</b>.",
+    "translation": "Otobüs yakında gelecek."
+  },
+  {
+    "concept": "again",
+    "sentence": "Please read the sentence <b>again</b>.",
+    "translation": "Lütfen cümleyi tekrar oku."
+  },
+  {
+    "concept": "left",
+    "sentence": "Turn <b>left</b> at the next street.",
+    "translation": "Bir sonraki sokakta sola dön."
+  },
+  {
+    "concept": "between",
+    "sentence": "The bank is <b>between</b> the school and the park.",
+    "translation": "Banka okul ile parkın arasındadır."
+  },
+  {
+    "concept": "far",
+    "sentence": "The airport is <b>far</b> from the city center.",
+    "translation": "Havalimanı şehir merkezinden uzaktır."
+  },
+  {
+    "concept": "bus",
+    "sentence": "We take the <b>bus</b> to school.",
+    "translation": "Okula otobüsle gideriz."
+  },
+  {
+    "concept": "bicycle",
+    "sentence": "I ride my <b>bicycle</b> in the park.",
+    "translation": "Parkta bisikletime binerim."
+  },
+  {
+    "concept": "train",
+    "sentence": "The <b>train</b> leaves from platform two.",
+    "translation": "Tren ikinci perondan kalkar."
+  },
+  {
+    "concept": "wheel",
+    "sentence": "The bicycle has a broken <b>wheel</b>.",
+    "translation": "Bisikletin kırık bir tekerleği var."
+  },
+  {
+    "concept": "driver",
+    "sentence": "The <b>driver</b> stopped at the red light.",
+    "translation": "Sürücü kırmızı ışıkta durdu."
+  },
+  {
+    "concept": "fuel",
+    "sentence": "The car cannot run without <b>fuel</b>.",
+    "translation": "Araba yakıt olmadan çalışamaz."
+  },
+  {
+    "concept": "bank",
+    "sentence": "I keep my money in the <b>bank</b>.",
+    "translation": "Paramı bankada tutarım."
+  },
+  {
+    "concept": "library",
+    "sentence": "You can borrow books from the <b>library</b>.",
+    "translation": "Kütüphaneden ödünç kitap alabilirsin."
+  },
+  {
+    "concept": "bakery",
+    "sentence": "We buy fresh bread from the <b>bakery</b>.",
+    "translation": "Fırından taze ekmek alırız."
+  },
+  {
+    "concept": "engineer",
+    "sentence": "The <b>engineer</b> designed a new bridge.",
+    "translation": "Mühendis yeni bir köprü tasarladı."
+  },
+  {
+    "concept": "farmer",
+    "sentence": "The <b>farmer</b> grows vegetables.",
+    "translation": "Çiftçi sebze yetiştirir."
+  },
+  {
+    "concept": "dentist",
+    "sentence": "Visit the <b>dentist</b> if your tooth hurts.",
+    "translation": "Dişin ağrıyorsa diş hekimine git."
+  },
+  {
+    "concept": "computer",
+    "sentence": "I use a <b>computer</b> to write reports.",
+    "translation": "Rapor yazmak için bilgisayar kullanırım."
+  },
+  {
+    "concept": "keyboard",
+    "sentence": "Type your name on the <b>keyboard</b>.",
+    "translation": "Adını klavyede yaz."
+  },
+  {
+    "concept": "battery",
+    "sentence": "My phone's <b>battery</b> is almost empty.",
+    "translation": "Telefonumun pili neredeyse boş."
+  },
+  {
+    "concept": "password",
+    "sentence": "Choose a strong <b>password</b> for your account.",
+    "translation": "Hesabın için güçlü bir şifre seç."
+  },
+  {
+    "concept": "file",
+    "sentence": "Save the <b>file</b> before closing the program.",
+    "translation": "Programı kapatmadan önce dosyayı kaydet."
+  },
+  {
+    "concept": "search",
+    "sentence": "You can <b>search</b> for information online.",
+    "translation": "İnternette bilgi arayabilirsin."
+  },
+  {
+    "concept": "send",
+    "sentence": "Please <b>send</b> me a message.",
+    "translation": "Lütfen bana bir mesaj gönder."
+  },
+  {
+    "concept": "save",
+    "sentence": "Remember to <b>save</b> your work.",
+    "translation": "Çalışmanı kaydetmeyi unutma."
+  },
+  {
+    "concept": "print",
+    "sentence": "Can you <b>print</b> this document?",
+    "translation": "Bu belgeyi yazdırabilir misin?"
+  },
+  {
+    "concept": "swim",
+    "sentence": "Fish can <b>swim</b> in water.",
+    "translation": "Balıklar suda yüzebilir."
+  },
+  {
+    "concept": "sing",
+    "sentence": "We like to <b>sing</b> together.",
+    "translation": "Birlikte şarkı söylemeyi severiz."
+  },
+  {
+    "concept": "cook",
+    "sentence": "I want to <b>cook</b> dinner tonight.",
+    "translation": "Bu akşam yemek pişirmek istiyorum."
+  },
+  {
+    "concept": "cut",
+    "sentence": "Please <b>cut</b> the apple in half.",
+    "translation": "Lütfen elmayı ikiye kes."
+  },
+  {
+    "concept": "throw",
+    "sentence": "Do not <b>throw</b> rubbish on the ground.",
+    "translation": "Yere çöp atma."
+  },
+  {
+    "concept": "touch",
+    "sentence": "Do not <b>touch</b> the hot pan.",
+    "translation": "Sıcak tavaya dokunma."
+  },
+  {
+    "concept": "hear",
+    "sentence": "Can you <b>hear</b> the birds outside?",
+    "translation": "Dışarıdaki kuşları duyabiliyor musun?"
+  },
+  {
+    "concept": "remember",
+    "sentence": "I can <b>remember</b> your name.",
+    "translation": "Adını hatırlayabiliyorum."
+  },
+  {
+    "concept": "think",
+    "sentence": "Please <b>think</b> before you answer.",
+    "translation": "Lütfen cevaplamadan önce düşün."
+  },
+  {
+    "concept": "smile",
+    "sentence": "A kind word can make someone <b>smile</b>.",
+    "translation": "Nazik bir söz birini gülümsetebilir."
+  },
+  {
+    "concept": "cry",
+    "sentence": "It is normal to <b>cry</b> when you feel sad.",
+    "translation": "Üzgün hissedince ağlamak normaldir."
+  },
+  {
+    "concept": "whisper",
+    "sentence": "Please <b>whisper</b>; the baby is sleeping.",
+    "translation": "Lütfen fısılda; bebek uyuyor."
+  },
+  {
+    "concept": "ask",
+    "sentence": "You can <b>ask</b> the teacher for help.",
+    "translation": "Öğretmenden yardım isteyebilirsin."
+  },
+  {
+    "concept": "explain",
+    "sentence": "Can you <b>explain</b> the rule to me?",
+    "translation": "Kuralı bana açıklayabilir misin?"
+  },
+  {
+    "concept": "promise",
+    "sentence": "Do not <b>promise</b> something you cannot do.",
+    "translation": "Yapamayacağın bir şey için söz verme."
+  },
+  {
+    "concept": "invite",
+    "sentence": "We will <b>invite</b> our neighbors to dinner.",
+    "translation": "Komşularımızı akşam yemeğine davet edeceğiz."
+  },
+  {
+    "concept": "arrive",
+    "sentence": "Please <b>arrive</b> before eight o'clock.",
+    "translation": "Lütfen saat sekizden önce var."
+  },
+  {
+    "concept": "wait",
+    "sentence": "Please <b>wait</b> here for a moment.",
+    "translation": "Lütfen burada bir dakika bekle."
+  },
+  {
+    "concept": "build",
+    "sentence": "They plan to <b>build</b> a new school.",
+    "translation": "Yeni bir okul inşa etmeyi planlıyorlar."
+  },
+  {
+    "concept": "repair",
+    "sentence": "Can you <b>repair</b> my bicycle?",
+    "translation": "Bisikletimi onarabilir misin?"
+  },
+  {
+    "concept": "continue",
+    "sentence": "We can <b>continue</b> after a short break.",
+    "translation": "Kısa bir aradan sonra devam edebiliriz."
+  },
+  {
+    "concept": "find",
+    "sentence": "I cannot <b>find</b> my keys.",
+    "translation": "Anahtarlarımı bulamıyorum."
+  },
+  {
+    "concept": "borrow",
+    "sentence": "May I <b>borrow</b> your pen?",
+    "translation": "Kalemini ödünç alabilir miyim?"
+  },
+  {
+    "concept": "pay",
+    "sentence": "You can <b>pay</b> by card.",
+    "translation": "Kartla ödeyebilirsin."
+  },
+  {
+    "concept": "earn",
+    "sentence": "Students can <b>earn</b> money by working part-time.",
+    "translation": "Öğrenciler yarı zamanlı çalışarak para kazanabilir."
+  },
+  {
+    "concept": "invest",
+    "sentence": "It is wise to <b>invest</b> in education.",
+    "translation": "Eğitime yatırım yapmak akıllıcadır."
+  },
+  {
+    "concept": "receipt",
+    "sentence": "Keep the <b>receipt</b> in case you need a refund.",
+    "translation": "İade gerekirse diye fişi sakla."
+  },
+  {
+    "concept": "cheap",
+    "sentence": "The tickets are <b>cheap</b> this week.",
+    "translation": "Biletler bu hafta ucuz."
+  },
+  {
+    "concept": "price",
+    "sentence": "What is the <b>price</b> of this bag?",
+    "translation": "Bu çantanın fiyatı nedir?"
+  },
+  {
+    "concept": "budget",
+    "sentence": "We must stay within our <b>budget</b>.",
+    "translation": "Bütçemizin sınırları içinde kalmalıyız."
+  },
+  {
+    "concept": "empty",
+    "sentence": "The bottle is <b>empty</b>; please fill it.",
+    "translation": "Şişe boş; lütfen doldur."
+  },
+  {
+    "concept": "soft",
+    "sentence": "This blanket feels very <b>soft</b>.",
+    "translation": "Bu battaniye çok yumuşak hissettiriyor."
+  },
+  {
+    "concept": "wide",
+    "sentence": "The river is too <b>wide</b> to cross here.",
+    "translation": "Nehir buradan geçmek için çok geniş."
+  },
+  {
+    "concept": "quiet",
+    "sentence": "Please be <b>quiet</b> in the library.",
+    "translation": "Lütfen kütüphanede sessiz ol."
+  },
+  {
+    "concept": "wet",
+    "sentence": "My shoes are <b>wet</b> from the rain.",
+    "translation": "Ayakkabılarım yağmurdan ıslak."
+  },
+  {
+    "concept": "sharp",
+    "sentence": "Be careful with that <b>sharp</b> knife.",
+    "translation": "O keskin bıçağa dikkat et."
+  },
+  {
+    "concept": "kind",
+    "sentence": "Our teacher is always <b>kind</b> to us.",
+    "translation": "Öğretmenimiz bize her zaman naziktir."
+  },
+  {
+    "concept": "generous",
+    "sentence": "He is <b>generous</b> and shares what he has.",
+    "translation": "O cömerttir ve sahip olduklarını paylaşır."
+  },
+  {
+    "concept": "shy",
+    "sentence": "The <b>shy</b> child spoke very softly.",
+    "translation": "Utangaç çocuk çok yumuşak bir sesle konuştu."
+  },
+  {
+    "concept": "brave",
+    "sentence": "The <b>brave</b> firefighter rescued the child.",
+    "translation": "Cesur itfaiyeci çocuğu kurtardı."
+  },
+  {
+    "concept": "curious",
+    "sentence": "The <b>curious</b> student asked many questions.",
+    "translation": "Meraklı öğrenci birçok soru sordu."
+  },
+  {
+    "concept": "honest",
+    "sentence": "An <b>honest</b> person tells the truth.",
+    "translation": "Dürüst bir insan doğruyu söyler."
+  },
+  {
+    "concept": "healthy",
+    "sentence": "Eating vegetables helps you stay <b>healthy</b>.",
+    "translation": "Sebze yemek sağlıklı kalmana yardımcı olur."
+  },
+  {
+    "concept": "tired",
+    "sentence": "I feel <b>tired</b> after the long journey.",
+    "translation": "Uzun yolculuktan sonra yorgun hissediyorum."
+  },
+  {
+    "concept": "thirsty",
+    "sentence": "After running, I am very <b>thirsty</b>.",
+    "translation": "Koştuktan sonra çok susamış olurum."
+  },
+  {
+    "concept": "shoulder",
+    "sentence": "He carried the bag on his <b>shoulder</b>.",
+    "translation": "Çantayı omzunda taşıdı."
+  },
+  {
+    "concept": "finger",
+    "sentence": "She wore a ring on her <b>finger</b>.",
+    "translation": "Parmağına bir yüzük taktı."
+  },
+  {
+    "concept": "knee",
+    "sentence": "I hurt my <b>knee</b> when I fell.",
+    "translation": "Düştüğümde dizimi incittim."
+  },
+  {
+    "concept": "brain",
+    "sentence": "The <b>brain</b> controls many functions of the body.",
+    "translation": "Beyin vücudun birçok işlevini kontrol eder."
+  },
+  {
+    "concept": "blood",
+    "sentence": "The heart pumps <b>blood</b> around the body.",
+    "translation": "Kalp vücuda kan pompalar."
+  },
+  {
+    "concept": "skin",
+    "sentence": "Protect your <b>skin</b> from the sun.",
+    "translation": "Cildini güneşten koru."
+  },
+  {
+    "concept": "symptom",
+    "sentence": "A cough can be a <b>symptom</b> of a cold.",
+    "translation": "Öksürük soğuk algınlığının bir belirtisi olabilir."
+  },
+  {
+    "concept": "appointment",
+    "sentence": "I have an <b>appointment</b> with the doctor tomorrow.",
+    "translation": "Yarın doktorla randevum var."
+  },
+  {
+    "concept": "emergency",
+    "sentence": "Call an ambulance in an <b>emergency</b>.",
+    "translation": "Acil bir durumda ambulans çağır."
+  },
+  {
+    "concept": "exercise",
+    "sentence": "Regular <b>exercise</b> is good for your health.",
+    "translation": "Düzenli egzersiz sağlığın için iyidir."
+  },
+  {
+    "concept": "team",
+    "sentence": "Our <b>team</b> won the match.",
+    "translation": "Takımımız karşılaşmayı kazandı."
+  },
+  {
+    "concept": "coach",
+    "sentence": "The <b>coach</b> explained the new strategy.",
+    "translation": "Antrenör yeni stratejiyi açıkladı."
+  },
+  {
+    "concept": "ball",
+    "sentence": "The child kicked the <b>ball</b> into the net.",
+    "translation": "Çocuk topu ağlara doğru vurdu."
+  },
+  {
+    "concept": "medal",
+    "sentence": "She won a gold <b>medal</b> at the competition.",
+    "translation": "Yarışmada altın madalya kazandı."
+  },
+  {
+    "concept": "stadium",
+    "sentence": "Thousands of fans filled the <b>stadium</b>.",
+    "translation": "Binlerce taraftar stadyumu doldurdu."
+  },
+  {
+    "concept": "language",
+    "sentence": "Turkish is my first <b>language</b>.",
+    "translation": "Türkçe benim ilk dilimdir."
+  },
+  {
+    "concept": "homework",
+    "sentence": "I finish my <b>homework</b> before dinner.",
+    "translation": "Ödevimi akşam yemeğinden önce bitiririm."
+  },
+  {
+    "concept": "exam",
+    "sentence": "We have a math <b>exam</b> tomorrow.",
+    "translation": "Yarın matematik sınavımız var."
+  },
+  {
+    "concept": "meaning",
+    "sentence": "What is the <b>meaning</b> of this word?",
+    "translation": "Bu kelimenin anlamı nedir?"
+  },
+  {
+    "concept": "translation",
+    "sentence": "This <b>translation</b> is easy to understand.",
+    "translation": "Bu çeviriyi anlamak kolaydır."
+  },
+  {
+    "concept": "pronunciation",
+    "sentence": "Listening helps improve your <b>pronunciation</b>.",
+    "translation": "Dinlemek telaffuzunu geliştirmeye yardımcı olur."
+  },
+  {
+    "concept": "opinion",
+    "sentence": "In my <b>opinion</b>, this is a good idea.",
+    "translation": "Bence bu iyi bir fikir."
+  },
+  {
+    "concept": "evidence",
+    "sentence": "The police are looking for <b>evidence</b>.",
+    "translation": "Polis kanıt arıyor."
+  },
+  {
+    "concept": "summary",
+    "sentence": "Write a short <b>summary</b> of the story.",
+    "translation": "Hikâyenin kısa bir özetini yaz."
+  },
+  {
+    "concept": "project",
+    "sentence": "We are working on a new <b>project</b>.",
+    "translation": "Yeni bir proje üzerinde çalışıyoruz."
+  },
+  {
+    "concept": "deadline",
+    "sentence": "The <b>deadline</b> for the report is Friday.",
+    "translation": "Raporun son teslim tarihi cumadır."
+  },
+  {
+    "concept": "meeting",
+    "sentence": "The <b>meeting</b> starts at nine.",
+    "translation": "Toplantı dokuzda başlar."
+  },
+  {
+    "concept": "employee",
+    "sentence": "Each <b>employee</b> has a desk.",
+    "translation": "Her çalışanın bir masası var."
+  },
+  {
+    "concept": "customer",
+    "sentence": "The <b>customer</b> asked about the price.",
+    "translation": "Müşteri fiyatı sordu."
+  },
+  {
+    "concept": "contract",
+    "sentence": "Read the <b>contract</b> before signing it.",
+    "translation": "İmzalamadan önce sözleşmeyi oku."
+  },
+  {
+    "concept": "salary",
+    "sentence": "She receives her <b>salary</b> every month.",
+    "translation": "Maaşını her ay alır."
+  },
+  {
+    "concept": "tax",
+    "sentence": "We pay <b>tax</b> on our income.",
+    "translation": "Gelirimiz üzerinden vergi öderiz."
+  },
+  {
+    "concept": "loan",
+    "sentence": "He took out a <b>loan</b> to buy a house.",
+    "translation": "Ev almak için kredi çekti."
+  },
+  {
+    "concept": "office",
+    "sentence": "My <b>office</b> is on the second floor.",
+    "translation": "Ofisim ikinci katta."
+  },
+  {
+    "concept": "factory",
+    "sentence": "The <b>factory</b> produces cars.",
+    "translation": "Fabrika araba üretir."
+  },
+  {
+    "concept": "career",
+    "sentence": "She wants a <b>career</b> in medicine.",
+    "translation": "Tıp alanında kariyer istiyor."
+  },
+  {
+    "concept": "hire",
+    "sentence": "The company plans to <b>hire</b> more engineers.",
+    "translation": "Şirket daha fazla mühendis işe almayı planlıyor."
+  },
+  {
+    "concept": "organize",
+    "sentence": "We need to <b>organize</b> the event carefully.",
+    "translation": "Etkinliği dikkatle düzenlememiz gerekiyor."
+  },
+  {
+    "concept": "manage",
+    "sentence": "Can you <b>manage</b> a team of ten people?",
+    "translation": "On kişilik bir takımı yönetebilir misin?"
+  },
+  {
+    "concept": "approve",
+    "sentence": "The manager must <b>approve</b> the request.",
+    "translation": "Yönetici talebi onaylamalıdır."
+  },
+  {
+    "concept": "prevent",
+    "sentence": "A helmet can help <b>prevent</b> serious injuries.",
+    "translation": "Kask ciddi yaralanmaları önlemeye yardımcı olabilir."
+  },
+  {
+    "concept": "comply",
+    "sentence": "All employees must <b>comply</b> with the safety rules.",
+    "translation": "Tüm çalışanlar güvenlik kurallarına uymalıdır."
+  },
+  {
+    "concept": "law",
+    "sentence": "Everyone must respect the <b>law</b>.",
+    "translation": "Herkes kanuna saygı göstermelidir."
+  },
+  {
+    "concept": "procedure",
+    "sentence": "Please follow the correct <b>procedure</b>.",
+    "translation": "Lütfen doğru prosedürü takip et."
+  },
+  {
+    "concept": "penalty",
+    "sentence": "There is a <b>penalty</b> for breaking the rules.",
+    "translation": "Kuralları çiğnemenin bir cezası var."
+  },
+  {
+    "concept": "judge",
+    "sentence": "The <b>judge</b> listened to the witness.",
+    "translation": "Hâkim tanığı dinledi."
+  },
+  {
+    "concept": "witness",
+    "sentence": "The <b>witness</b> described what happened.",
+    "translation": "Tanık ne olduğunu anlattı."
+  },
+  {
+    "concept": "verdict",
+    "sentence": "The jury announced its <b>verdict</b>.",
+    "translation": "Jüri hükmünü açıkladı."
+  },
+  {
+    "concept": "citizen",
+    "sentence": "Every <b>citizen</b> has rights and responsibilities.",
+    "translation": "Her vatandaşın hakları ve sorumlulukları vardır."
+  },
+  {
+    "concept": "border",
+    "sentence": "We crossed the <b>border</b> at night.",
+    "translation": "Sınırı gece geçtik."
+  },
+  {
+    "concept": "identity",
+    "sentence": "The officer checked my <b>identity</b>.",
+    "translation": "Görevli kimliğimi kontrol etti."
+  },
+  {
+    "concept": "election",
+    "sentence": "The next <b>election</b> will be held in June.",
+    "translation": "Bir sonraki seçim haziranda yapılacak."
+  },
+  {
+    "concept": "candidate",
+    "sentence": "Each <b>candidate</b> answered the same questions.",
+    "translation": "Her aday aynı soruları yanıtladı."
+  },
+  {
+    "concept": "constitution",
+    "sentence": "The <b>constitution</b> protects fundamental rights.",
+    "translation": "Anayasa temel hakları korur."
+  },
+  {
+    "concept": "community",
+    "sentence": "Our <b>community</b> helps people in need.",
+    "translation": "Topluluğumuz ihtiyaç sahiplerine yardım eder."
+  },
+  {
+    "concept": "tradition",
+    "sentence": "Sharing a meal is an important <b>tradition</b> here.",
+    "translation": "Bir yemeği paylaşmak burada önemli bir gelenektir."
+  },
+  {
+    "concept": "diversity",
+    "sentence": "We celebrate the <b>diversity</b> of our city.",
+    "translation": "Şehrimizin çeşitliliğini kutlarız."
+  },
+  {
+    "concept": "nature",
+    "sentence": "Spending time in <b>nature</b> helps me relax.",
+    "translation": "Doğada zaman geçirmek rahatlamama yardımcı olur."
+  },
+  {
+    "concept": "climate",
+    "sentence": "The <b>climate</b> is changing around the world.",
+    "translation": "İklim dünya genelinde değişiyor."
+  },
+  {
+    "concept": "recycling",
+    "sentence": "<b>Recycling</b> helps reduce waste.",
+    "translation": "Geri dönüşüm atıkları azaltmaya yardımcı olur."
+  },
+  {
+    "concept": "energy",
+    "sentence": "We need <b>energy</b> to heat our homes.",
+    "translation": "Evlerimizi ısıtmak için enerjiye ihtiyacımız var."
+  },
+  {
+    "concept": "coal",
+    "sentence": "Burning <b>coal</b> produces air pollution.",
+    "translation": "Kömür yakmak hava kirliliğine neden olur."
+  },
+  {
+    "concept": "resource",
+    "sentence": "Water is a precious natural <b>resource</b>.",
+    "translation": "Su değerli bir doğal kaynaktır."
+  },
+  {
+    "concept": "planet",
+    "sentence": "Earth is the <b>planet</b> we live on.",
+    "translation": "Dünya üzerinde yaşadığımız gezegendir."
+  },
+  {
+    "concept": "star",
+    "sentence": "The brightest <b>star</b> is visible tonight.",
+    "translation": "Bu gece en parlak yıldız görünüyor."
+  },
+  {
+    "concept": "gravity",
+    "sentence": "<b>Gravity</b> keeps us on the ground.",
+    "translation": "Yerçekimi bizi yerde tutar."
+  },
+  {
+    "concept": "atom",
+    "sentence": "An <b>atom</b> is a basic unit of matter.",
+    "translation": "Atom maddenin temel bir birimidir."
+  },
+  {
+    "concept": "pressure",
+    "sentence": "The <b>pressure</b> inside the container increased.",
+    "translation": "Kabın içindeki basınç arttı."
+  },
+  {
+    "concept": "density",
+    "sentence": "The <b>density</b> of water changes with temperature.",
+    "translation": "Suyun yoğunluğu sıcaklıkla değişir."
+  },
+  {
+    "concept": "quantity",
+    "sentence": "Check the <b>quantity</b> before placing the order.",
+    "translation": "Siparişi vermeden önce miktarı kontrol et."
+  },
+  {
+    "concept": "average",
+    "sentence": "The <b>average</b> of two and four is three.",
+    "translation": "İki ve dördün ortalaması üçtür."
+  },
+  {
+    "concept": "difference",
+    "sentence": "Can you see the <b>difference</b> between these pictures?",
+    "translation": "Bu resimler arasındaki farkı görebiliyor musun?"
+  },
+  {
+    "concept": "calculate",
+    "sentence": "Please <b>calculate</b> the total cost.",
+    "translation": "Lütfen toplam maliyeti hesapla."
+  },
+  {
+    "concept": "measure",
+    "sentence": "We need to <b>measure</b> the room before buying a carpet.",
+    "translation": "Halı almadan önce odayı ölçmemiz gerekiyor."
+  },
+  {
+    "concept": "multiply",
+    "sentence": "If you <b>multiply</b> three by four, you get twelve.",
+    "translation": "Üç ile dördü çarparsan on iki elde edersin."
+  },
+  {
+    "concept": "observe",
+    "sentence": "Scientists <b>observe</b> the behavior of animals.",
+    "translation": "Bilim insanları hayvanların davranışlarını gözlemler."
+  },
+  {
+    "concept": "verify",
+    "sentence": "Always <b>verify</b> the information before sharing it.",
+    "translation": "Bilgiyi paylaşmadan önce her zaman doğrula."
+  },
+  {
+    "concept": "predict",
+    "sentence": "It is difficult to <b>predict</b> the weather exactly.",
+    "translation": "Hava durumunu tam olarak öngörmek zordur."
+  },
+  {
+    "concept": "method",
+    "sentence": "This <b>method</b> makes learning easier.",
+    "translation": "Bu yöntem öğrenmeyi kolaylaştırır."
+  },
+  {
+    "concept": "structure",
+    "sentence": "We studied the <b>structure</b> of the building.",
+    "translation": "Binanın yapısını inceledik."
+  },
+  {
+    "concept": "component",
+    "sentence": "Every <b>component</b> has an important function.",
+    "translation": "Her bileşenin önemli bir işlevi vardır."
+  },
+  {
+    "concept": "effect",
+    "sentence": "Sleep has a strong <b>effect</b> on concentration.",
+    "translation": "Uykunun dikkat üzerinde güçlü bir etkisi vardır."
+  },
+  {
+    "concept": "factor",
+    "sentence": "Cost is an important <b>factor</b> in our decision.",
+    "translation": "Maliyet kararımızda önemli bir etkendir."
+  },
+  {
+    "concept": "context",
+    "sentence": "You can understand a word better in <b>context</b>.",
+    "translation": "Bir kelimeyi bağlam içinde daha iyi anlayabilirsin."
+  },
+  {
+    "concept": "benefit",
+    "sentence": "One <b>benefit</b> of walking is better health.",
+    "translation": "Yürümenin bir faydası daha iyi sağlıktır."
+  },
+  {
+    "concept": "risk",
+    "sentence": "Wearing a seat belt reduces the <b>risk</b> of injury.",
+    "translation": "Emniyet kemeri takmak yaralanma riskini azaltır."
+  },
+  {
+    "concept": "obstacle",
+    "sentence": "Lack of money can be an <b>obstacle</b> to education.",
+    "translation": "Para eksikliği eğitimin önünde bir engel olabilir."
+  },
+  {
+    "concept": "necessary",
+    "sentence": "Clean water is <b>necessary</b> for life.",
+    "translation": "Temiz su yaşam için gereklidir."
+  },
+  {
+    "concept": "optional",
+    "sentence": "The extra exercise is <b>optional</b>.",
+    "translation": "Ek alıştırma isteğe bağlıdır."
+  },
+  {
+    "concept": "efficient",
+    "sentence": "An <b>efficient</b> machine uses less energy.",
+    "translation": "Verimli bir makine daha az enerji kullanır."
+  },
+  {
+    "concept": "accurate",
+    "sentence": "We need <b>accurate</b> information to make a good decision.",
+    "translation": "İyi bir karar vermek için doğru bilgiye ihtiyacımız var."
+  },
+  {
+    "concept": "reliable",
+    "sentence": "This website is a <b>reliable</b> source of information.",
+    "translation": "Bu internet sitesi güvenilir bir bilgi kaynağıdır."
+  },
+  {
+    "concept": "flexible",
+    "sentence": "Our schedule is <b>flexible</b>, so we can change the time.",
+    "translation": "Programımız esnek, bu yüzden saati değiştirebiliriz."
+  },
+  {
+    "concept": "complex",
+    "sentence": "The human brain is very <b>complex</b>.",
+    "translation": "İnsan beyni çok karmaşıktır."
+  },
+  {
+    "concept": "abstract",
+    "sentence": "Freedom is an <b>abstract</b> concept.",
+    "translation": "Özgürlük soyut bir kavramdır."
+  },
+  {
+    "concept": "unique",
+    "sentence": "Every person's fingerprints are <b>unique</b>.",
+    "translation": "Her insanın parmak izleri benzersizdir."
+  },
+  {
+    "concept": "local",
+    "sentence": "We buy vegetables from a <b>local</b> farmer.",
+    "translation": "Yerel bir çiftçiden sebze alırız."
+  },
+  {
+    "concept": "foreign",
+    "sentence": "Learning a <b>foreign</b> language opens new doors.",
+    "translation": "Yabancı bir dil öğrenmek yeni kapılar açar."
+  },
+  {
+    "concept": "private",
+    "sentence": "This is <b>private</b> information; please do not share it.",
+    "translation": "Bu özel bir bilgidir; lütfen paylaşma."
+  },
+  {
+    "concept": "personal",
+    "sentence": "Keep your <b>personal</b> information safe.",
+    "translation": "Kişisel bilgilerini güvende tut."
+  },
+  {
+    "concept": "legal",
+    "sentence": "You should get <b>legal</b> advice before signing.",
+    "translation": "İmzalamadan önce hukuki tavsiye almalısın."
+  },
+  {
+    "concept": "ethical",
+    "sentence": "The company follows strict <b>ethical</b> standards.",
+    "translation": "Şirket sıkı etik standartlara uyar."
+  },
+  {
+    "concept": "possible",
+    "sentence": "Is it <b>possible</b> to change the date?",
+    "translation": "Tarihi değiştirmek mümkün mü?"
+  },
+  {
+    "concept": "certain",
+    "sentence": "I am <b>certain</b> that this is the right answer.",
+    "translation": "Bunun doğru cevap olduğundan eminim."
+  },
+  {
+    "concept": "obvious",
+    "sentence": "The answer is <b>obvious</b> when you read the question carefully.",
+    "translation": "Soruyu dikkatle okuyunca cevap açıkça bellidir."
+  },
+  {
+    "concept": "temporary",
+    "sentence": "This is only a <b>temporary</b> solution.",
+    "translation": "Bu yalnızca geçici bir çözümdür."
+  },
+  {
+    "concept": "gradual",
+    "sentence": "We noticed a <b>gradual</b> improvement in her health.",
+    "translation": "Sağlığında kademeli bir iyileşme fark ettik."
+  },
+  {
+    "concept": "annual",
+    "sentence": "The company publishes an <b>annual</b> report.",
+    "translation": "Şirket yıllık bir rapor yayımlar."
+  },
+  {
+    "concept": "initial",
+    "sentence": "The <b>initial</b> plan changed after the meeting.",
+    "translation": "Başlangıçtaki plan toplantıdan sonra değişti."
+  },
+  {
+    "concept": "current",
+    "sentence": "What is your <b>current</b> address?",
+    "translation": "Mevcut adresin nedir?"
+  },
+  {
+    "concept": "future",
+    "sentence": "We must think about <b>future</b> generations.",
+    "translation": "Gelecekteki nesilleri düşünmeliyiz."
+  },
+  {
+    "concept": "expand",
+    "sentence": "The company plans to <b>expand</b> its business.",
+    "translation": "Şirket işini genişletmeyi planlıyor."
+  },
+  {
+    "concept": "reduce",
+    "sentence": "We should <b>reduce</b> our water consumption.",
+    "translation": "Su tüketimimizi azaltmalıyız."
+  },
+  {
+    "concept": "adapt",
+    "sentence": "Animals must <b>adapt</b> to changes in their environment.",
+    "translation": "Hayvanlar çevrelerindeki değişikliklere uyum sağlamalıdır."
+  },
+  {
+    "concept": "include",
+    "sentence": "Please <b>include</b> your phone number in the form.",
+    "translation": "Lütfen telefon numaranı forma ekle."
+  },
+  {
+    "concept": "represent",
+    "sentence": "The red lines <b>represent</b> roads on this map.",
+    "translation": "Bu haritada kırmızı çizgiler yolları temsil eder."
+  },
+  {
+    "concept": "reflect",
+    "sentence": "Mirrors <b>reflect</b> light.",
+    "translation": "Aynalar ışığı yansıtır."
+  },
+  {
+    "concept": "consider",
+    "sentence": "Please <b>consider</b> all the options before deciding.",
+    "translation": "Lütfen karar vermeden önce tüm seçenekleri dikkate al."
+  },
+  {
+    "concept": "understand",
+    "sentence": "I can <b>understand</b> the main idea of this text.",
+    "translation": "Bu metnin ana fikrini anlayabiliyorum."
+  },
+  {
+    "concept": "infer",
+    "sentence": "We can <b>infer</b> the meaning from the context.",
+    "translation": "Bağlamdan anlam çıkarabiliriz."
+  },
+  {
+    "concept": "examine",
+    "sentence": "The doctor will <b>examine</b> your knee.",
+    "translation": "Doktor dizini inceleyecek."
+  },
+  {
+    "concept": "review",
+    "sentence": "Please <b>review</b> your answers before submitting.",
+    "translation": "Lütfen göndermeden önce cevaplarını gözden geçir."
+  },
+  {
+    "concept": "discover",
+    "sentence": "Travel helps us <b>discover</b> new cultures.",
+    "translation": "Seyahat yeni kültürler keşfetmemize yardımcı olur."
+  },
+  {
+    "concept": "implement",
+    "sentence": "The school will <b>implement</b> the new policy next month.",
+    "translation": "Okul yeni politikayı gelecek ay uygulamaya koyacak."
+  },
+  {
+    "concept": "facilitate",
+    "sentence": "Pictures can <b>facilitate</b> the learning process.",
+    "translation": "Resimler öğrenme sürecini kolaylaştırabilir."
+  },
+  {
+    "concept": "support",
+    "sentence": "Good friends <b>support</b> each other.",
+    "translation": "İyi arkadaşlar birbirini destekler."
+  },
+  {
+    "concept": "allocate",
+    "sentence": "We must <b>allocate</b> enough time for each task.",
+    "translation": "Her görev için yeterli zaman tahsis etmeliyiz."
+  },
+  {
+    "concept": "distribute",
+    "sentence": "The volunteers will <b>distribute</b> food to families.",
+    "translation": "Gönüllüler ailelere yiyecek dağıtacak."
+  },
+  {
+    "concept": "provide",
+    "sentence": "The library can <b>provide</b> useful information.",
+    "translation": "Kütüphane yararlı bilgiler sağlayabilir."
+  }
+]

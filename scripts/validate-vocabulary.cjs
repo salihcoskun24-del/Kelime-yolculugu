@@ -3,11 +3,11 @@ const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
 const web = path.resolve(__dirname, '../www');
-for (const name of ['app.js','sw.js','words.js','vocabularies.js']) {
+for (const name of ['app.js','sw.js','words.js','vocabularies.js','sentences.js']) {
   new vm.Script(fs.readFileSync(path.join(web, name), 'utf8'), {filename:name});
 }
 const context = vm.createContext({});
-vm.runInContext(fs.readFileSync(path.join(web,'words.js'),'utf8') + '\n' + fs.readFileSync(path.join(web,'vocabularies.js'),'utf8') + '\nthis.banks={en:WORDS,...VOCABULARIES};', context);
+vm.runInContext(fs.readFileSync(path.join(web,'words.js'),'utf8') + '\n' + fs.readFileSync(path.join(web,'vocabularies.js'),'utf8') + '\n' + fs.readFileSync(path.join(web,'sentences.js'),'utf8') + '\nthis.exercises=SENTENCES;this.banks={en:WORDS,...VOCABULARIES};', context);
 assert.equal(Object.keys(context.banks).length, 6);
 for (const [lang,pairs] of Object.entries(context.banks)) {
   assert.equal(pairs.length, 1000, `${lang}: 1000 entries required`);
@@ -22,3 +22,23 @@ for (const [lang,pairs] of Object.entries(context.banks)) {
   if(lang==='ar')assert.ok(pairs.every(p=>/[\u0600-\u06ff]/u.test(p[0])&&!/[A-Za-z]/u.test(p[0])),'Arabic script');
 }
 console.log('Validated: 6 languages, 6,000 unique source entries, 100 levels per language, unambiguous lesson cards, Russian/Arabic scripts, JavaScript syntax.');
+
+assert.equal(Object.keys(context.exercises).length,6);
+for(const [lang,levels] of Object.entries(context.exercises)){
+  assert.equal(levels.length,100,`${lang}: sentence exercises for 100 levels`);
+  for(const [index,questions] of levels.entries()){
+    assert.equal(questions.length,3,`${lang}: three exercises at level ${index+1}`);
+    assert.equal(new Set(questions.map(q=>q.wordIndex)).size,3,`${lang}: three distinct lesson words`);
+    assert.equal(new Set(questions.map(q=>q.answer.toLocaleLowerCase(lang))).size,3,`${lang}: distinct options`);
+    for(const question of questions){
+      assert.ok(Number.isInteger(question.wordIndex)&&question.wordIndex>=0&&question.wordIndex<10);
+      assert.ok(context.banks[lang][index*10+question.wordIndex]);
+      assert.equal((question.text.match(/___/g)||[]).length,1,`${lang}: single blank`);
+      assert.ok(question.answer.trim()&&question.translation.trim());
+      assert.ok(!/[<>]/.test(question.text+question.answer),`${lang}: text must not contain markup`);
+      if(lang==='ar')assert.ok(/[\u0600-\u06ff]/u.test(question.text)&&/[\u0600-\u06ff]/u.test(question.answer));
+      if(lang==='ru')assert.ok(/[А-Яа-яЁё]/u.test(question.text)&&/[А-Яа-яЁё]/u.test(question.answer));
+    }
+  }
+}
+console.log('Validated: 1,800 sentence exercises, three distinct lesson words per level, one blank per question, unique answer options.');

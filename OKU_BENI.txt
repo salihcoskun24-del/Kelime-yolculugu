@@ -1,4 +1,4 @@
-KELİME YOLCULUĞU 2.0
+KELİME YOLCULUĞU 2.1
 ====================
 6 dil: İngilizce, Almanca, İspanyolca, Rusça, Arapça, Fransızca.
 Her dil: 100 bölüm ve 1000 kelime/ifade; Türkçe karşılıklarla eşleştirme.
@@ -10,15 +10,21 @@ Sıralı CSV kelime listeleri kelime-listeleri klasöründedir.
 
 OYUN
 Yabancı dilde kelimeye dokununca o dilde sesli okunur.
-Türkçe karşılığını seç. 10 doğru eşleşmede sonraki bölüm açılır.
+Türkçe karşılığını seç. 10 doğru eşleşmeden sonra o bölümden üç kelimeyle cümle soruları açılır.
+Üçünü de doğru yanıtlayıp Bölümü tamamla deyince sonraki bölüm açılır.
+Yanlış cümle cevabında yalnızca o soruyu tekrar denersin.
+Türkçe anlamlar ve üç cevap seçeneği vardır. Dolu cümleyi dinleyebilirsin.
 Yanlış eşleşmede bölüm yeniden başlar. Kaldığın eşleşmeler kaydedilir.
 Kelime defteri tamamladığın bölümleri gösterir; orada da telaffuz dinlenir.
 
 YARDIMCILAR — HER DİLDE 5 + 5 HAK
-Kaldığım yere gel: Haritada aktif bölüme kaydırır. Eski bir bölüm
-oynuyorsan kayıtlı aktif bölümüne döndürür. Zaten oradaysan hak gitmez.
-İpucu: Doğru çifti 5 saniye işaretler; eşleştirmeyi sen yaparsın.
-Haritadan ipucu kullanırsan aktif bölüm açılır.
+Kaldığım yere gel: Yanlış cevapla sıfırlanan bölümde önceki doğru çiftleri
+1 hak karşılığında geri getirir. 8 doğru sonrası yanlışta 0/10 olur;
+düğmeye basınca 8/10 geri gelir, 1 hak düşer. Sayfa yenilense de kurtarma
+kaydı saklanır. Geri getirilecek çift yoksa hak harcanmaz.
+Aynı kurtarma kaydı bir kez kullanılabilir. Haritadan da geri getirilebilir.
+İpucu: Eşleştirmede doğru çifti, cümlede doğru seçeneği işaretler.
+Eşleştirmeyi veya cümle cevabını sen seçersin.
 İpucu görünürken tekrar dokunmak ikinci hak harcamaz.
 Haklar kayıtlı kalır, bölüm geçince veya sıfırlayınca yenilenmez.
 Bakiye sıfırsa yardımcı pasif olur. Reklamla hak kazanma henüz eklenmedi.
@@ -70,3 +76,8 @@ npm run build: Vercel için dist klasörünü üretir.
 npm run vocabulary:export: CSV listelerini yeniden üretir.
 Veri hazırlığı ve sıralama: VOCABULARY.md.
 3D etkiler SVG/CSS ile sağlanır. Orijinal Python original klasöründedir.
+
+CÜMLE VERİLERİ
+Her dilde 100 bölüm x 3 soru, toplam 1800 cümle sorusu.
+Cümleler ve cevaplar cumle-sorulari klasöründeki CSV listelerinde.
+Cümle aşaması ve geri getirilebilir eşleşmeler yedeklere de dahil edilir.

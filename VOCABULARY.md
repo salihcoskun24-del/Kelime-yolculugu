@@ -42,3 +42,19 @@ Telaffuz, cihazın seçilen dil için sağladığı metin okuma sesini kullanır
 Üretim uygulaması çeviri API'sine istek göndermez; listeler pakete gömülüdür.
 Yayınlanmış bir dilin kayıtlarını veya bölüm sırasını değiştirirken kaydedilmiş
 oturum ve tamamlanmış bölüm verileri için bir geçiş tasarlanmalıdır.
+
+## Bölüm sonu cümleleri
+
+`www/sentences.js`, her dilde 100 bölüm için üçer soru (toplam 1.800) içerir.
+Her sorunun `wordIndex` değeri o bölümdeki on kelimeden birine işaret eder.
+Sorular farklı üç kelimeye aittir. `answer` cümlede gereken çekimli biçim olabilir.
+Her cümlede tek boşluk, Türkçe anlam ve o bölümün sorularından üç farklı seçenek vardır.
+Türkçe anlam, birden çok kelimenin dil bilgisi bakımından uyabildiği durumlarda hedefi açıklar.
+
+`scripts/sentence-source.json` özgün İngilizce bağlam cümlelerini ve Türkçe anlamlarını
+saklar. Diğer diller için otomatik çeviri taslakları kullanıldı; kayıp işaretler,
+çevrilmeden kalan cümleler ve aynı biçimde görünen seçenekler düzeltildi.
+Almanca ayrılabilen eylemlerde boşluk eylemin çekimli bölümünü kapsayabilir.
+Tüm cümleler ana dili konuşan bir editör tarafından doğrulanmış değildir.
+CSV listeleri `cumle-sorulari/` içindedir. `npm run sentences:export` bunları üretir.
+Veri kontrolü 100 bölüm, üç ayrı hedef kelime, tek boşluk ve ayrı seçenekleri denetler.

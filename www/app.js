@@ -11,11 +11,11 @@ const LANGUAGE_LIST = [
 const STORAGE_KEY = 'ky-v2';
 const escapeHTML = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = (n,lo,hi,fallback) => Number.isInteger(n)?Math.max(lo,Math.min(hi,n)):fallback;
-const freshProgress = () => ({unlocked:1,completed:[],jump:5,hint:5,session:null});
+const freshProgress = () => ({unlocked:1,completed:[],jump:5,hint:5,session:null,recovery:null});
 function cleanProgress(value={}){
   const completed = Array.isArray(value.completed)?[...new Set(value.completed.filter(n=>Number.isInteger(n)&&n>=1&&n<=100))].sort((a,b)=>a-b):[];
   return {unlocked:Math.max(clamp(value.unlocked,1,100,1),Math.min(100,Math.max(0,...completed)+1)),completed,
-    jump:clamp(value.jump,0,5,5),hint:clamp(value.hint,0,5,5),session:value.session||null};
+    jump:clamp(value.jump,0,5,5),hint:clamp(value.hint,0,5,5),session:value.session||null,recovery:value.recovery||null};
 }
 function normalizeState(value){
   const result={version:2,language:'en',sound:true,progress:Object.fromEntries(LANGUAGE_LIST.map(l=>[l.id,freshProgress()]))};
@@ -37,7 +37,6 @@ let screen='languages',game=null,timer=null,hintTimer=null,audioCtx=null,install
 const language=()=>LANGUAGE_LIST.find(l=>l.id===state.language);
 const progress=()=>state.progress[state.language];
 const vocabulary=()=>state.language==='en'?WORDS:VOCABULARIES[state.language];
-const movement=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{toast('İlerleme kaydedilemedi. Tarayıcı depolama iznini kontrol et.');}}
 function toast(message){const t=document.querySelector('#toast');t.textContent=message;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),3300);}
 function stopPronunciation(){if('speechSynthesis' in window){try{window.speechSynthesis.cancel();}catch{}}}
@@ -79,13 +78,13 @@ function render(){
     body=`${header()}${languageBadge()}<div class="eyebrow">ÖĞREN • EŞLEŞTİR • KEŞFET</div><h1>Yeni kelimeler,<br><span>yeni ufuklar.</span></h1><p>${l.name} öğrenmenin en keyifli yolculuğu.<br>Her eşleşmede bir adım daha ileri!</p>${island}<div class="stats"><div class="stat"><strong style="color:var(--gold)">${p.unlocked}</strong><span>Aktif bölüm</span></div><div class="stat"><strong style="color:var(--mint)">${p.completed.length*10}</strong><span>Tamamlanan kelime</span></div><div class="stat"><strong>100</strong><span>Keşfedilecek bölüm</span></div></div><div class="section"><h2>Yolculuğuna devam et</h2><span class="pill">${l.name.toLocaleUpperCase('tr')} → TÜRKÇE</span></div><div class="journey"><div class="row"><div><span class="eyebrow">BÖLÜM ${p.unlocked} · ${difficulty(p.unlocked)}</span><h3 style="margin:8px 0">${region(p.unlocked)}</h3></div><span style="font-size:30px">✦</span></div><div class="row tiny"><span>Genel ilerleme</span><span>${p.completed.length} / 100 bölüm</span></div><div class="progress"><i style="width:${p.completed.length}%"></i></div><button class="primary" data-start="${p.unlocked}">${p.session?'Kaldığın yerden devam et':'Yolculuğa devam et'} <span style="float:right">→</span></button></div><div class="footer-note">${l.name} · 100 bölüm · 1.000 kelime</div>`;
   }
   if(screen==='map'){
-    body=`${header()}${languageBadge()}<div class="eyebrow">ADIM ADIM İLERLE</div><h1>Senin <span>yolculuğun.</span></h1><p>Her bölümde 10 kelime eşleştir.<br>Kolaydan zora yeni durakları keşfet.</p><p class="tiny">◎ Kaldığın bölüme git · ✧ Doğru çifti gör<br>Her yardımcı için başlangıçta 5 hak; diline özel saklanır.</p><div class="map">${Array.from({length:100},(_,i)=>{const n=i+1,locked=n>p.unlocked,done=p.completed.includes(n);return `${i%10===0?`<div class="map-region"><span>${i/10+1}. ADA</span><strong>${region(n)}</strong><small>${difficulty(n)}</small></div>`:''}<div class="maprow"><button class="node ${locked?'locked':!done?'current':''}" style="--x:${[0,-65,-90,-65,0,65,90,65][i%8]}px" data-level="${n}" data-start="${n}" ${locked?'disabled':''} aria-label="Bölüm ${n}${locked?', kilitli':done?', tamamlandı':''}">${locked?'⌑':done?'✓':n}<small>Bölüm ${n}</small></button></div>`;}).join('')}</div>`;
+    body=`${header()}${languageBadge()}<div class="eyebrow">ADIM ADIM İLERLE</div><h1>Senin <span>yolculuğun.</span></h1><p>Her bölümde 10 kelime eşleştir, 3 cümlede boşluk doldur.<br>Kolaydan zora yeni durakları keşfet.</p><p class="tiny">◎ Yanlış öncesi eşleşmelerini geri getir · ✧ Doğru çifti gör<br>Her yardımcı için başlangıçta 5 hak; diline özel saklanır.</p><div class="map">${Array.from({length:100},(_,i)=>{const n=i+1,locked=n>p.unlocked,done=p.completed.includes(n);return `${i%10===0?`<div class="map-region"><span>${i/10+1}. ADA</span><strong>${region(n)}</strong><small>${difficulty(n)}</small></div>`:''}<div class="maprow"><button class="node ${locked?'locked':!done?'current':''}" style="--x:${[0,-65,-90,-65,0,65,90,65][i%8]}px" data-level="${n}" data-start="${n}" ${locked?'disabled':''} aria-label="Bölüm ${n}${locked?', kilitli':done?', tamamlandı':''}">${locked?'⌑':done?'✓':n}<small>Bölüm ${n}</small></button></div>`;}).join('')}</div>`;
   }
   if(screen==='words'){
     body=`${header()}${languageBadge()}<div class="eyebrow">KELİME DEFTERİN</div><h1>Keşfettiğin <span>kelimeler.</span></h1><p>Tamamladığın ${l.name} bölümlerini burada tekrar et. Kelimeye dokun, telaffuzunu dinle.</p><input id="search" class="search" placeholder="${l.name} veya Türkçe kelime ara…" aria-label="Kelime ara"><div id="wordlist"></div>`;
   }
   if(screen==='settings'){
-    body=`${header()}${languageBadge()}<div class="eyebrow">SANA GÖRE</div><h1>Yolculuk <span>ayarları.</span></h1><div class="setting row"><span>Sesler ve kelime telaffuzu</span><button class="iconbtn" data-action="sound">${state.sound?'Açık':'Kapalı'}</button></div><div class="setting"><strong>${l.name} yardımcı hakları</strong><p>Kaldığım yere gel: <b>${p.jump} / 5</b><br>İpucu: <b>${p.hint} / 5</b></p><p class="tiny">Haklar dil başına bir kez verilir, bölüm geçince yenilenmez. Henüz reklamla hak kazanma açık değil.</p></div><div class="setting"><strong>Nasıl oynanır?</strong><p>${l.name} kelimeye dokununca telaffuzunu dinle, ardından Türkçe karşılığını seç. 10 doğru eşleşmeyle sonraki bölümü aç. Yanlış eşleştirmede bölüm yeniden başlar.</p><p>İpucu bir doğru çifti işaretler; eşleştirmeyi sen yaparsın. Kaldığım yere gel, haritada aktif bölümüne kaydırır; eski bir bölüm oynuyorsan kayıtlı bölümüne döndürür. Zaten oradaysan hak harcamaz.</p></div><div class="setting"><strong>Telefonuna ekle</strong><p>Android: Chrome menüsü → Ana ekrana ekle / Uygulamayı yükle.<br>iPhone: Safari → Paylaş → Ana Ekrana Ekle.</p><button class="secondary" data-action="install">Uygulamayı yükle</button><p class="tiny">Çevrimdışı kullanım için HTTPS üzerinden ilk açılışı tamamla. Telaffuz için ${l.name} ses paketi gerekebilir; ses kalitesi ve çevrimdışı ses desteği cihaza bağlıdır.</p></div><div class="setting"><strong>İlerlemen bu cihazda saklanır</strong><p>Tüm dillerin ilerlemesini ve haklarını yedekleyebilirsin. Tarayıcı verilerini silmek kaydı siler.</p><button class="secondary" data-action="export">Tüm dilleri yedekle ↓</button><button class="secondary" data-action="import">Yedekten geri yükle ↑</button><input type="file" accept="application/json" id="backup" hidden><button class="secondary danger" data-action="reset">${l.name} ilerlemesini sıfırla</button><p class="tiny">İlerlemeyi sıfırlamak yardımcı haklarını yenilemez.</p></div><p class="footer-note">Kelime Yolculuğu · Sürüm 2.0<br>6 dil · 6.000 kelime · Hesap yok</p>`;
+    body=`${header()}${languageBadge()}<div class="eyebrow">SANA GÖRE</div><h1>Yolculuk <span>ayarları.</span></h1><div class="setting row"><span>Sesler ve kelime telaffuzu</span><button class="iconbtn" data-action="sound">${state.sound?'Açık':'Kapalı'}</button></div><div class="setting"><strong>${l.name} yardımcı hakları</strong><p>Kaldığım yere gel: <b>${p.jump} / 5</b><br>İpucu: <b>${p.hint} / 5</b></p><p class="tiny">Haklar dil başına bir kez verilir, bölüm geçince yenilenmez. Henüz reklamla hak kazanma açık değil.</p></div><div class="setting"><strong>Nasıl oynanır?</strong><p>${l.name} kelimeye dokununca telaffuzunu dinle, ardından Türkçe karşılığını seç. 10 doğru eşleşmeden sonra 3 cümlede boşluk doldur; ardından sonraki bölüm açılır. Yanlış eşleştirmede bölüm yeniden başlar.</p><p>İpucu bir doğru çifti işaretler; eşleştirmeyi sen yaparsın. Kaldığım yere gel, yanlış cevapla sıfırlanan bölümde önceki doğru eşleşmelerini 1 hak karşılığında geri getirir. Örneğin 8 doğru yaptıysan yeniden 8/10 olur. Geri getirilecek eşleşme yoksa hak harcanmaz. Cümle sorusunda yanlış seçersen yalnızca o soruyu tekrar denersin.</p></div><div class="setting"><strong>Telefonuna ekle</strong><p>Android: Chrome menüsü → Ana ekrana ekle / Uygulamayı yükle.<br>iPhone: Safari → Paylaş → Ana Ekrana Ekle.</p><button class="secondary" data-action="install">Uygulamayı yükle</button><p class="tiny">Çevrimdışı kullanım için HTTPS üzerinden ilk açılışı tamamla. Telaffuz için ${l.name} ses paketi gerekebilir; ses kalitesi ve çevrimdışı ses desteği cihaza bağlıdır.</p></div><div class="setting"><strong>İlerlemen bu cihazda saklanır</strong><p>Tüm dillerin ilerlemesini ve haklarını yedekleyebilirsin. Tarayıcı verilerini silmek kaydı siler.</p><button class="secondary" data-action="export">Tüm dilleri yedekle ↓</button><button class="secondary" data-action="import">Yedekten geri yükle ↑</button><input type="file" accept="application/json" id="backup" hidden><button class="secondary danger" data-action="reset">${l.name} ilerlemesini sıfırla</button><p class="tiny">İlerlemeyi sıfırlamak yardımcı haklarını yenilemez.</p></div><p class="footer-note">Kelime Yolculuğu · Sürüm 2.1<br>6 dil · 6.000 kelime · Hesap yok</p>`;
   }
   const isMap=screen==='map';
   app.innerHTML=`<main class="screen ${isMap?'with-tools':''}">${body}</main>${screen==='languages'?'':nav()}${isMap?tools():''}`;
@@ -101,18 +100,20 @@ function listWords(q){
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function validSession(s,level,pairs){
   const order=a=>Array.isArray(a)&&a.length===10&&new Set(a).size===10&&a.every(x=>Number.isInteger(x)&&x>=0&&x<10);
-  return s&&s.level===level&&order(s.left)&&order(s.right)&&Array.isArray(s.matches)&&s.matches.length<10&&s.matches.every(pair=>Array.isArray(pair)&&pair.length===2&&pair.every(i=>Number.isInteger(i)&&i>=0&&i<10)&&pairs[pair[0]][1]===pairs[pair[1]][1])&&new Set(s.matches.map(x=>x[0])).size===s.matches.length&&new Set(s.matches.map(x=>x[1])).size===s.matches.length;
+  return s&&s.level===level&&order(s.left)&&order(s.right)&&Array.isArray(s.matches)&&s.matches.length<=10&&(s.quizProgress===undefined||(Number.isInteger(s.quizProgress)&&s.quizProgress>=0&&s.quizProgress<=3))&&(s.matches.length===10||!s.quizProgress)&&s.matches.every(pair=>Array.isArray(pair)&&pair.length===2&&pair.every(i=>Number.isInteger(i)&&i>=0&&i<10)&&pairs[pair[0]][1]===pairs[pair[1]][1])&&new Set(s.matches.map(x=>x[0])).size===s.matches.length&&new Set(s.matches.map(x=>x[1])).size===s.matches.length;
 }
-function snapshot(){if(!game||game.level!==progress().unlocked||progress().completed.includes(game.level))return;progress().session={level:game.level,left:game.left,right:game.right,matches:game.matches};save();}
-function start(n,fresh=false){
+function sessionData(){return {level:game.level,left:[...game.left],right:[...game.right],matches:game.matches.map(pair=>[...pair]),quizProgress:game.quizProgress||0};}
+function snapshot(){if(!game||game.level!==progress().unlocked||progress().completed.includes(game.level))return;progress().session=sessionData();save();}
+function start(n,fresh=false,restored=null){
   const p=progress(),l=language();
   if(!Number.isInteger(n)||n>p.unlocked||n<1||n>100)return;
   cleanup();screen='game';
-  const pairs=vocabulary().slice((n-1)*10,n*10),session=!fresh&&n===p.unlocked&&validSession(p.session,n,pairs)?p.session:null;
-  game={level:n,pairs,left:session?[...session.left]:shuffle(Array.from({length:10},(_,i)=>i)),right:session?[...session.right]:shuffle(Array.from({length:10},(_,i)=>i)),matches:session?session.matches.map(pair=>[...pair]):[],selected:null,blocked:false,hintVisible:false};
+  const pairs=vocabulary().slice((n-1)*10,n*10),session=validSession(restored,n,pairs)?restored:!fresh&&n===p.unlocked&&validSession(p.session,n,pairs)?p.session:null;
+  game={level:n,pairs,left:session?[...session.left]:shuffle(Array.from({length:10},(_,i)=>i)),right:session?[...session.right]:shuffle(Array.from({length:10},(_,i)=>i)),matches:session?session.matches.map(pair=>[...pair]):[],selected:null,blocked:false,hintVisible:false,quizProgress:clamp(session?.quizProgress,0,3,0)};
   snapshot();window.scrollTo(0,0);
+  if(game.matches.length===10){renderQuiz();return;}
   const matched=(id,side)=>game.matches.some(pair=>pair[side]===id);
-  app.innerHTML=`<main class="screen game-screen"><div class="gamehead"><button class="iconbtn" data-go="map" aria-label="Haritaya dön">‹</button><div style="text-align:center"><div class="eyebrow">${l.flag} ${l.name} · ${difficulty(n)}</div><h2>Bölüm ${n} <span class="tiny">/ 100</span></h2></div><button class="iconbtn" data-action="sound" aria-label="Sesi aç veya kapat">${state.sound?'♫':'♩'}</button></div><div class="game-status"><div class="row tiny"><span id="status" role="status">${game.matches.length?'Kaldığın yerden devam et':'İlk kelimeni seç'}</span><strong id="count" style="color:var(--mint)">${game.matches.length} / 10</strong></div><div class="progress"><i id="gameprogress" style="width:${game.matches.length*10}%"></i></div></div><div class="board"><div class="col-title">${l.name.toLocaleUpperCase('tr')}</div><div class="col-title">TÜRKÇE</div>${game.left.map((id,i)=>`<button class="word ${matched(id,0)?'matched':''}" lang="${l.id}" dir="${l.dir}" data-id="${id}" data-side="0" ${matched(id,0)?'disabled':''}>${escapeHTML(pairs[id][0])}</button><button class="word ${matched(game.right[i],1)?'matched':''}" lang="tr" dir="ltr" data-id="${game.right[i]}" data-side="1" ${matched(game.right[i],1)?'disabled':''}>${escapeHTML(pairs[game.right[i]][1])}</button>`).join('')}</div><div class="game-info">♫ ${l.name} kelimeye dokun, dinle ve eşleştir.<br>Yanlışta bölüm yeniden başlar.</div></main>${tools(true)}`;
+  app.innerHTML=`<main class="screen game-screen"><div class="gamehead"><button class="iconbtn" data-go="map" aria-label="Haritaya dön">‹</button><div style="text-align:center"><div class="eyebrow">${l.flag} ${l.name} · ${difficulty(n)}</div><h2>Bölüm ${n} <span class="tiny">/ 100</span></h2></div><button class="iconbtn" data-action="sound" aria-label="Sesi aç veya kapat">${state.sound?'♫':'♩'}</button></div><div class="game-status"><div class="row tiny"><span id="status" role="status">${game.matches.length?'Kaldığın yerden devam et':'İlk kelimeni seç'}</span><strong id="count" style="color:var(--mint)">${game.matches.length} / 10</strong></div><div class="progress"><i id="gameprogress" style="width:${game.matches.length*10}%"></i></div></div><div class="board"><div class="col-title">${l.name.toLocaleUpperCase('tr')}</div><div class="col-title">TÜRKÇE</div>${game.left.map((id,i)=>`<button class="word ${matched(id,0)?'matched':''}" lang="${l.id}" dir="${l.dir}" data-id="${id}" data-side="0" ${matched(id,0)?'disabled':''}>${escapeHTML(pairs[id][0])}</button><button class="word ${matched(game.right[i],1)?'matched':''}" lang="tr" dir="ltr" data-id="${game.right[i]}" data-side="1" ${matched(game.right[i],1)?'disabled':''}>${escapeHTML(pairs[game.right[i]][1])}</button>`).join('')}</div><div class="game-info">♫ ${l.name} kelimeye dokun, dinle ve eşleştir.<br>Yanlışta bölüm yeniden başlar; doğru eşleşmelerini yardımcıyla geri getirebilirsin.</div></main>${tools(true)}`;
 }
 function markSelected(item){game.selected=item;item.btn.classList.add('selected');item.btn.setAttribute('aria-pressed','true');}
 function choose(btn){
@@ -132,25 +133,26 @@ function choose(btn){
     document.querySelector('#status').textContent=['Harika eşleşme!','Böyle devam et!','Bir adım daha ileri!'][game.matches.length%3];
     document.querySelector('#gameprogress').style.width=game.matches.length*10+'%';
     if(game.matches.length===10){
-      game.blocked=true;const n=game.level,p=progress();
-      if(!p.completed.includes(n))p.completed.push(n);
-      p.completed.sort((a,b)=>a-b);
-      if(n===p.unlocked){p.unlocked=Math.min(100,n+1);p.session=null;}
-      save();timer=setTimeout(()=>celebrate(n),500);
+      game.blocked=true;
+      document.querySelector('#status').textContent='Eşleştirmeler tamam! Şimdi 3 cümle.';
+      timer=setTimeout(()=>renderQuiz(),450);
     }
   }else{
     sound(false);game.blocked=true;btn.classList.add('wrong');old.btn.classList.add('wrong');
     document.querySelector('#status').textContent='Yanlış eşleşme. Yeniden deneyelim!';
     const n=game.level;
-    if(n===progress().unlocked){progress().session=null;save();}
+    if(game.matches.length>0)progress().recovery=sessionData();
+    if(n===progress().unlocked)progress().session=null;
+    save();
     timer=setTimeout(()=>start(n,true),1100);
   }
 }
 function useHint(){
   const p=progress();
   if(p.hint<=0){toast('İpucu hakkın bitti. Reklamla hak kazanma henüz açık değil.');return;}
-  if(screen!=='game')start(p.unlocked);
+  if(screen!=='game'&&screen!=='quiz')start(p.unlocked);
   if(!game||game.blocked)return;
+  if(screen==='quiz'){useQuizHint();return;}
   if(game.hintVisible){toast('İpucun işaretli. Doğru çifti eşleştir.');return;}
   const remaining=side=>Array.from(app.querySelectorAll(`.word[data-side="${side}"]:not(:disabled)`));
   const left=remaining(0),right=remaining(1);if(!left.length||!right.length)return;
@@ -167,23 +169,69 @@ function useHint(){
   toast(`${pair[0]} → ${pair[1]}`);pronounce(pair[0]);
   hintTimer=setTimeout(clearHint,5000);
 }
-function jumpToCurrent(){
-  const p=progress();
-  if(p.jump<=0){toast('Kaldığım yere gel hakkın bitti. Reklamla hak kazanma henüz açık değil.');return;}
-  if(screen==='game'){
-    if(game?.blocked)return;
-    if(game?.level===p.unlocked){toast('Zaten kaldığın bölümdesin. Hak harcanmadı.');return;}
-    p.jump--;save();start(p.unlocked);toast('Kaldığın bölüme döndün.');return;
+function restoreMatches(){
+  const p=progress(),recovery=p.recovery;
+  if(p.jump<=0){toast('Geri getirme hakkın bitti.');return;}
+  if(game?.blocked)return;
+  if(screen==='quiz'){toast('Eşleştirmelerin zaten tamam. Cümle sorusunu tekrar deneyebilirsin.');return;}
+  const level=recovery?.level;
+  const pairs=Number.isInteger(level)?vocabulary().slice((level-1)*10,level*10):[];
+  if(!Number.isInteger(level)||level<1||level>p.unlocked||!validSession(recovery,level,pairs)||recovery.matches.length===0||recovery.matches.length>=10){
+    toast('Geri getirilecek eşleşme yok. Hak harcanmadı.');return;
   }
-  const target=app.querySelector(`[data-level="${p.unlocked}"]`);if(!target)return;
-  const rect=target.getBoundingClientRect();
-  if(rect.top>=90&&rect.bottom<=innerHeight-180){toast('Kaldığın bölüm zaten burada. Hak harcanmadı.');return;}
-  p.jump--;save();updateTools();target.scrollIntoView({behavior:movement(),block:'center'});
-  target.classList.add('landed');setTimeout(()=>target.classList.remove('landed'),1700);
+  if(screen==='game'&&game.level!==level){toast('Bu bölümde geri getirilecek eşleşme yok. Hak harcanmadı.');return;}
+  const currentCount=screen==='game'?game.matches.length:validSession(p.session,level,pairs)?p.session.matches.length:0;
+  if(currentCount>=recovery.matches.length){toast('Önceki doğru sayına zaten ulaştın. Hak harcanmadı.');return;}
+  const count=recovery.matches.length;
+  p.jump--;p.recovery=null;save();
+  start(level,false,recovery);
+  toast(`${count} doğru eşleşmen geri geldi. 1 hak kullanıldı.`);
+}
+function renderQuiz(reviewIndex=null){
+  if(!game||game.matches.length!==10)return;
+  stopPronunciation();clearHint();clearTimeout(timer);game.blocked=false;screen='quiz';
+  if(game.quizProgress===3&&reviewIndex===null){completeLevel();return;}
+  const l=language(),review=reviewIndex!==null,index=review?reviewIndex:game.quizProgress;
+  const questions=SENTENCES[state.language][game.level-1],question=questions[index];
+  if(game.quizOptionIndex!==index){game.quizOptionIndex=index;game.quizOptions=shuffle(questions.map(q=>q.answer));}
+  game.quizReview=review;
+  const sentence=escapeHTML(question.text).replace('___',`<span class="sentence-blank ${review?'filled':''}" dir="auto">${review?escapeHTML(question.answer):'…'}</span>`);
+  app.innerHTML=`<main class="screen quiz-screen"><div class="gamehead"><button class="iconbtn" data-go="map" aria-label="Haritaya dön">‹</button><div style="text-align:center"><div class="eyebrow">${l.flag} ${l.name} · BÖLÜM ${game.level}</div><h2>Cümle zamanı</h2></div><button class="iconbtn" data-action="sound" aria-label="Sesi aç veya kapat">${state.sound?'♫':'♩'}</button></div><div class="quiz-heading"><span class="pill">✓ 10 / 10 EŞLEŞME</span><span class="tiny">Cümle ${index+1} / 3</span></div><div class="progress"><i style="width:${game.quizProgress/3*100}%"></i></div><p class="eyebrow">BOŞLUĞA HANGİ KELİME GELİR?</p><div class="sentence-card"><p class="sentence-text" lang="${l.id}" dir="${l.dir}">${sentence}</p><div class="sentence-translation"><span>TÜRKÇESİ</span><p>${escapeHTML(question.translation)}</p></div></div><div class="quiz-options" aria-label="Cevap seçenekleri">${game.quizOptions.map(option=>`<button class="quiz-choice ${review&&option===question.answer?'correct':''}" lang="${l.id}" dir="${l.dir}" data-answer="${escapeHTML(option)}" data-correct="${option===question.answer}" ${review?'disabled':''}>${escapeHTML(option)}</button>`).join('')}</div><p id="quiz-feedback" class="quiz-feedback" role="status">${review?'Doğru! Kelimeyi cümle içinde de kullandın.':'Türkçe anlamından yararlan, doğru kelimeyi seç.'}</p>${review?`<button class="secondary" data-speak="${escapeHTML(question.text.replace('___',question.answer))}">♫ Cümleyi dinle</button><button class="primary quiz-next" data-action="next-sentence">${game.quizProgress===3?'Bölümü tamamla ✦':'Sonraki cümle →'}</button>`:''}<p class="tiny quiz-note">Yanlış seçimde yeniden deneyebilirsin; eşleşmelerin korunur.</p></main>${tools(true)}`;
+  window.scrollTo(0,0);
+}
+function chooseSentence(button){
+  if(screen!=='quiz'||!game||game.quizReview||button.disabled)return;
+  clearHint();
+  const index=game.quizProgress,question=SENTENCES[state.language][game.level-1][index];
+  if(button.dataset.answer===question.answer){
+    sound();game.quizProgress++;snapshot();renderQuiz(index);
+    pronounce(question.text.replace('___',question.answer));
+  }else{
+    sound(false);button.disabled=true;button.classList.add('wrong');
+    document.querySelector('#quiz-feedback').textContent='Bu kelime uymadı. Cümleyi ve Türkçesini okuyup yeniden dene.';
+  }
+}
+function useQuizHint(){
+  if(!game||game.quizReview){toast('Bu soruyu zaten doğru yanıtladın. Hak harcanmadı.');return;}
+  if(game.hintVisible){toast('Doğru kelime zaten işaretli. Hak harcanmadı.');return;}
+  const button=app.querySelector('.quiz-choice[data-correct="true"]');if(!button||button.disabled)return;
+  progress().hint--;save();updateTools();
+  button.classList.add('hinted');game.hintVisible=true;
+  document.querySelector('#quiz-feedback').textContent='İpucu: Işıklı kelime boşluğu tamamlar.';
+  hintTimer=setTimeout(clearHint,5000);
+}
+function completeLevel(){
+  if(!game||game.matches.length!==10||game.quizProgress!==3)return;
+  const n=game.level,p=progress();
+  if(!p.completed.includes(n))p.completed.push(n);
+  p.completed.sort((a,b)=>a-b);
+  if(n===p.unlocked){p.unlocked=Math.min(100,n+1);p.session=null;}
+  if(p.recovery?.level===n)p.recovery=null;
+  save();celebrate(n);
 }
 function celebrate(n){
   screen='success';clearHint();game=null;const p=progress(),l=language();
-  app.innerHTML=`<main class="screen success"><div class="medal">✦</div><div class="eyebrow">${l.name} · ${n===100?'BÜYÜK YOLCULUK TAMAMLANDI':'BİR ADA DAHA KEŞFEDİLDİ'}</div><h1>${n===100?'Zirveye ulaştın!':'Muhteşemsin!'}</h1><p>Bölüm ${n} tamamlandı.<br>${n===100?'1.000 kelimelik yolculuğunu tamamladın.':'Yeni kelimeler artık senin dünyanda.'}</p><div class="stats"><div class="stat"><strong style="color:var(--mint)">10/10</strong><span>Doğru eşleşme</span></div><div class="stat"><strong style="color:var(--gold)">${p.completed.length*10}</strong><span>Toplam kelime</span></div><div class="stat"><strong>${p.completed.length}</strong><span>Tamamlanan bölüm</span></div></div>${n<100?`<button class="primary" data-start="${n+1}">Sonraki adaya git →</button>`:''}<button class="secondary" data-go="map">Bölüm haritasına dön</button><button class="secondary" data-go="languages">Başka bir dil keşfet</button></main>`;
+  app.innerHTML=`<main class="screen success"><div class="medal">✦</div><div class="eyebrow">${l.name} · ${n===100?'BÜYÜK YOLCULUK TAMAMLANDI':'BİR ADA DAHA KEŞFEDİLDİ'}</div><h1>${n===100?'Zirveye ulaştın!':'Muhteşemsin!'}</h1><p>Bölüm ${n} tamamlandı.<br>${n===100?'1.000 kelimelik yolculuğunu tamamladın.':'Yeni kelimeler artık senin dünyanda.'}</p><div class="stats"><div class="stat"><strong style="color:var(--mint)">10/10</strong><span>Doğru eşleşme</span></div><div class="stat"><strong style="color:var(--gold)">${p.completed.length*10}</strong><span>Toplam kelime</span></div><div class="stat"><strong>${p.completed.length}</strong><span>Tamamlanan bölüm</span></div></div><p class="quiz-result">✓ 3 / 3 cümle tamamlandı</p>${n<100?`<button class="primary" data-start="${n+1}">Sonraki adaya git →</button>`:''}<button class="secondary" data-go="map">Bölüm haritasına dön</button><button class="secondary" data-go="languages">Başka bir dil keşfet</button></main>`;
   confetti();
 }
 
@@ -206,13 +254,15 @@ app.addEventListener('click',async e=>{
   if(b.dataset.go){screen=b.dataset.go;render();return;}
   if(b.dataset.start){start(Number(b.dataset.start));return;}
   if(b.dataset.speak){pronounce(b.dataset.speak);return;}
+  if(b.classList.contains('quiz-choice')){chooseSentence(b);return;}
   if(b.classList.contains('word')){choose(b);return;}
   switch(b.dataset.action){
     case 'sound':state.sound=!state.sound;if(!state.sound)stopPronunciation();save();
       app.querySelectorAll('[data-action="sound"]').forEach(button=>{button.textContent=screen==='settings'&&button.closest('.setting')?(state.sound?'Açık':'Kapalı'):(state.sound?'♫':'♩');button.setAttribute('aria-label',state.sound?'Sesi kapat':'Sesi aç');});
       toast(state.sound?'Sesler ve telaffuz açık':'Sesler ve telaffuz kapalı');break;
     case 'hint':useHint();break;
-    case 'jump':jumpToCurrent();break;
+    case 'jump':restoreMatches();break;
+    case 'next-sentence':renderQuiz();break;
     case 'install':if(installPrompt){await installPrompt.prompt();installPrompt=null;}else toast('Safari: Paylaş → Ana Ekrana Ekle. Chrome: Menü → Uygulamayı yükle.');break;
     case 'export':{
       const url=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='kelime-yolculugu-tum-diller-yedek.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);break;
